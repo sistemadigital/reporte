@@ -1,799 +1,466 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>⚖️Estadísticas</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    :root {
-      --primary: #2c3e50;
-      --secondary: #34495e;
-      --accent: #3498db;
-      --accent-light: #5dade2;
-      --success: #2ecc71;
-      --warning: #f39c12;
-      --danger: #e74c3c;
-      --light: #ecf0f1;
-      --dark: #2c3e50;
-      --text: #2c3e50;
-      --text-muted: #7f8c8d;
-      --bg: #f8f9fa;
-      --card: #ffffff;
-      --border: #e2e8f0;
-      --shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
-      --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
-      --radius: 12px;
-      --transition: all 0.3s ease;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte Estadístico del Sistema Digital</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #0066cc;
+            --primary-dark: #0052a3;
+            --light-color: #ffffff;
+            --light-gray: #f5f7fa;
+            --border-color: #e1e5eb;
+            --text-color: #333333;
+            --text-light: #666666;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+            --informe-color: #0066cc;
+            --informe-dark: #0052a3;
+        }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      line-height: 1.6;
-      color: var(--text);
-      background-color: var(--bg);
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
+        body {
+            background-color: var(--light-gray);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
 
-    /* ===== DASHBOARD ===== */
-    .dashboard {
-      display: block;
-      padding: 1rem;
-      min-height: 100vh;
-    }
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
-    header {
-      padding: 1.5rem 1rem;
-      text-align: center;
-      background-color: var(--card);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      margin-bottom: 2rem;
-      position: relative;
-    }
+        /* Header Styles */
+        header {
+            background-color: var(--light-color);
+            box-shadow: var(--shadow);
+            padding: 0.5rem 2rem;
+            border-bottom: 4px solid var(--primary-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-    h1 {
-      color: var(--primary);
-      font-weight: 800;
-      letter-spacing: -0.5px;
-      font-size: 2.2rem;
-      margin-bottom: 0.5rem;
-    }
+        .module-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            flex: 1;
+            justify-content: flex-start;
+        }
 
-    h5 {
-      color: var(--text-muted);
-      font-weight: 400;
-      margin-bottom: 1.5rem;
-    }
+        .module-btn {
+            background-color: var(--light-color);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 0.8rem 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            color: var(--text-color);
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
 
-    .filters {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-top: 1.5rem;
-    }
+        .module-btn:hover {
+            background-color: rgba(0, 102, 204, 0.05);
+            border-color: var(--primary-color);
+        }
 
-    .filter-group {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
+        .module-btn.active {
+            background-color: var(--primary-color);
+            color: var(--light-color);
+            border-color: var(--primary-color);
+        }
 
-    label {
-      font-weight: 500;
-      font-size: 0.9rem;
-      color: var(--text-muted);
-    }
+        .module-btn.informe-trimestral {
+            background-color: var(--informe-color);
+            color: white;
+            font-weight: bold;
+            border-color: var(--informe-color);
+        }
 
-    select {
-      padding: 0.75rem 1rem;
-      border-radius: var(--radius);
-      border: 1px solid var(--border);
-      background: var(--card);
-      color: var(--text);
-      font-size: 1rem;
-      transition: var(--transition);
-      appearance: none;
-      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="%237f8c8d"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>');
-      background-repeat: no-repeat;
-      background-position: right 12px center;
-      background-size: 1.2em;
-      min-width: 200px;
-    }
+        .module-btn.informe-trimestral:hover {
+            background-color: var(--informe-dark);
+            border-color: var(--informe-dark);
+        }
 
-    select:focus {
-      outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-    }
+        .module-btn.informe-trimestral.active {
+            background-color: var(--informe-dark);
+            color: white;
+            border-color: var(--informe-dark);
+        }
 
-    .dashboard-content {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-    }
+        .header-right {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
 
-    @media (min-width: 768px) {
-      .dashboard-content {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
+        /* Main Content Styles */
+        main {
+            flex: 1;
+            padding: 2rem;
+        }
 
-    @media (min-width: 1200px) {
-      .dashboard-content {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
+        /* Content Panel */
+        .content-panel {
+            background-color: var(--light-color);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
 
-    .card {
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 1.5rem;
-      position: relative;
-      overflow: hidden;
-      transition: var(--transition);
-    }
+        .content-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            background-color: rgba(0, 102, 204, 0.05);
+        }
 
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: var(--shadow-lg);
-    }
+        .content-title {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
 
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1rem;
-    }
+        .content-area {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
 
-    .card-title {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--primary);
-    }
+        .module-content {
+            display: none;
+        }
 
-    .card-total {
-      font-weight: 800;
-      font-size: 1.8rem;
-      color: var(--accent);
-      text-align: center;
-      margin: 1rem 0;
-    }
+        .module-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
 
-    .chart-container {
-      height: 300px;
-      position: relative;
-    }
+        .iframe-container {
+            width: 100%;
+            height: 600px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
 
-    .loading-overlay, .no-data-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(255, 255, 255, 0.9);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 10;
-      border-radius: var(--radius);
-      text-align: center;
-      flex-direction: column;
-    }
+        .iframe-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
 
-    .spinner {
-      width: 40px;
-      height: 40px;
-      border: 4px solid #f3f3f3;
-      border-top: 4px solid var(--accent);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
+        .placeholder-content {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--text-light);
+        }
 
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
+        .placeholder-icon {
+            font-size: 4rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            opacity: 0.7;
+        }
 
-    .buttons-container {
-      text-align: center;
-      margin: 2rem 0;
-    }
+        .placeholder-text h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
 
-    .btn {
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      padding: 0.75rem 1.5rem;
-      border-radius: var(--radius);
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 1rem;
-      transition: var(--transition);
-      margin: 0 0.5rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
+        .placeholder-text p {
+            max-width: 600px;
+            margin: 0 auto 1.5rem;
+        }
 
-    .btn:hover {
-      background: var(--accent-light);
-      transform: translateY(-2px);
-    }
+        /* Footer */
+        footer {
+            background-color: var(--light-color);
+            border-top: 1px solid var(--border-color);
+            padding: 1.5rem 2rem;
+            text-align: center;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
 
-    .btn-secondary {
-      background: var(--secondary);
-    }
+        .footer-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-    .btn-secondary:hover {
-      background: #415b76;
-    }
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
 
-    .legend {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      justify-content: center;
-      margin-top: 1rem;
-    }
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .module-buttons {
+                gap: 0.4rem;
+            }
+            
+            .module-btn {
+                padding: 0.7rem 1rem;
+                font-size: 0.85rem;
+            }
+        }
 
-    .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.85rem;
-    }
-
-    .legend-color {
-      width: 12px;
-      height: 12px;
-      border-radius: 3px;
-    }
-
-    /* Estilos para gráficos específicos */
-    .bar {
-      transition: opacity 0.3s;
-    }
-
-    .bar:hover {
-      opacity: 0.8;
-    }
-
-    .line {
-      fill: none;
-      stroke-width: 2;
-    }
-
-    .area {
-      opacity: 0.5;
-    }
-
-    .treemap-rect {
-      stroke: #fff;
-      stroke-width: 1px;
-    }
-
-    .treemap-text {
-      font-size: 10px;
-      text-anchor: middle;
-      pointer-events: none;
-    }
-
-    /* Estilos para el iframe del informe trimestral */
-    .informe-trimestral-container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: white;
-      z-index: 1000;
-      display: none;
-      flex-direction: column;
-    }
-
-    .informe-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem;
-      background: var(--primary);
-      color: white;
-    }
-
-    .informe-iframe {
-      flex: 1;
-      border: none;
-    }
-  </style>
-  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 0.5rem 1rem;
+                gap: 0.5rem;
+            }
+            
+            .module-buttons {
+                justify-content: flex-start;
+                overflow-x: auto;
+                padding-bottom: 0.5rem;
+                width: 100%;
+            }
+            
+            .module-btn {
+                flex-shrink: 0;
+            }
+            
+            .header-right {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .footer-info {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .content-area {
+                padding: 1.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <section class="dashboard" id="dashboard">
-    <header>
-      <h2>Estadísticas Defensoría Civil y Comercial 6</h2>
-      <h5>Diseño y programación de Rómulo Fioravante.Año 2025</h5>
-      <div class="filters">
-        <div class="filter-group">
-          <label for="chartSelector">Gráfico a Mostrar</label>
-          <select id="chartSelector"></select>
-        </div>
-        <div class="filter-group">
-          <label for="filtroRango">Rango</label>
-          <select id="filtroRango">
-            <option value="semana">Semanal (7 días)</option>
-            <option value="mes" selected>Mensual (30 días)</option>
-            <option value="anio">Anual (365 días)</option>
-          </select>
-        </div>
-      </div>
-    </header>
-
-    <div class="dashboard-content">
-      <div class="card">
-        <div class="card-header">
-          <h3 class="card-title" id="chartTitle">Estado</h3>
-        </div>
-        <div id="loading" class="loading-overlay">
-          <div class="spinner"></div>
-          <p>Cargando datos...</p>
-        </div>
-        <div id="no-data" class="no-data-overlay" style="display:none;">
-          <h3>No hay datos para mostrar</h3>
-          <p>Intente seleccionar otro tipo de visualización.</p>
-        </div>
-        <div id="totalGeneral" class="card-total">0</div>
-        <div id="mainChart" class="chart-container"></div>
-        <div id="chart-legend" class="legend"></div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          <h3>Resumen General</h3>
-        </div>
-        <div id="summaryChart" class="chart-container"></div>
-        <div id="summary-legend" class="legend"></div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          <h3>Tendencia Temporal</h3>
-        </div>
-        <div id="trendChart" class="chart-container"></div>
-      </div>
-    </div>
-
-    <div class="buttons-container">
-      <button id="btnPrintDashboard" class="btn">
-        <i class="fas fa-print"></i> Imprimir Estadísticas
-      </button>
-      <button id="btnDownload" class="btn">
-        <i class="fas fa-download"></i> Descargar como Imagen
-      </button>
-      <button id="btnRefresh" class="btn btn-secondary">
-        <i class="fas fa-sync-alt"></i> Actualizar Datos
-      </button>
-      <button id="btnInformeTrimestral" class="btn" style="background: var(--success);">
-        <i class="fas fa-file-alt"></i> Informe Trimestral Oficial
-      </button>
-    </div>
-  </section>
-
-  <!-- Contenedor para el informe trimestral -->
-  <div class="informe-trimestral-container" id="informeTrimestral">
-    <div class="informe-header">
-      <h2>Informe Trimestral Oficial</h2>
-      <button id="btnCerrarInforme" class="btn" style="background: var(--danger);">
-        <i class="fas fa-times"></i> Cerrar
-      </button>
-    </div>
-    <iframe src="https://sistema-secretarios.github.io/estadistica/" class="informe-iframe"></iframe>
-  </div>
-
-  <script type="module">
-    // Importación de Firebase
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getFirestore, collection, query, onSnapshot } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
-    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
-
-    // === Configuración de Firebase ===
-    const firebaseConfigCausas = {
-      apiKey: "AIzaSyBt6X0u0BpiNPcV2SNPrN-spCmjl2AhZaA",
-      authDomain: "causas-defensoria.firebaseapp.com",
-      projectId: "causas-defensoria",
-      storageBucket: "causas-defensoria.firebasestorage.app",
-      messagingSenderId: "186064671470",
-      appId: "1:186064671470:web:b58bae5eadbe6e469f19ff"
-    };
-    
-    const firebaseConfigAtencion = {
-      apiKey: "AIzaSyDgxLS98sk6GkLrjMu3BVS2cmZ9exdh4dY",
-      authDomain: "atencion-publico-def6.firebaseapp.com",
-      databaseURL: "https://atencion-publico-def6-default-rtdb.firebaseio.com",
-      projectId: "atencion-publico-def6",
-      storageBucket: "atencion-publico-def6.firebasestorage.app",
-      messagingSenderId: "1052433106688",
-      appId: "1:1052433106688:web:8ac3e144bcf377ac4b55e5"
-    };
-
-    const appCausas = initializeApp(firebaseConfigCausas, "causasApp");
-    const appAtencion = initializeApp(firebaseConfigAtencion, "atencionApp");
-    const dbCausas = getFirestore(appCausas);
-    const dbAtencion = getDatabase(appAtencion);
-
-    // === Estado ===
-    let datosCacheCausas = null;
-    let datosCacheAtencion = null;
-    let chPrincipal = null;
-
-    // === Elementos DOM ===
-    const dashboardPage = document.getElementById("dashboard");
-    const loadingOverlay = document.getElementById("loading");
-    const noDataOverlay = document.getElementById("no-data");
-    const chartSelector = document.getElementById("chartSelector");
-    const filtroRango = document.getElementById("filtroRango");
-    const btnInformeTrimestral = document.getElementById("btnInformeTrimestral");
-    const informeTrimestral = document.getElementById("informeTrimestral");
-    const btnCerrarInforme = document.getElementById("btnCerrarInforme");
-
-    // === Paletas de colores ===
-    const colorScales = {
-      estado: d3.scaleOrdinal(d3.schemePaired),
-      prioridad: d3.scaleOrdinal(d3.schemeSet1),
-      intervencion: d3.scaleOrdinal(d3.schemeSet2),
-      audiencias: d3.scaleOrdinal(d3.schemeOranges[7]),
-      gesel: d3.scaleOrdinal(d3.schemeGreens[7]),
-      vencimiento: d3.scaleOrdinal(d3.schemePurples[7]),
-      recursos: d3.scaleOrdinal(d3.schemeSet1),
-      usuarioAsignado: d3.scaleOrdinal(d3.schemeSet3),
-      type: d3.scaleOrdinal(["#34c759", "#ff9500", "#af52de", "#ff3b30"]),
-      generic: d3.scaleOrdinal(d3.schemeTableau10)
-    };
-
-    // === Lista de gráficos disponibles ===
-    const chartsData = [
-      { id: "estado", name: "Estado", key: "estado", source: "causas" },
-      { id: "prioridad", name: "Prioridad", key: "prioridad", source: "causas" },
-      { id: "intervencion", name: "Intervención", key: "intervencion", source: "causas" },
-      { id: "audiencias", name: "Audiencias", key: "audiencias", dateFilter: true, source: "causas" },
-      { id: "gesel", name: "Audiencia Gesel", key: "gesel", dateFilter: true, source: "causas" },
-      { id: "vencimiento", name: "Vencimientos", key: "vencimiento", dateFilter: true, source: "causas" },
-      { id: "recursos", name: "Recursos", key: "recursos", source: "causas" },
-      { id: "usuarioAsignado", name: "Usuario Asignado", key: "usuarioAsignado", source: "causas" },
-      { id: "atencion", name: "Atención al Público", key: "type", source: "atencion" }
-    ];
-
-    // === Mostrar/ocultar informe trimestral ===
-    btnInformeTrimestral.addEventListener("click", () => {
-      informeTrimestral.style.display = "flex";
-    });
-
-    btnCerrarInforme.addEventListener("click", () => {
-      informeTrimestral.style.display = "none";
-    });
-
-    // === Inicialización del dashboard ===
-    function initDashboard() {
-      chartSelector.innerHTML = "";
-      chartsData.forEach(c => {
-        const option = document.createElement("option");
-        option.value = c.id;
-        option.textContent = c.name;
-        chartSelector.appendChild(option);
-      });
-
-      chartSelector.addEventListener("change", actualizarDashboard);
-      filtroRango.addEventListener("change", actualizarDashboard);
-      document.getElementById("btnRefresh").addEventListener("click", cargarDatos);
-      document.getElementById("btnPrintDashboard").addEventListener("click", () => window.print());
-      document.getElementById("btnDownload").addEventListener("click", descargarImagen);
-
-      cargarDatos();
-    }
-
-    // === Crear gráfico de dona ===
-    function crearGraficoTorta(id){
-      d3.select(id).select("svg").remove();
-      const container = document.getElementById(id.replace("#", ""));
-      const width = container.clientWidth;
-      const height = container.clientHeight;
-      const size = Math.min(width, height);
-      
-      const svg = d3.select(id).append("svg")
-        .attr("width", width)
-        .attr("height", height)
-        .attr("viewBox", `0 0 ${size} ${size}`)
-        .attr("preserveAspectRatio", "xMidYMid meet");
+    <div class="app-container">
+        <header>
+            <div class="module-buttons">
+                <!-- Botón 1: Causas -->
+                <button class="module-btn active" data-module="causas">
+                    Causas
+                </button>
+                
+                <!-- Botón 2: Pases Diarios -->
+                <button class="module-btn" data-module="pases">
+                    Pases Diarios
+                </button>
+                
+                <!-- Botón 3: Atención al Público -->
+                <button class="module-btn" data-module="atencion">
+                    Atención al Público
+                </button>
+                
+                <!-- Botón 4: Dictamenes -->
+                <button class="module-btn" data-module="dictamenes">
+                    Dictámenes
+                </button>
+                
+                <!-- Botón 5: Oficios -->
+                <button class="module-btn" data-module="oficios">
+                    Oficios
+                </button>
+                
+                <!-- Botón 6: Partes -->
+                <button class="module-btn" data-module="partes">
+                    Partes
+                </button>
+                
+                <!-- Botón 7: Calendario -->
+                <button class="module-btn" data-module="calendario">
+                    Calendario
+                </button>
+                
+                <!-- Botón 8: Prioridad-Intervención -->
+                <button class="module-btn" data-module="prioridad">
+                    Prioridad-Intervención
+                </button>
+            </div>
+            
+            <div class="header-right">
+                <!-- Botón Informe Trimestral Oficial -->
+                <button class="module-btn informe-trimestral" data-module="informe">
+                    Informe Trimestral Oficial
+                </button>
+            </div>
+        </header>
         
-      const g = svg.append("g").attr("transform", `translate(${size/2}, ${size/2})`);
-      const radius = Math.min(size, size) / 2 - 20;
-      const arc = d3.arc().innerRadius(radius * 0.6).outerRadius(radius);
-      const pie = d3.pie().value(d => d.v).sort(null);
-      
-      return { svg, g, arc, pie, radius };
-    }
+        <main>
+            <div class="content-panel">
+                <div class="content-header">
+                    <h2 class="content-title" id="module-title">Causas</h2>
+                </div>
+                
+                <div class="content-area">
+                    <!-- Placeholder content (initial) -->
+                    <div id="initial-content" class="placeholder-content">
+                        <div class="placeholder-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <div class="placeholder-text">
+                            <h3>Reporte Estadístico del Sistema Digital</h3>
+                            <p>Seleccione uno de los módulos del panel superior para visualizar los reportes estadísticos correspondientes. Cada módulo mostrará información específica del sistema de gestión de la Defensoría Civil y Comercial 6.</p>
+                            <p>Esta aplicación permite acceder a los datos de forma integrada y en tiempo real.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Module content will be loaded here -->
+                    <div id="module-content-container">
+                        <!-- Content for each module will be inserted here by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <div class="footer-info">
+                <div>
+                    <p><strong>Defensoría Civil y Comercial 6</strong> - Ministerio Público Misiones</p>
+                </div>
+                <div>
+                    <p>Sistema de Reportes Estadísticos | Versión 2.1</p>
+                </div>
+                <div>
+                    <p><i class="far fa-calendar-alt"></i> <span id="current-date"></span></p>
+                </div>
+            </div>
+        </footer>
+    </div>
 
-    // === Formatear fecha a DD/MM/AAAA ===
-    function formatearFecha(timestamp) {
-      if (!timestamp) return "Sin dato";
-      const date = typeof timestamp.toDate === 'function' ? timestamp.toDate() : new Date(timestamp);
-      const day = String(date.getDate()).padStart(2, '0');
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const year = date.getFullYear();
-      return `${day}/${month}/${year}`;
-    }
-
-    // === Actualizar gráfico de dona ===
-    function actualizarGraficoTorta(chart, data, key, colorKey, totalId){
-      const agg = d3.rollups(data, d => d.length, d => {
-        const value = d[key];
-        if (value && typeof value.toDate === 'function') {
-          return formatearFecha(value);
+    <script>
+        // Set current date in footer
+        const currentDateElement = document.getElementById('current-date');
+        const today = new Date();
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        currentDateElement.textContent = today.toLocaleDateString('es-ES', options);
+        
+        // Define URLs for each module
+        const moduleUrls = {
+            atencion: "https://sistema-secretarios.github.io/cantidad-empleados/atencionE",
+            calendario: "https://sistema-secretarios.github.io/cantidad-empleados/calendarioE",
+            causas: "https://sistema-secretarios.github.io/cantidad-empleados/causaE",
+            dictamenes: "https://sistema-secretarios.github.io/cantidad-empleados/dictamenE",
+            oficios: "https://sistema-secretarios.github.io/cantidad-empleados/oficiosE",
+            partes: "https://sistema-secretarios.github.io/cantidad-empleados/partesE",
+            pases: "https://sistema-secretarios.github.io/cantidad-empleados/paseE",
+            prioridad: "https://sistema-secretarios.github.io/cantidad-empleados/prioridad-interE",
+            informe: "https://sistema-secretarios.github.io/estadistica/"
+        };
+        
+        // Module data for display
+        const moduleData = {
+            causas: {
+                title: "Causas",
+                url: moduleUrls.causas
+            },
+            pases: {
+                title: "Pases Diarios",
+                url: moduleUrls.pases
+            },
+            atencion: {
+                title: "Atención al Público",
+                url: moduleUrls.atencion
+            },
+            dictamenes: {
+                title: "Dictámenes",
+                url: moduleUrls.dictamenes
+            },
+            oficios: {
+                title: "Oficios",
+                url: moduleUrls.oficios
+            },
+            partes: {
+                title: "Partes",
+                url: moduleUrls.partes
+            },
+            calendario: {
+                title: "Calendario",
+                url: moduleUrls.calendario
+            },
+            prioridad: {
+                title: "Prioridad-Intervención",
+                url: moduleUrls.prioridad
+            },
+            informe: {
+                title: "Informe Trimestral Oficial",
+                url: moduleUrls.informe
+            }
+        };
+        
+        // Get DOM elements
+        const moduleBtns = document.querySelectorAll('.module-btn');
+        const moduleTitle = document.getElementById('module-title');
+        const initialContent = document.getElementById('initial-content');
+        const moduleContentContainer = document.getElementById('module-content-container');
+        
+        // Function to load module content
+        function loadModule(moduleId) {
+            // Update active button
+            moduleBtns.forEach(btn => {
+                if (btn.dataset.module === moduleId) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            // Update title
+            moduleTitle.textContent = moduleData[moduleId].title;
+            
+            // Hide initial content and show module content
+            initialContent.style.display = 'none';
+            moduleContentContainer.innerHTML = '';
+            
+            // Create module content - ONLY IFRAME
+            const moduleContent = document.createElement('div');
+            moduleContent.className = 'module-content active';
+            
+            // Create iframe container with URL
+            moduleContent.innerHTML = `
+                <div class="iframe-container">
+                    <iframe src="${moduleData[moduleId].url}" title="${moduleData[moduleId].title}" id="module-iframe"></iframe>
+                </div>
+            `;
+            
+            moduleContentContainer.appendChild(moduleContent);
         }
-        return value || "Sin dato";
-      }).map(([k, v]) => ({ k, v }));
-      
-      const total = d3.sum(agg, d => d.v);
-      document.getElementById(totalId).textContent = total;
-
-      const arcs = chart.g.selectAll(".arc").data(chart.pie(agg), d => d.data.k);
-      arcs.exit().remove();
-
-      const newArcs = arcs.enter().append("g").attr("class", "arc");
-      newArcs.append("path")
-        .attr("fill", d => (colorScales[colorKey] || colorScales.generic)(d.data.k))
-        .transition().duration(750).attrTween("d", function(d){
-            const i = d3.interpolate(d.startAngle, d.endAngle);
-            return function(t){
-                d.endAngle = i(t);
-                return chart.arc(d);
-            };
-        });
-
-      arcs.select("path").transition().duration(750).attr("d", chart.arc);
-
-      const legendContainer = document.getElementById("chart-legend");
-      legendContainer.innerHTML = "";
-      
-      const legendData = agg.sort((a,b) => d3.descending(a.v,b.v));
-      
-      legendData.forEach(item => {
-        const percentage = total > 0 ? ((item.v / total) * 100).toFixed(1) : 0;
         
-        const legendItem = document.createElement("div");
-        legendItem.className = "legend-item";
-        
-        const colorBox = document.createElement("span");
-        colorBox.className = "legend-color";
-        colorBox.style.backgroundColor = (colorScales[colorKey] || colorScales.generic)(item.k);
-        
-        const text = document.createElement("span");
-        text.textContent = `${item.k}: ${item.v} (${percentage}%)`;
-        
-        legendItem.appendChild(colorBox);
-        legendItem.appendChild(text);
-        legendContainer.appendChild(legendItem);
-      });
-    }
-
-    // === Lógica de rangos ===
-    function obtenerDias(){
-      if(filtroRango.value==="semana") return 7;
-      if(filtroRango.value==="mes") return 30;
-      if(filtroRango.value==="anio") return 365;
-      return 30;
-    }
-    
-    function fechaValidaEnRango(valor){
-      const dias = obtenerDias();
-      if(!valor) return false;
-      const hoy = new Date();
-      const limite = new Date(hoy); 
-      limite.setDate(hoy.getDate() - dias); // 👈 cambio: hacia atrás
-      const toDate = (v) => v && typeof v==="object" && "seconds" in v ? new Date(v.seconds * 1000) : new Date(v);
-      const d = toDate(valor);
-      return !isNaN(d) && d >= limite && d <= hoy; // 👈 ahora compara pasado hasta hoy
-    }
-    
-    function obtenerCampo(obj, posibles){
-      for(const k of posibles){ 
-        if(k in obj && obj[k] != null) return obj[k]; 
-      }
-      return null;
-    }
-
-    // === Render principal ===
-    function actualizarDashboard(){
-      if (datosCacheCausas === null || datosCacheAtencion === null) return;
-
-      loadingOverlay.style.display = "none";
-      if(!chPrincipal) chPrincipal = crearGraficoTorta("#mainChart");
-
-      const selectedChartId = chartSelector.value;
-      const chartConfig = chartsData.find(c => c.id === selectedChartId);
-
-      let data = [];
-      if(chartConfig.source === "atencion"){
-        data = datosCacheAtencion;
-        document.getElementById("filtroRango").style.display = "none";
-      } else if (chartConfig.source === "causas") {
-        data = datosCacheCausas;
-        document.getElementById("filtroRango").style.display = "block";
-        if(chartConfig.dateFilter){
-          data = data.filter(d => fechaValidaEnRango(obtenerCampo(d, [chartConfig.key])));
-        }
-      }
-
-      document.getElementById("chartTitle").textContent = chartConfig.name;
-
-      if (data.length > 0) {
-        noDataOverlay.style.display = "none";
-        actualizarGraficoTorta(chPrincipal, data, chartConfig.key, chartConfig.key, "totalGeneral");
-        actualizarGraficosSecundarios();
-      } else {
-        noDataOverlay.style.display = "flex";
-        d3.select("#mainChart svg").remove();
-        document.getElementById("chart-legend").innerHTML = "";
-        document.getElementById("totalGeneral").textContent = "0";
-        chPrincipal = null;
-      }
-    }
-
-    function actualizarGraficosSecundarios() {
-      if (datosCacheCausas && datosCacheCausas.length > 0) {
-        const summaryChart = crearGraficoTorta("#summaryChart");
-        const agg = d3.rollups(datosCacheCausas, d => d.length, d => d.estado || "Sin dato").map(([k, v]) => ({ k, v }));
-        const totalEstados = d3.sum(agg, d => d.v);
-        
-        const arcs = summaryChart.g.selectAll(".arc").data(summaryChart.pie(agg), d => d.data.k);
-        arcs.exit().remove();
-
-        const newArcs = arcs.enter().append("g").attr("class", "arc");
-        newArcs.append("path")
-          .attr("fill", d => colorScales.estado(d.data.k))
-          .transition().duration(750).attrTween("d", function(d){
-              const i = d3.interpolate(d.startAngle, d.endAngle);
-              return function(t){
-                  d.endAngle = i(t);
-                  return summaryChart.arc(d);
-              };
-          });
-
-        arcs.select("path").transition().duration(750).attr("d", summaryChart.arc);
-
-        const summaryLegend = document.getElementById("summary-legend");
-        summaryLegend.innerHTML = "";
-        
-        agg.sort((a,b) => d3.descending(a.v,b.v)).forEach(item => {
-          const percentage = totalEstados > 0 ? ((item.v / totalEstados) * 100).toFixed(1) : 0;
-          const legendItem = document.createElement("div");
-          legendItem.className = "legend-item";
-          const colorBox = document.createElement("span");
-          colorBox.className = "legend-color";
-          colorBox.style.backgroundColor = colorScales.estado(item.k);
-          const text = document.createElement("span");
-          text.textContent = `${item.k}: ${item.v} (${percentage}%)`;
-          legendItem.appendChild(colorBox);
-          legendItem.appendChild(text);
-          summaryLegend.appendChild(legendItem);
-        });
-      }
-      
-      if (datosCacheAtencion && datosCacheAtencion.length > 0) {
-        const container = document.getElementById("trendChart");
-        const width = container.clientWidth;
-        const height = container.clientHeight;
-        
-        d3.select("#trendChart svg").remove();
-        
-        const svg = d3.select("#trendChart")
-          .append("svg")
-          .attr("width", width)
-          .attr("height", height);
-        
-        const margin = { top: 20, right: 20, bottom: 30, left: 50 };
-        const innerWidth = width - margin.left - margin.right;
-        const innerHeight = height - margin.top - margin.bottom;
-        
-        const g = svg.append("g")
-          .attr("transform", `translate(${margin.left},${margin.top})`);
-        
-        const now = new Date();
-        const days = 30; 
-        const dates = Array.from({ length: days }, (_, i) => {
-          const d = new Date(now);
-          d.setDate(now.getDate() - (days - 1) + i);
-          return d;
+        // Add click event listeners to buttons
+        moduleBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const moduleId = btn.dataset.module;
+                loadModule(moduleId);
+            });
         });
         
-        const dateCounts = dates.map(date => {
-          const count = datosCacheAtencion.filter(d => {
-            const fieldDate = d.timestamp;
-            if (!fieldDate) return false;
-            const dDate = new Date(fieldDate);
-            return dDate.toDateString() === date.toDateString();
-          }).length;
-          return { date, count };
-        });
-        
-        const x = d3.scaleTime()
-          .domain(d3.extent(dates))
-          .range([0, innerWidth]);
-        
-        const y = d3.scaleLinear()
-          .domain([0, d3.max(dateCounts, d => d.count)])
-          .range([innerHeight, 0])
-          .nice();
-        
-        const line = d3.line()
-          .x(d => x(d.date))
-          .y(d => y(d.count));
-        
-        g.append("path")
-          .datum(dateCounts)
-          .attr("class", "line")
-          .attr("d", line)
-          .attr("stroke", colorScales.generic("default"))
-          .attr("stroke-width", 2)
-          .attr("fill", "none");
-        
-        g.append("g")
-          .attr("transform", `translate(0,${innerHeight})`)
-          .call(d3.axisBottom(x).ticks(d3.timeDay.every(7)));
-        
-        g.append("g")
-          .call(d3.axisLeft(y));
-      }
-    }
-
-    function cargarDatos() {
-      loadingOverlay.style.display = "flex";
-      
-      onSnapshot(query(collection(dbCausas, "causas")), snap => {
-        const arr = [];
-        snap.forEach(d => arr.push({ id: d.id, ...d.data() }));
-        datosCacheCausas = arr;
-        actualizarDashboard();
-      }, err => {
-        console.error("Error al obtener datos de causas:", err);
-        datosCacheCausas = [];
-        actualizarDashboard();
-      });
-
-      onValue(ref(dbAtencion, "atencion"), snap => {
-        const data = snap.val();
-        const arr = data ? Object.values(data) : [];
-        datosCacheAtencion = arr;
-        actualizarDashboard();
-      }, err => {
-        console.error("Error al obtener datos de atenciones:", err);
-        datosCacheAtencion = [];
-        actualizarDashboard();
-      });
-    }
-
-    function descargarImagen() {
-      const card = document.querySelector(".card");
-      html2canvas(card).then(canvas => {
-        const link = document.createElement("a");
-        link.download = "estadisticas.png";
-        link.href = canvas.toDataURL("image/png");
-        link.click();
-      });
-    }
-
-    // Inicializar el dashboard directamente
-    initDashboard();
-  </script>
+        // Load the first module by default (Causas)
+        loadModule('causas');
+    </script>
 </body>
 </html>
