@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Defensoría - Registro de Días Concedidos</title>
+<style>
+  :root {
+    --primary-blue: #007bff;
+    --primary-light-blue: #e7f4ff;
+    --primary-dark-blue: #0056b3;
+    --secondary-gray: #f8f9fa;
+    --secondary-light-gray: #e9ecef;
+    --secondary-dark-gray: #6c757d;
+    --status-success: #28a745;
+    --status-warning: #ffc107;
+    --status-danger: #dc3545;
+    --status-info: #17a2b8;
+    --text-primary: #212529;
+    --text-secondary: #6c757d;
+    --text-link: #007bff;
+    --text-light: #ffffff;
+    --background-default: #ffffff;
+    --background-card: #ffffff;
+    --background-header: #ffffff;
+    --background-table-header: #f8f9fa;
+    --border-default: #dee2e6;
+    --font-family: 'Arial', 'Helvetica', sans-serif;
+    --display-size: 24px;
+    --h1-size: 20px;
+    --h2-size: 18px;
+    --body-large-size: 16px;
+    --body-regular-size: 14px;
+    --caption-size: 12px;
+    --font-weight-regular: 400;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    --spacing-unit: 8px;
+    --spacing-xs: 4px;
+    --spacing-s: 8px;
+    --spacing-m: 16px;
+    --spacing-l: 24px;
+    --spacing-xl: 32px;
+    --spacing-gutter: 20px;
+    --border-radius-small: 2px;
+    --border-radius-default: 4px;
+    --border-radius-pill: 20px;
+    --shadow-none: none;
+    --shadow-subtle: 0 1px 3px rgba(0,0,0,0.1);
+    --radius: 12px;
+    --shadow: 0 4px 15px rgba(0,0,0,.08);
+    
+    /* Mapeo de variables para mantener funcionalidad */
+    --bg: var(--primary-light-blue);
+    --card: var(--background-card);
+    --accent: var(--primary-blue);
+    --accent-dark: var(--primary-dark-blue);
+    --text: var(--text-primary);
+    --muted: var(--text-secondary);
+    --error: var(--status-danger);
+    --error-bg: #fdf2f2;
+  }
+
+  /* RESET Y BASE */
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:var(--font-family);
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.6;
+    padding: 12px;
+    min-height: 100vh;
+  }
+
+  /* Contenedor principal */
+  .container{
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .main-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  
+  @media(max-width: 1100px){
+    .main-content {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Card - Estilo Elevado */
+  .card{
+    background:var(--card);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .card-header {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0 0 16px;
+    color: var(--accent);
+    border-bottom: 1px solid var(--border-default);
+    padding-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .form-group {
+    margin-bottom: 16px;
+  }
+  
+  label{
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    display: block;
+    color: var(--text);
+  }
+
+  /* Inputs - Estilo Limpio y Redondeado */
+  input, select, textarea{
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border-default);
+    background: #fff;
+    color: var(--text);
+    outline: none;
+    font-size: 14px;
+    transition: border-color 0.2s;
+  }
+  
+  input:focus, select:focus{
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+  }
+  
+  input[type="color"] {
+    padding: 4px;
+    height: 42px;
+  }
+  
+  .form-row {
+    display: flex;
+    gap: 12px;
+  }
+  
+  .form-row > * {
+    flex: 1;
+  }
+
+  /* Estilos para errores */
+  .input-error {
+    border-color: var(--error) !important;
+    background-color: var(--error-bg) !important;
+  }
+  
+  .error-message {
+    color: var(--error);
+    font-size: 12px;
+    margin-top: 4px;
+    display: none;
+  }
+  
+  .error-message.show {
+    display: block;
+  }
+
+  /* Botones */
+  .btn{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+    text-decoration: none;
+  }
+  
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+  }
+  
+  .btn-secondary {
+    background: var(--secondary-light-gray);
+    border: 1px solid var(--border-default);
+    color: var(--text);
+  }
+  
+  .btn:hover:not(:disabled) {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+  
+  .btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  .btn-small {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+  
+  .btn-group {
+    display: flex;
+    gap: 8px;
+  }
+
+  /* Calendario */
+  .calendar-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .calendar-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  
+  .calendar-controls {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    flex: 1;
+  }
+  
+  .calendar-weekday {
+    font-size: 12px;
+    color: var(--accent);
+    text-align: center;
+    padding: 8px 0;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  
+  .calendar-day {
+    background: var(--secondary-gray);
+    border: 1px solid var(--border-default);
+    border-radius: 6px;
+    padding: 8px 4px;
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    transition: background 0.2s;
+  }
+  
+  .calendar-day:hover:not(.other-month) {
+    background: #f1f7fc;
+  }
+  
+  .day-number {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  
+  .calendar-day.other-month {
+    opacity: 0.4;
+    background: #fcfcfc;
+  }
+  
+  .calendar-day.today {
+    border-color: var(--accent);
+    border-width: 2px;
+  }
+  
+  .day-events {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    overflow: hidden;
+  }
+  
+  .event-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 2px;
+    display: inline-block;
+  }
+  
+  .event-item {
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .calendar-legend {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-default);
+  }
+  
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+  }
+
+  /* Sección de reportes */
+  .reports-section {
+    margin-top: 20px;
+  }
+  
+  .reports-filters {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+    background: var(--card);
+    padding: 20px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+  
+  .reports-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .user-stats-container {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .user-stats-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border-default);
+    padding-bottom: 12px;
+  }
+  
+  .user-stats-chart-container {
+    height: 300px;
+    width: 100%;
+  }
+  
+  .user-stats-details {
+    margin-top: 20px;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  
+  .user-stat-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border-default);
+  }
+  
+  .user-stat-item:last-child {
+    border-bottom: none;
+  }
+  
+  .user-stat-name {
+    flex: 1;
+  }
+  
+  .user-stat-count {
+    font-weight: bold;
+    color: var(--accent-dark);
+  }
+
+  /* Tabla de registros */
+  .table-container {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 20px;
+    overflow: hidden;
+  }
+  
+  .table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  
+  .table-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  
+  .search-box {
+    min-width: 200px;
+  }
+  
+  .table-wrapper {
+    overflow-x: auto;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th, td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-default);
+  }
+  
+  thead th {
+    background: var(--background-table-header);
+    font-weight: 600;
+    color: var(--muted);
+    font-size: 13px;
+    text-transform: uppercase;
+  }
+  
+  tbody tr:hover {
+    background: var(--secondary-light-gray);
+  }
+  
+  .color-indicator {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    display: inline-block;
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-default);
+  }
+  
+  .pagination-info {
+    font-size: 14px;
+    color: var(--muted);
+  }
+  
+  .pagination-controls {
+    display: flex;
+    gap: 8px;
+  }
+
+  /* Notificaciones */
+  #formNotification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    z-index: 1000;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: all 0.3s ease;
+    max-width: 300px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    font-size: 14px;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    body {
+      padding: 8px;
+    }
+    
+    .main-content {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    
+    .card {
+      padding: 16px;
+    }
+    
+    .form-row {
+      flex-direction: column;
+    }
+    
+    .calendar-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .calendar-controls {
+      width: 100%;
+      justify-content: space-between;
+    }
+    
+    .calendar-day {
+      min-height: 60px;
+      padding: 4px 2px;
+    }
+    
+    .reports-filters {
+      grid-template-columns: 1fr;
+    }
+    
+    .reports-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    
+    .table-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .table-actions {
+      width: 100%;
+      justify-content: space-between;
+    }
+    
+    .user-stats-chart-container {
+      height: 250px;
+    }
+    
+    th, td {
+      padding: 8px 12px;
+    }
+    
+    .pagination {
+      flex-direction: column;
+      gap: 12px;
+    }
+    
+    #formNotification {
+      right: 10px;
+      left: 10px;
+      max-width: none;
+    }
+  }
+</style>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container">
+    <!-- Primera fila: Formulario y Calendario -->
+    <div class="main-content">
+      <!-- Formulario de registro -->
+      <div class="card">
+        <div class="card-header">
+          Registrar Días Concedidos
+        </div>
+        <form id="form" autocomplete="off">
+          <div class="form-group">
+            <label for="nombre">Nombre y apellido</label>
+            <select id="nombre" required>
+              <option value="">-- Seleccionar --</option>
+              <option>Bazante Nadia Romina</option>
+              <option>Boillat Cesar Enrique</option>
+              <option>Cardozo Maria Raquel</option>
+              <option>Cedron Noelia Aurora</option>
+              <option>Corrales Alicia Mariela</option>
+              <option>Escobar Monica Graciela</option>
+              <option>Fioravante Romulo</option>
+              <option>Gonzalez Alberto Misael</option>
+              <option>Gonzalez Juan Jose</option>
+              <option>Gudiño Natalia Esther</option>
+              <option>Magnani Enzo Luciano</option>
+              <option>Pablos Patricia</option>
+              <option>Palacios Ana Gabriela</option>
+              <option>Ortega Lucia Noemi</option>
+              <option>Ramos Marcelo Gustavo</option>
+              <option>Riveros Patricia Soledad</option>
+              <option>Sosa Rita Cecilia</option>
+            </select>
+            <div id="nombreError" class="error-message"></div>
+          </div>
+          
+          <div class="form-group">
+            <label for="articulo">Artículo del Reglamento</label>
+            <input id="articulo" required placeholder="Ej: Art. 10 - Licencia Ordinaria" />
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="dias">Cantidad de días</label>
+              <input id="dias" type="number" min="1" step="1" required placeholder="Mínimo 1 día" />
+            </div>
+            <div class="form-group">
+              <label for="inicio">Fecha de inicio</label>
+              <input id="inicio" type="date" required />
+              <div id="inicioError" class="error-message"></div>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="color">Color de Identificación</label>
+              <input id="color" type="color" value="#007bff" />
+            </div>
+            <div class="form-group" style="display: flex; align-items: flex-end;">
+              <div class="btn-group">
+                <button class="btn btn-primary" type="submit">Agregar</button>
+                <button class="btn btn-secondary" type="button" id="resetBtn">Limpiar</button>
+              </div>
+            </div>
+          </div>
+          
+          <input type="hidden" id="editingId" />
+        </form>
+      </div>
+
+      <!-- Calendario -->
+      <div class="card calendar-container">
+        <div class="calendar-header">
+          <div class="calendar-title" id="calTitle">Calendario</div>
+          <div class="calendar-controls">
+            <div class="btn-group">
+              <button class="btn btn-secondary btn-small" id="prevBtn">◀</button>
+              <button class="btn btn-secondary btn-small" id="todayBtn">Hoy</button>
+              <button class="btn btn-secondary btn-small" id="nextBtn">▶</button>
+            </div>
+            <select id="monthPicker" class="btn btn-secondary btn-small"></select>
+            <select id="yearPicker" class="btn btn-secondary btn-small"></select>
+          </div>
+        </div>
+        
+        <div class="calendar-grid" id="weekdays"></div>
+        <div class="calendar-grid" id="calendarGrid"></div>
+        
+        <div class="calendar-legend" id="legend"></div>
+      </div>
+    </div>
+
+    <!-- Segunda fila: Reporte Estadístico -->
+    <div class="reports-section">
+      <!-- Filtros para el reporte (se agregan filtros de mes y año) -->
+      <div class="reports-filters">
+        <div class="form-group">
+          <label for="filterDateStart">Fecha inicio</label>
+          <input type="date" id="filterDateStart">
+        </div>
+        <div class="form-group">
+          <label for="filterDateEnd">Fecha fin</label>
+          <input type="date" id="filterDateEnd">
+        </div>
+        <div class="form-group">
+          <label for="filterUser">Usuario</label>
+          <select id="filterUser">
+            <option value="">Todos los usuarios</option>
+            <option>Bazante Nadia Romina</option>
+            <option>Boillat Cesar Enrique</option>
+            <option>Cardozo Maria Raquel</option>
+            <option>Cedron Noelia Aurora</option>
+            <option>Corrales Alicia Mariela</option>
+            <option>Escobar Monica Graciela</option>
+            <option>Fioravante Romulo</option>
+            <option>Gonzalez Alberto Misael</option>
+            <option>Gonzalez Juan Jose</option>
+            <option>Gudiño Natalia Esther</option>
+            <option>Magnani Enzo Luciano</option>
+            <option>Pablos Patricia</option>
+            <option>Palacios Ana Gabriela</option>
+            <option>Ortega Lucia Noemi</option>
+            <option>Ramos Marcelo Gustavo</option>
+            <option>Riveros Patricia Soledad</option>
+            <option>Sosa Rita Cecilia</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="filterDays">Días mínimos</label>
+          <input id="filterDays" type="number" min="0" placeholder="Todos">
+        </div>
+        <!-- NUEVOS FILTROS: Mes y Año -->
+        <div class="form-group">
+          <label for="filterMonth">Mes</label>
+          <select id="filterMonth">
+            <option value="">Todos</option>
+            <option value="1">Enero</option>
+            <option value="2">Febrero</option>
+            <option value="3">Marzo</option>
+            <option value="4">Abril</option>
+            <option value="5">Mayo</option>
+            <option value="6">Junio</option>
+            <option value="7">Julio</option>
+            <option value="8">Agosto</option>
+            <option value="9">Septiembre</option>
+            <option value="10">Octubre</option>
+            <option value="11">Noviembre</option>
+            <option value="12">Diciembre</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="filterYear">Año</label>
+          <select id="filterYear">
+            <option value="">Todos</option>
+            <option value="2025">2025</option>
+            <option value="2026">2026</option>
+            <option value="2027">2027</option>
+            <option value="2028">2028</option>
+            <option value="2029">2029</option>
+            <option value="2030">2030</option>
+          </select>
+        </div>
+        <div class="form-group" style="display: flex; align-items: flex-end;">
+          <button class="btn btn-primary" id="applyFiltersBtn">Aplicar Filtros</button>
+        </div>
+      </div>
+
+      <!-- Gráfico de estadísticas por usuario -->
+      <div class="user-stats-container">
+        <div class="user-stats-header">
+          <h3>Estadísticas por Usuario</h3>
+          <button id="printStatsBtn" class="btn btn-secondary btn-small">🖨️ Imprimir</button>
+        </div>
+        <div class="user-stats-chart-container">
+          <canvas id="userStatsChart"></canvas>
+        </div>
+        <div class="user-stats-details" id="userStatsDetails">
+          <p class="text-center text-muted">Cargando estadísticas...</p>
+        </div>
+      </div>
+
+      <!-- Tabla de registros -->
+      <div class="table-container">
+        <div class="table-header">
+          <h3>Registros de Días Concedidos</h3>
+          <div class="table-actions">
+            <input id="search" class="search-box" placeholder="Buscar por nombre o artículo..." />
+            <button class="btn btn-secondary btn-small" id="printTableBtn">🖨️ Imprimir</button>
+          </div>
+        </div>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Inicio</th>
+                <th>Nombre</th>
+                <th>Artículo</th>
+                <th>Días</th>
+                <th>Color</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="recordsTable"></tbody>
+          </table>
+        </div>
+        
+        <div class="pagination">
+          <div class="pagination-info" id="paginationInfo"></div>
+          <div class="pagination-controls" id="paginationControls"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+// Firebase Configuration
+firebase.initializeApp({
+  apiKey: "AIzaSyDDIbbbuorx96B02O-gmZ60oAs7bb7fjfM",
+  authDomain: "defensoria6rpj.firebaseapp.com",
+  projectId: "defensoria6rpj",
+  storageBucket: "defensoria6rpj.appspot.com",
+  messagingSenderId: "388530292853",
+  appId: "1:388530292853:web:3161b40c0f7b1eb01fd03c",
+  databaseURL: "https://defensoria6rpj-default-rtdb.firebaseio.com/"
+});
+
+const db = firebase.database().ref("registros");
+
+// Application State
+let state = {
+  records: [],
+  currentMonth: new Date().getMonth(),
+  currentYear: new Date().getFullYear(),
+  searchFilter: "",
+  currentPage: 1,
+  recordsPerPage: 10,
+  reportFilters: {
+    dateStart: "",
+    dateEnd: "",
+    user: "",
+    minDays: 0,
+    month: "",   // Nuevo filtro mes
+    year: ""     // Nuevo filtro año
+  }
+};
+
+// Chart instance
+let userStatsChart = null;
+
+// Utility Functions
+function uuid() {
+  return "id" + Math.random().toString(16).slice(2);
+}
+
+function daysInMonth(month, year) {
+  return new Date(year, month + 1, 0).getDate();
+}
+
+function firstDayOfMonth(month, year) {
+  return new Date(year, month, 1).getDay();
+}
+
+function formatDate(dateString) {
+  if (!dateString) return "";
+  const date = new Date(dateString + "T00:00:00");
+  return date.toLocaleDateString("es-AR", { day: "2-digit", month: "2-digit", year: "numeric" });
+}
+
+// Función mejorada para verificar duplicados exactos
+function checkDuplicate(nombre, inicio, editingId = "") {
+  return state.records.some(record => {
+    // Si estamos editando, ignoramos el registro actual
+    if (record.id === editingId) return false;
+    
+    // Verificamos si existe un registro con el mismo nombre y misma fecha de inicio
+    return record.nombre === nombre && record.inicio === inicio;
+  });
+}
+
+// Función para verificar solapamientos de fechas
+function checkDateOverlap(nombre, inicio, dias, editingId = "") {
+  const startDate = new Date(inicio + "T00:00:00");
+  const endDate = new Date(startDate);
+  endDate.setDate(startDate.getDate() + dias - 1);
+  
+  return state.records.some(record => {
+    // Si estamos editando, ignoramos el registro actual
+    if (record.id === editingId) return false;
+    
+    // Solo verificamos para el mismo usuario
+    if (record.nombre !== nombre) return false;
+    
+    const recordStart = new Date(record.inicio + "T00:00:00");
+    const recordEnd = new Date(recordStart);
+    recordEnd.setDate(recordStart.getDate() + record.dias - 1);
+    
+    // Verificamos si los períodos se solapan
+    return (startDate <= recordEnd && endDate >= recordStart);
+  });
+}
+
+// Función para mostrar notificaciones
+function showNotification(message, type = "success") {
+  // Crear elemento de notificación si no existe
+  let notification = document.getElementById("formNotification");
+  if (!notification) {
+    notification = document.createElement("div");
+    notification.id = "formNotification";
+    document.body.appendChild(notification);
+  }
+  
+  // Establecer color según tipo
+  if (type === "success") {
+    notification.style.backgroundColor = "#28a745";
+  } else if (type === "error") {
+    notification.style.backgroundColor = "#dc3545";
+  } else if (type === "warning") {
+    notification.style.backgroundColor = "#ffc107";
+    notification.style.color = "#212529";
+  } else {
+    notification.style.backgroundColor = "#007bff";
+  }
+  
+  notification.textContent = message;
+  
+  // Mostrar notificación
+  setTimeout(() => {
+    notification.style.opacity = "1";
+    notification.style.transform = "translateY(0)";
+  }, 100);
+  
+  // Ocultar después de 3 segundos
+  setTimeout(() => {
+    notification.style.opacity = "0";
+    notification.style.transform = "translateY(-20px)";
+  }, 3000);
+}
+
+// Firebase Operations
+function upsertRecord(obj) {
+  db.child(obj.id).set(obj);
+}
+
+function removeRecord(id) {
+  db.child(id).remove();
+}
+
+// Initialize Firebase listener
+db.on("value", snapshot => {
+  const recordsData = snapshot.val() || {};
+  state.records = Object.values(recordsData);
+  renderAll();
+});
+
+// Form Handling
+document.getElementById("form").addEventListener("submit", e => {
+  e.preventDefault();
+  
+  const id = document.getElementById("editingId").value || uuid();
+  const nombre = document.getElementById("nombre").value.trim();
+  const articulo = document.getElementById("articulo").value.trim();
+  const dias = parseInt(document.getElementById("dias").value);
+  const inicio = document.getElementById("inicio").value;
+  const color = document.getElementById("color").value;
+  
+  // Validaciones básicas
+  if (!nombre || !articulo || !dias || !inicio) {
+    showNotification("Por favor, complete todos los campos obligatorios", "error");
+    return;
+  }
+  
+  if (dias < 1) {
+    showNotification("La cantidad de días debe ser al menos 1", "error");
+    return;
+  }
+  
+  // Verificar duplicados exactos (mismo nombre y misma fecha)
+  const isDuplicate = checkDuplicate(nombre, inicio, id);
+  
+  if (isDuplicate) {
+    document.getElementById("nombre").classList.add("input-error");
+    document.getElementById("inicio").classList.add("input-error");
+    document.getElementById("nombreError").textContent = "Ya existe un registro para esta persona en esta fecha";
+    document.getElementById("nombreError").classList.add("show");
+    document.getElementById("inicioError").textContent = "Esta fecha ya está registrada para esta persona";
+    document.getElementById("inicioError").classList.add("show");
+    document.getElementById("nombre").focus();
+    return;
+  }
+  
+  // Verificar solapamientos de fechas para el mismo usuario
+  const hasOverlap = checkDateOverlap(nombre, inicio, dias, id);
+  
+  if (hasOverlap) {
+    showNotification("Advertencia: Este período se solapa con otro registro existente para la misma persona", "warning");
+    // Continuamos con el registro a pesar de la advertencia
+  }
+  
+  // Limpiar errores
+  document.getElementById("nombre").classList.remove("input-error");
+  document.getElementById("inicio").classList.remove("input-error");
+  document.getElementById("nombreError").classList.remove("show");
+  document.getElementById("inicioError").classList.remove("show");
+
+  const record = {
+    id,
+    nombre,
+    articulo,
+    dias,
+    inicio,
+    color
+  };
+  
+  upsertRecord(record);
+  document.getElementById("form").reset();
+  document.getElementById("editingId").value = "";
+  
+  showNotification(id === document.getElementById("editingId").value ? "Registro actualizado correctamente" : "Registro agregado correctamente");
+});
+
+document.getElementById("resetBtn").addEventListener("click", () => {
+  document.getElementById("form").reset();
+  document.getElementById("editingId").value = "";
+  document.getElementById("nombre").classList.remove("input-error");
+  document.getElementById("inicio").classList.remove("input-error");
+  document.getElementById("nombreError").classList.remove("show");
+  document.getElementById("inicioError").classList.remove("show");
+});
+
+// Clear errors on input
+document.getElementById("nombre").addEventListener("input", function() {
+  this.classList.remove("input-error");
+  document.getElementById("nombreError").classList.remove("show");
+});
+
+document.getElementById("inicio").addEventListener("input", function() {
+  this.classList.remove("input-error");
+  document.getElementById("inicioError").classList.remove("show");
+});
+
+// Search Functionality
+document.getElementById("search").addEventListener("input", e => {
+  state.searchFilter = e.target.value.toLowerCase();
+  state.currentPage = 1;
+  renderTable();
+  renderPagination();
+});
+
+// Print Functionality
+document.getElementById("printStatsBtn").addEventListener("click", () => {
+  window.print();
+});
+
+document.getElementById("printTableBtn").addEventListener("click", () => {
+  window.print();
+});
+
+// Calendar Navigation
+document.getElementById("prevBtn").addEventListener("click", () => {
+  state.currentMonth--;
+  if (state.currentMonth < 0) {
+    state.currentMonth = 11;
+    state.currentYear--;
+  }
+  renderCalendar();
+});
+
+document.getElementById("nextBtn").addEventListener("click", () => {
+  state.currentMonth++;
+  if (state.currentMonth > 11) {
+    state.currentMonth = 0;
+    state.currentYear++;
+  }
+  renderCalendar();
+});
+
+document.getElementById("todayBtn").addEventListener("click", () => {
+  const today = new Date();
+  state.currentMonth = today.getMonth();
+  state.currentYear = today.getFullYear();
+  renderCalendar();
+});
+
+// Month and Year Pickers
+const monthPicker = document.getElementById("monthPicker");
+const yearPicker = document.getElementById("yearPicker");
+const monthNames = [
+  "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+  "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+];
+
+// Initialize month picker
+monthNames.forEach((month, index) => {
+  const option = document.createElement("option");
+  option.value = index;
+  option.textContent = month;
+  monthPicker.appendChild(option);
+});
+
+// Initialize year picker
+for (let year = 2020; year <= 2030; year++) {
+  const option = document.createElement("option");
+  option.value = year;
+  option.textContent = year;
+  yearPicker.appendChild(option);
+}
+
+monthPicker.value = state.currentMonth;
+yearPicker.value = state.currentYear;
+
+monthPicker.addEventListener("change", () => {
+  state.currentMonth = parseInt(monthPicker.value);
+  renderCalendar();
+});
+
+yearPicker.addEventListener("change", () => {
+  state.currentYear = parseInt(yearPicker.value);
+  renderCalendar();
+});
+
+// Report Filters (incluye los nuevos filtros de mes y año)
+document.getElementById("applyFiltersBtn").addEventListener("click", () => {
+  state.reportFilters.dateStart = document.getElementById("filterDateStart").value;
+  state.reportFilters.dateEnd = document.getElementById("filterDateEnd").value;
+  state.reportFilters.user = document.getElementById("filterUser").value;
+  state.reportFilters.minDays = parseInt(document.getElementById("filterDays").value) || 0;
+  // Nuevos filtros
+  state.reportFilters.month = document.getElementById("filterMonth").value;
+  state.reportFilters.year = document.getElementById("filterYear").value;
+  renderUserStats();
+});
+
+// Calendar Rendering
+function renderCalendar() {
+  const month = state.currentMonth;
+  const year = state.currentYear;
+  
+  // Update calendar title
+  document.getElementById("calTitle").textContent = 
+    `${monthNames[month]} ${year}`;
+  
+  // Update pickers
+  monthPicker.value = month;
+  yearPicker.value = year;
+  
+  // Render weekdays
+  const weekdaysContainer = document.getElementById("weekdays");
+  const weekdays = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
+  weekdaysContainer.innerHTML = weekdays.map(day => 
+    `<div class="calendar-weekday">${day}</div>`
+  ).join("");
+  
+  // Calculate calendar days
+  const daysInCurrentMonth = daysInMonth(month, year);
+  const firstDay = firstDayOfMonth(month, year);
+  const prevMonthDays = daysInMonth(month - 1, year);
+  
+  const calendarGrid = document.getElementById("calendarGrid");
+  calendarGrid.innerHTML = "";
+  
+  // Previous month days
+  for (let i = firstDay - 1; i >= 0; i--) {
+    const day = prevMonthDays - i;
+    const dayElement = createDayElement(day, true);
+    calendarGrid.appendChild(dayElement);
+  }
+  
+  // Current month days
+  const today = new Date();
+  for (let day = 1; day <= daysInCurrentMonth; day++) {
+    const isToday = day === today.getDate() && 
+                   month === today.getMonth() && 
+                   year === today.getFullYear();
+    const dayElement = createDayElement(day, false, isToday);
+    calendarGrid.appendChild(dayElement);
+  }
+  
+  // Next month days
+  const totalCells = 42; // 6 rows x 7 days
+  const remainingCells = totalCells - (firstDay + daysInCurrentMonth);
+  for (let day = 1; day <= remainingCells; day++) {
+    const dayElement = createDayElement(day, true);
+    calendarGrid.appendChild(dayElement);
+  }
+  
+  // Update legend
+  renderLegend();
+}
+
+function createDayElement(day, isOtherMonth, isToday = false) {
+  const dayElement = document.createElement("div");
+  dayElement.className = "calendar-day";
+  
+  if (isOtherMonth) {
+    dayElement.classList.add("other-month");
+  }
+  
+  if (isToday) {
+    dayElement.classList.add("today");
+  }
+  
+  const dateString = isOtherMonth ? "" : 
+    `${state.currentYear}-${String(state.currentMonth + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+  
+  // Find events for this day
+  const events = [];
+  if (!isOtherMonth) {
+    state.records.forEach(record => {
+      const startDate = new Date(record.inicio + "T00:00:00");
+      const endDate = new Date(startDate);
+      endDate.setDate(startDate.getDate() + record.dias - 1);
+      
+      const currentDate = new Date(dateString + "T00:00:00");
+      
+      if (currentDate >= startDate && currentDate <= endDate) {
+        events.push({
+          name: record.nombre,
+          color: record.color
+        });
+      }
+    });
+  }
+  
+  dayElement.innerHTML = `
+    <div class="day-number">${day}</div>
+    <div class="day-events">
+      ${events.slice(0, 3).map(event => `
+        <div class="event-item">
+          <span class="event-dot" style="background-color: ${event.color}"></span>
+          ${event.name}
+        </div>
+      `).join("")}
+      ${events.length > 3 ? `<div class="event-item">+${events.length - 3} más</div>` : ""}
+    </div>
+  `;
+  
+  return dayElement;
+}
+
+function renderLegend() {
+  const legendContainer = document.getElementById("legend");
+  
+  // Get unique users with their colors from current month
+  const usersInMonth = {};
+  state.records.forEach(record => {
+    const startDate = new Date(record.inicio + "T00:00:00");
+    const endDate = new Date(startDate);
+    endDate.setDate(startDate.getDate() + record.dias - 1);
+    
+    const firstDayOfMonth = new Date(state.currentYear, state.currentMonth, 1);
+    const lastDayOfMonth = new Date(state.currentYear, state.currentMonth + 1, 0);
+    
+    // Check if record overlaps with current month
+    if (startDate <= lastDayOfMonth && endDate >= firstDayOfMonth) {
+      usersInMonth[record.nombre] = record.color;
+    }
+  });
+  
+  legendContainer.innerHTML = Object.entries(usersInMonth)
+    .map(([name, color]) => `
+      <div class="legend-item">
+        <span class="event-dot" style="background-color: ${color}"></span>
+        ${name}
+      </div>
+    `).join("");
+}
+
+// Table Rendering
+function renderTable() {
+  const tableBody = document.getElementById("recordsTable");
+  
+  // Filter records
+  let filteredRecords = state.records.filter(record => {
+    // Search filter
+    if (state.searchFilter && 
+        !record.nombre.toLowerCase().includes(state.searchFilter) && 
+        !record.articulo.toLowerCase().includes(state.searchFilter)) {
+      return false;
+    }
+    
+    return true;
+  });
+  
+  // Sort by date (newest first)
+  filteredRecords.sort((a, b) => new Date(b.inicio) - new Date(a.inicio));
+  
+  // Pagination
+  const startIndex = (state.currentPage - 1) * state.recordsPerPage;
+  const endIndex = startIndex + state.recordsPerPage;
+  const paginatedRecords = filteredRecords.slice(startIndex, endIndex);
+  
+  // Render table rows
+  tableBody.innerHTML = paginatedRecords.map(record => `
+    <tr>
+      <td>${formatDate(record.inicio)}</td>
+      <td>${record.nombre}</td>
+      <td>${record.articulo}</td>
+      <td>${record.dias}</td>
+      <td><div class="color-indicator" style="background-color: ${record.color}"></div></td>
+      <td>
+        <button class="btn btn-secondary btn-small" onclick="editRecord('${record.id}')">
+          ✏️ Editar
+        </button>
+      </td>
+    </tr>
+  `).join("");
+  
+  // Update pagination info
+  document.getElementById("paginationInfo").textContent = 
+    `Mostrando ${startIndex + 1}-${Math.min(endIndex, filteredRecords.length)} de ${filteredRecords.length} registros`;
+  
+  renderPagination(filteredRecords.length);
+}
+
+function renderPagination(totalRecords) {
+  const paginationControls = document.getElementById("paginationControls");
+  const totalPages = Math.ceil(totalRecords / state.recordsPerPage);
+  
+  if (totalPages <= 1) {
+    paginationControls.innerHTML = "";
+    return;
+  }
+  
+  let paginationHTML = "";
+  
+  // Previous button
+  if (state.currentPage > 1) {
+    paginationHTML += `<button class="btn btn-secondary btn-small" onclick="changePage(${state.currentPage - 1})">Anterior</button>`;
+  }
+  
+  // Page numbers
+  for (let i = 1; i <= totalPages; i++) {
+    if (i === state.currentPage) {
+      paginationHTML += `<button class="btn btn-primary btn-small" disabled>${i}</button>`;
+    } else {
+      paginationHTML += `<button class="btn btn-secondary btn-small" onclick="changePage(${i})">${i}</button>`;
+    }
+  }
+  
+  // Next button
+  if (state.currentPage < totalPages) {
+    paginationHTML += `<button class="btn btn-secondary btn-small" onclick="changePage(${state.currentPage + 1})">Siguiente</button>`;
+  }
+  
+  paginationControls.innerHTML = paginationHTML;
+}
+
+window.changePage = function(page) {
+  state.currentPage = page;
+  renderTable();
+};
+
+// Edit Record
+window.editRecord = function(id) {
+  const record = state.records.find(r => r.id === id);
+  if (!record) return;
+  
+  document.getElementById("nombre").value = record.nombre;
+  document.getElementById("articulo").value = record.articulo;
+  document.getElementById("dias").value = record.dias;
+  document.getElementById("inicio").value = record.inicio;
+  document.getElementById("color").value = record.color;
+  document.getElementById("editingId").value = record.id;
+  
+  // Clear errors
+  document.getElementById("nombre").classList.remove("input-error");
+  document.getElementById("inicio").classList.remove("input-error");
+  document.getElementById("nombreError").classList.remove("show");
+  document.getElementById("inicioError").classList.remove("show");
+  
+  // Scroll to form
+  document.getElementById("form").scrollIntoView({ behavior: "smooth" });
+};
+
+// User Statistics (incorpora los nuevos filtros de mes y año)
+function renderUserStats() {
+  // Apply report filters
+  let filteredRecords = [...state.records];
+  
+  if (state.reportFilters.dateStart) {
+    const startDate = new Date(state.reportFilters.dateStart);
+    filteredRecords = filteredRecords.filter(record => {
+      const recordDate = new Date(record.inicio + "T00:00:00");
+      return recordDate >= startDate;
+    });
+  }
+  
+  if (state.reportFilters.dateEnd) {
+    const endDate = new Date(state.reportFilters.dateEnd);
+    filteredRecords = filteredRecords.filter(record => {
+      const recordDate = new Date(record.inicio + "T00:00:00");
+      return recordDate <= endDate;
+    });
+  }
+  
+  if (state.reportFilters.user) {
+    filteredRecords = filteredRecords.filter(record => record.nombre === state.reportFilters.user);
+  }
+  
+  if (state.reportFilters.minDays > 0) {
+    filteredRecords = filteredRecords.filter(record => record.dias >= state.reportFilters.minDays);
+  }
+
+  // Nuevos filtros: mes y año
+  if (state.reportFilters.month) {
+    const month = parseInt(state.reportFilters.month);
+    filteredRecords = filteredRecords.filter(record => {
+      const [year, m] = record.inicio.split('-').map(Number);
+      return m === month;
+    });
+  }
+  if (state.reportFilters.year) {
+    const year = parseInt(state.reportFilters.year);
+    filteredRecords = filteredRecords.filter(record => {
+      const [y] = record.inicio.split('-').map(Number);
+      return y === year;
+    });
+  }
+  
+  // Calculate statistics
+  const userStats = {};
+  
+  filteredRecords.forEach(record => {
+    if (!userStats[record.nombre]) {
+      userStats[record.nombre] = 0;
+    }
+    userStats[record.nombre] += record.dias;
+  });
+  
+  // Sort users by total days (descending)
+  const sortedUsers = Object.entries(userStats)
+    .sort((a, b) => b[1] - a[1])
+    .map(([name, days]) => ({ name, days }));
+  
+  // Prepare chart data
+  const userNames = sortedUsers.map(user => user.name);
+  const userDays = sortedUsers.map(user => user.days);
+  
+  // Get or create chart
+  const ctx = document.getElementById('userStatsChart').getContext('2d');
+  
+  if (userStatsChart) {
+    userStatsChart.destroy();
+  }
+  
+  userStatsChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: userNames,
+      datasets: [{
+        label: 'Días Concedidos',
+        data: userDays,
+        backgroundColor: 'rgba(13, 110, 253, 0.7)',
+        borderColor: 'rgba(13, 110, 253, 1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: 'Cantidad de Días'
+          }
+        },
+        x: {
+          ticks: {
+            maxRotation: 45,
+            minRotation: 45
+          }
+        }
+      },
+      plugins: {
+        legend: {
+          display: false
+        }
+      }
+    }
+  });
+  
+  // Update stats details
+  const statsDetails = document.getElementById('userStatsDetails');
+  
+  if (sortedUsers.length === 0) {
+    statsDetails.innerHTML = '<p class="text-center text-muted">No hay datos para mostrar</p>';
+  } else {
+    let detailsHTML = `
+      <div class="user-stat-item" style="font-weight: bold; background-color: var(--secondary-light-gray);">
+        <div class="user-stat-name">Usuario</div>
+        <div class="user-stat-count">Días Totales</div>
+      </div>
+    `;
+    
+    sortedUsers.forEach(user => {
+      detailsHTML += `
+        <div class="user-stat-item">
+          <div class="user-stat-name">${user.name}</div>
+          <div class="user-stat-count">${user.days}</div>
+        </div>
+      `;
+    });
+    
+    const totalDays = sortedUsers.reduce((sum, user) => sum + user.days, 0);
+    
+    detailsHTML += `
+      <div class="user-stat-item" style="font-weight: bold; border-top: 2px solid var(--border-default);">
+        <div class="user-stat-name">Total</div>
+        <div class="user-stat-count">${totalDays}</div>
+      </div>
+    `;
+    
+    statsDetails.innerHTML = detailsHTML;
+  }
+}
+
+// Main render function
+function renderAll() {
+  renderCalendar();
+  renderTable();
+  renderUserStats();
+}
+
+// Initialize application
+renderAll();
+</script>
+</body>
+</html>
