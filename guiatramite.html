@@ -45,18 +45,47 @@
         .left-sidebar::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 10px; }
         .clickable-title { cursor: pointer; transition: opacity 0.2s; }
         .clickable-title:hover { opacity: 0.85; }
+        .inicio-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 400px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #1e293b;
+            background-color: #ffffff;
+            border-radius: 1rem;
+            border: 1px solid #e2e8f0;
+            padding: 2rem;
+        }
+        /* Estilos para el filtro en el header */
+        .header-search {
+            min-width: 250px;
+        }
+        @media (max-width: 640px) {
+            .header-search {
+                width: 100%;
+                margin-top: 0.5rem;
+            }
+        }
     </style>
 </head>
 <body class="bg-slate-100 text-slate-900">
 
 <header class="bg-indigo-950 text-white border-b-4 border-amber-500 no-print relative z-10">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-5 flex justify-between items-center flex-wrap gap-2">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-5 flex justify-between items-center flex-wrap gap-3">
         <div id="resetAppButton" class="clickable-title">
             <h1 class="text-xl sm:text-2xl font-bold tracking-tight">Guía de Actuación de la Defensoría Oficial</h1>
-            <p class="text-indigo-300 text-xs sm:text-sm font-medium">Integral: Ley XII-27 (CPC) | Leyes XVII-37, XIX-41, XIX-51</p>
+            <p class="text-indigo-300 text-xs sm:text-sm font-medium">Integral: Ley XII-27 (CPC) | Ley IV-N.15 (Orgánica) | Leyes XVII-37, XIX-41, XIX-51</p>
         </div>
-        <div class="text-right">
-            <span class="bg-amber-500 text-indigo-950 px-3 py-1 rounded font-black text-xs">PASO A PASO PARA EMPLEADOS</span>
+        <div class="flex items-center gap-3 flex-wrap">
+            <!-- Filtro de búsqueda movido aquí -->
+            <div class="relative header-search">
+                <i data-lucide="search" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+                <input type="text" id="searchProceso" placeholder="Buscar proceso o paso..." class="w-full pl-9 pr-3 py-2 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-slate-800 shadow-sm">
+            </div>
+            <span class="bg-amber-500 text-indigo-950 px-3 py-1 rounded font-black text-xs whitespace-nowrap">PASO A PASO PARA EMPLEADOS</span>
         </div>
     </div>
 </header>
@@ -64,21 +93,15 @@
 <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 py-6">
     <div class="flex flex-col lg:flex-row gap-6">
         
-        <!-- PANEL IZQUIERDO: lista de procesos actualizada -->
+        <!-- PANEL IZQUIERDO: lista de procesos (sin el filtro, que ahora está arriba) -->
         <aside class="lg:w-80 xl:w-96 flex-shrink-0 left-sidebar no-print rounded-2xl shadow-sm p-4">
-            <div class="mb-5">
-                <div class="relative">
-                    <i data-lucide="search" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400"></i>
-                    <input type="text" id="searchProceso" placeholder="Buscar proceso o paso..." class="w-full pl-9 pr-3 py-2.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white shadow-sm">
-                </div>
-            </div>
             <div id="buttons-container" class="space-y-1 pb-8"></div>
         </aside>
 
-        <!-- CONTENIDO CENTRAL: guía paso a paso dinámica -->
+        <!-- CONTENIDO CENTRAL: mensaje de inicio o proceso seleccionado -->
         <main id="main-content" class="flex-1 bg-white rounded-2xl shadow-xl border border-slate-200 p-4 sm:p-8 relative min-h-[600px]"></main>
 
-        <!-- PANEL DERECHO: controles y recordatorio (se mantiene igual) -->
+        <!-- PANEL DERECHO: controles y recordatorio -->
         <aside class="lg:w-80 flex-shrink-0 space-y-6 no-print right-panel">
             <div class="control-general-card rounded-xl p-5 text-white shadow-lg">
                 <div class="flex items-center gap-2 mb-3 border-b border-amber-400/40 pb-2">
@@ -127,195 +150,373 @@
 
 <script>
     // ============================================================
-    // LISTA DE PROCESOS ACTUALIZADA CON LAS NUEVAS LEYES
+    // LISTA DE PROCESOS ACTUALIZADA CON NORMATIVA DE DEFENSORÍA
     // ============================================================
     const procesosList = [
-        { key: 'alimentos', title: 'Alimentos y Litisexpensas', category: 'familia', subtitle: 'Arts. 696-710 CPC' },
-        { key: 'ejecucionAlimentos', title: 'Ejecución de Alimentos', category: 'familia', subtitle: 'Arts. 704, 707 CPC' },
-        { key: 'proteccionViolencia', title: 'Violencia Familiar (Ley XIV-6)', category: 'familia', subtitle: 'Arts. 655-658 CPC' },
-        { key: 'incapacidad', title: 'Declaración de Incapacidad', category: 'familia', subtitle: 'Arts. 659-673 CPC' },
-        { key: 'inhabilitacion', title: 'Declaración de Inhabilitación', category: 'familia', subtitle: 'Arts. 674-678 CPC' },
-        { key: 'restitucionMenores', title: 'Restitución de Menores', category: 'familia', subtitle: 'Arts. 679-695 CPC' },
-        { key: 'adopcion', title: 'Adopción', category: 'familia', subtitle: 'Ley XII-20 / Art. 654 CPC' },
-        { key: 'cuidadoPersonal', title: 'Cuidado Personal / Régimen', category: 'familia', subtitle: 'Arts. 648, 715 CPC' },
-        { key: 'divorcio', title: 'Divorcio y Nulidad', category: 'familia', subtitle: 'Arts. 641, 648, 715-716 CPC' },
-        { key: 'tutelaCuratela', title: 'Tutela y Curatela', category: 'familia', subtitle: 'Arts. 713-714 CPC' },
-        { key: 'homologacion', title: 'Homologación de Acuerdos', category: 'familia', subtitle: 'Arts. 311, 648 CPC' },
-        { key: 'desalojo', title: 'Desalojo', category: 'civil', subtitle: 'Arts. 623-635 CPC' },
-        { key: 'interdictos', title: 'Interdictos Posesorios', category: 'civil', subtitle: 'Arts. 576-592 CPC' },
-        { key: 'rendicionCuentas', title: 'Rendición de Cuentas', category: 'civil', subtitle: 'Arts. 596-601 CPC' },
-        { key: 'divisionCondominio', title: 'División de Cosas Comunes', category: 'civil', subtitle: 'Arts. 620-622 CPC' },
-        { key: 'mensuraDeslinde', title: 'Mensura y Deslinde', category: 'civil', subtitle: 'Arts. 602-619 CPC' },
-        { key: 'ejecutivo', title: 'Juicio Ejecutivo', category: 'civil', subtitle: 'Arts. 489-528 CPC' },
-        { key: 'ejecucionHipotecaria', title: 'Ejecución Hipotecaria', category: 'civil', subtitle: 'Arts. 567-569 CPC' },
-        { key: 'sucesorio', title: 'Proceso Sucesorio', category: 'civil', subtitle: 'Arts. 717-763 CPC' },
-        { key: 'ausentes', title: 'Defensor de Ausentes', category: 'especial', subtitle: 'Arts. 344, 521, 560, 805 CPC' },
-        { key: 'medidasAutosatisfactivas', title: 'Medidas Autosatisfactivas', category: 'especial', subtitle: 'Arts. 636-639 CPC' },
-        { key: 'proteccionIntegridadSexual', title: 'Protección Víctimas Integridad Sexual (Ley XVII-37)', category: 'leyes_especiales', subtitle: 'Ley XVII-37 (ex Ley 4013)' },
-        { key: 'pensionGraciableMenores', title: 'Pensión Graciable a Menores Víctimas (Ley XIX-51)', category: 'leyes_especiales', subtitle: 'Ley XIX-51' },
-        { key: 'proteccionPersonasMayores', title: 'Protección Integral Personas Mayores (Ley XIX-41)', category: 'leyes_especiales', subtitle: 'Ley XIX-41 (ex Ley 3920)' }
+        { key: 'alimentos', title: 'Alimentos y Litisexpensas', category: 'familia', subtitle: 'Arts. 696-710 CPC; Ley IV-N.15 arts. 113,118' },
+        { key: 'ejecucionAlimentos', title: 'Ejecución de Alimentos', category: 'familia', subtitle: 'Arts. 704,707 CPC; Ley IV-N.15 art.118' },
+        { key: 'proteccionViolencia', title: 'Violencia Familiar (Ley XIV-6)', category: 'familia', subtitle: 'Arts. 655-658 CPC; Ley IV-N.15 arts.113,118' },
+        { key: 'incapacidad', title: 'Declaración de Incapacidad', category: 'familia', subtitle: 'Arts. 659-673 CPC; Ley IV-N.15 arts.113,118' },
+        { key: 'inhabilitacion', title: 'Declaración de Inhabilitación', category: 'familia', subtitle: 'Arts. 674-678 CPC; Ley IV-N.15 arts.113,118' },
+        { key: 'restitucionMenores', title: 'Restitución de Menores', category: 'familia', subtitle: 'Arts. 679-695 CPC; Ley IV-N.15 art.118' },
+        { key: 'adopcion', title: 'Adopción', category: 'familia', subtitle: 'Ley XII-20 / Art. 654 CPC; Ley IV-N.15 art.118' },
+        { key: 'cuidadoPersonal', title: 'Cuidado Personal / Régimen', category: 'familia', subtitle: 'Arts. 648,715 CPC; Ley IV-N.15 art.118' },
+        { key: 'divorcio', title: 'Divorcio y Nulidad', category: 'familia', subtitle: 'Arts. 641,648,715-716 CPC; Ley IV-N.15 art.118' },
+        { key: 'tutelaCuratela', title: 'Tutela y Curatela', category: 'familia', subtitle: 'Arts. 713-714 CPC; Ley IV-N.15 arts.113,118' },
+        { key: 'homologacion', title: 'Homologación de Acuerdos', category: 'familia', subtitle: 'Arts. 311,648 CPC; Ley IV-N.15 art.118' },
+        { key: 'desalojo', title: 'Desalojo', category: 'civil', subtitle: 'Arts. 623-635 CPC; Ley IV-N.15 arts.113,118' },
+        { key: 'interdictos', title: 'Interdictos Posesorios', category: 'civil', subtitle: 'Arts. 576-592 CPC; Ley IV-N.15 art.118' },
+        { key: 'rendicionCuentas', title: 'Rendición de Cuentas', category: 'civil', subtitle: 'Arts. 596-601 CPC; Ley IV-N.15 art.118' },
+        { key: 'divisionCondominio', title: 'División de Cosas Comunes', category: 'civil', subtitle: 'Arts. 620-622 CPC; Ley IV-N.15 art.118' },
+        { key: 'mensuraDeslinde', title: 'Mensura y Deslinde', category: 'civil', subtitle: 'Arts. 602-619 CPC; Ley IV-N.15 art.118' },
+        { key: 'ejecutivo', title: 'Juicio Ejecutivo', category: 'civil', subtitle: 'Arts. 489-528 CPC; Ley IV-N.15 arts.113,118' },
+        { key: 'ejecucionHipotecaria', title: 'Ejecución Hipotecaria', category: 'civil', subtitle: 'Arts. 567-569 CPC; Ley IV-N.15 art.118' },
+        { key: 'sucesorio', title: 'Proceso Sucesorio', category: 'civil', subtitle: 'Arts. 717-763 CPC; Ley IV-N.15 arts.113,118' },
+        { key: 'ausentes', title: 'Defensor de Ausentes', category: 'especial', subtitle: 'Arts. 344,521,560,805 CPC; Ley IV-N.15 arts.113,114,118' },
+        { key: 'medidasAutosatisfactivas', title: 'Medidas Autosatisfactivas', category: 'especial', subtitle: 'Arts. 636-639 CPC; Ley IV-N.15 art.118' },
+        { key: 'proteccionIntegridadSexual', title: 'Protección Víctimas Integridad Sexual (Ley XVII-37)', category: 'leyes_especiales', subtitle: 'Ley XVII-37; Ley IV-N.15 arts.113,118' },
+        { key: 'pensionGraciableMenores', title: 'Pensión Graciable a Menores Víctimas (Ley XIX-51)', category: 'leyes_especiales', subtitle: 'Ley XIX-51; Ley IV-N.15 arts.113,118' },
+        { key: 'proteccionPersonasMayores', title: 'Protección Integral Personas Mayores (Ley XIX-41)', category: 'leyes_especiales', subtitle: 'Ley XIX-41; Ley IV-N.15 arts.113,118' }
     ];
 
     const db = {};
 
+    // Función para generar el paso de "Imposibilidad de asumir" igual para todos
+    function getPasoImposibilidad() {
+        return {
+            nombre: "Imposibilidad de asumir la defensa",
+            art: "Ley IV-N.15 arts. 21, 28; CPC arts. 17, 39; Ley IV-N.15 art. 118 inc.4",
+            instrucciones: "El Defensor Oficial debe analizar si existe alguna causal que le impida intervenir en el proceso. En caso afirmativo, debe excusarse inmediatamente y ponerlo en conocimiento del juez para que designe a otro defensor. Las causales son: parentesco con alguna de las partes (hasta 4° grado de consanguinidad o 2° de afinidad); tener interés directo o indirecto en el proceso; haber sido defensor o representante de la parte contraria; enemistad manifiesta o amistad íntima con alguna de las partes; estar encausado por delito doloso o condenado por delito doloso; ser fallido no rehabilitado; estar inhabilitado judicialmente; ejercer simultáneamente actividad incompatible; haberse desempeñado como funcionario o empleado en el mismo asunto.",
+            controles: [
+                "Verificar parentesco con las partes",
+                "Evaluar existencia de interés personal en el resultado",
+                "Comprobar si se ha tenido intervención previa en el mismo asunto",
+                "Revisar situación personal (condenas, inhibiciones, quiebra)",
+                "Consultar si existe incompatibilidad horaria o funcional"
+            ]
+        };
+    }
+
     // ============================================================
-    // PROCESOS DE FAMILIA (actuación del Defensor Oficial)
+    // PROCESOS DE FAMILIA (con paso de imposibilidad agregado al inicio)
     // ============================================================
-    db.alimentos = { title: "Alimentos y Litisexpensas", ref: "Arts. 696-710 CPC", etapas: [
-        { nombre: "Asumir representación del alimentante o del menor", art: "Art. 696", instrucciones: "Si se designa defensor al alimentante carenciado o al niño/ adolescente, tomar intervención. Promover demanda o contestar según el caso, ofreciendo prueba de ingresos y necesidades.", controles: ["Verificar competencia", "Solicitar alimentos provisorios (Art. 697)", "Denunciar domicilio electrónico"] },
-        { nombre: "Actuar en audiencia preliminar", art: "Art. 698", instrucciones: "Comparecer personalmente, intentar conciliación. Si el alimentante no comparece, pedir multa y cuota provisoria.", controles: ["Controlar que no se vulneren derechos del niño", "Proponer plan de pagos si corresponde", "Solicitar acuerdo homologable"] },
-        { nombre: "Intervenir en etapa de sentencia y ejecución", art: "Arts. 703-704", instrucciones: "Controlar que la cuota fijada sea equitativa y desde la demanda. En ejecución, pedir embargo directo sobre haberes y medidas compulsivas.", controles: ["Apelar con efecto devolutivo si es gravoso", "Solicitar actualización por índices", "Actuar con celeridad"] }
-    ] };
+    db.alimentos = { 
+        title: "Alimentos y Litisexpensas", 
+        ref: "Arts. 696-710 CPC; Ley IV-N.15 arts. 113, 118", 
+        etapas: [
+            getPasoImposibilidad(),
+            { nombre: "Asumir representación del alimentante o del menor", art: "Art. 696 CPC; Ley IV-N.15 art.118 inc.1", instrucciones: "Si se designa defensor al alimentante carenciado o al niño/adolescente, tomar intervención. Promover demanda o contestar según el caso, ofreciendo prueba de ingresos y necesidades.", controles: ["Verificar competencia", "Solicitar alimentos provisorios (Art. 697 CPC)", "Denunciar domicilio electrónico (Art.40 CPC)"] },
+            { nombre: "Actuar en audiencia preliminar", art: "Art. 698 CPC; Ley IV-N.15 art.118 inc.18", instrucciones: "Comparecer personalmente, intentar conciliación. Si el alimentante no comparece, pedir multa y cuota provisoria.", controles: ["Controlar que no se vulneren derechos del niño", "Proponer plan de pagos si corresponde", "Solicitar acuerdo homologable"] },
+            { nombre: "Intervenir en etapa de sentencia y ejecución", art: "Arts. 703-704 CPC; Ley IV-N.15 art.118 inc.5", instrucciones: "Controlar que la cuota fijada sea equitativa y desde la demanda. En ejecución, pedir embargo directo sobre haberes y medidas compulsivas.", controles: ["Apelar con efecto devolutivo si es gravoso", "Solicitar actualización por índices", "Actuar con celeridad"] }
+        ] 
+    };
     
-    db.ejecucionAlimentos = { title: "Ejecución de Alimentos", ref: "Arts. 704, 707 CPC", etapas: [
-        { nombre: "Iniciar ejecución en representación del acreedor", art: "Art. 704", instrucciones: "Presentar sentencia firme o acta de acuerdo. Pedir embargo de sueldos, inhibición y oficio a empleador.", controles: ["Verificar falta de pago y calcular intereses", "Acreditar domicilio del ejecutado", "Legajo de apremio"] },
-        { nombre: "Solicitar medidas compulsivas progresivas", art: "Art. 707", instrucciones: "Si persiste el incumplimiento, pedir arresto del deudor hasta 10 días (si no hay otro medio), sin afectar la cuota alimentaria.", controles: ["Acreditar rebeldía alimentaria y peligro", "Notificar personalmente", "Evitar perjuicio al trabajo del deudor"] }
-    ] };
+    db.ejecucionAlimentos = { 
+        title: "Ejecución de Alimentos", 
+        ref: "Arts. 704,707 CPC; Ley IV-N.15 art.118", 
+        etapas: [
+            getPasoImposibilidad(),
+            { nombre: "Iniciar ejecución en representación del acreedor", art: "Art. 704 CPC", instrucciones: "Presentar sentencia firme o acta de acuerdo. Pedir embargo de sueldos, inhibición y oficio a empleador.", controles: ["Verificar falta de pago y calcular intereses", "Acreditar domicilio del ejecutado", "Legajo de apremio"] },
+            { nombre: "Solicitar medidas compulsivas progresivas", art: "Art. 707 CPC; Ley IV-N.15 art.118 inc.7", instrucciones: "Si persiste el incumplimiento, pedir arresto del deudor hasta 10 días (si no hay otro medio), sin afectar la cuota alimentaria.", controles: ["Acreditar rebeldía alimentaria y peligro", "Notificar personalmente", "Evitar perjuicio al trabajo del deudor"] }
+        ] 
+    };
     
-    db.proteccionViolencia = { title: "Violencia Familiar", ref: "Arts. 655-658 CPC", etapas: [
-        { nombre: "Asistir a la víctima y solicitar medidas urgentes", art: "Art. 655", instrucciones: "Recibir denuncia en cualquier día y hora. Redactar petición de exclusión del agresor, prohibición de acercamiento, alimentos provisorios, botón antipánico.", controles: ["Entrevista en reserva", "Obtener informe del equipo interdisciplinario", "Actuar sin costo para la víctima"] },
-        { nombre: "Representar a la víctima en audiencia", art: "Art. 656", instrucciones: "Audiencia dentro de 48 hs. Ofrecer prueba (testimonios, informes médicos, pericias psicológicas).", controles: ["Solicitar medidas definitivas por plazo determinado", "Impulsar notificación al denunciado", "Requerir evaluación de riesgo"] },
-        { nombre: "Seguimiento y control de incumplimientos", art: "Arts. 657-658", instrucciones: "Denunciar incumplimientos de medidas. Pedir revinculación supervisada si cesa el riesgo.", controles: ["Derivar a redes de asistencia", "Informar al juez cada 30 días", "Actuar con perspectiva de género"] }
-    ] };
+    db.proteccionViolencia = { 
+        title: "Violencia Familiar", 
+        ref: "Arts. 655-658 CPC; Ley XIV-6; Ley IV-N.15 arts.113,118", 
+        etapas: [
+            getPasoImposibilidad(),
+            { nombre: "Asistir a la víctima y solicitar medidas urgentes", art: "Art. 655 CPC; Ley IV-N.15 art.118 inc.2", instrucciones: "Recibir denuncia en cualquier día y hora. Redactar petición de exclusión del agresor, prohibición de acercamiento, alimentos provisorios, botón antipánico.", controles: ["Entrevista en reserva", "Obtener informe del equipo interdisciplinario", "Actuar sin costo para la víctima"] },
+            { nombre: "Representar a la víctima en audiencia", art: "Art. 656 CPC", instrucciones: "Audiencia dentro de 48 hs. Ofrecer prueba (testimonios, informes médicos, pericias psicológicas).", controles: ["Solicitar medidas definitivas por plazo determinado", "Impulsar notificación al denunciado", "Requerir evaluación de riesgo"] },
+            { nombre: "Seguimiento y control de incumplimientos", art: "Arts. 657-658 CPC; Ley IV-N.15 art.118 inc.22", instrucciones: "Denunciar incumplimientos de medidas. Pedir revinculación supervisada si cesa el riesgo.", controles: ["Derivar a redes de asistencia", "Informar al juez cada 30 días", "Actuar con perspectiva de género"] }
+        ] 
+    };
     
-    db.incapacidad = { title: "Declaración de Incapacidad", ref: "Arts. 659-673 CPC", etapas: [
-        { nombre: "Asumir defensoría del presunto incapaz", art: "Arts. 659-660", instrucciones: "Designado por el juez, entrevistar al causante, recabar historia clínica, proponer medidas de apoyo.", controles: ["Solicitar pericia médica oficial", "Pedir curador provisorio", "Asegurar que no haya conflictos de intereses"] },
-        { nombre: "Control de pericias y oposición", art: "Arts. 661-665", instrucciones: "Revisar dictámenes, participar en audiencia con fiscal y familiares. Si existen indicios de capacidad, oponerse a la declaración.", controles: ["Garantizar contradicción", "Solicitar entrevista personal del juez", "Proponer inhabilitación si corresponde"] },
-        { nombre: "Rendición de cuentas y cese", art: "Arts. 670-673", instrucciones: "Supervisar inventario de bienes, controlar rendición anual del curador. Promover revisión periódica y cese si desaparecen causales.", controles: ["Oponerse a actos de disposición no autorizados", "Denunciar irregularidades", "Impulsar rehabilitación"] }
-    ] };
+    db.incapacidad = { 
+        title: "Declaración de Incapacidad", 
+        ref: "Arts. 659-673 CPC; Ley IV-N.15 arts.113,118", 
+        etapas: [
+            getPasoImposibilidad(),
+            { nombre: "Asumir defensoría del presunto incapaz", art: "Arts. 659-660 CPC; Ley IV-N.15 art.118 inc.1", instrucciones: "Designado por el juez, entrevistar al causante, recabar historia clínica, proponer medidas de apoyo.", controles: ["Solicitar pericia médica oficial", "Pedir curador provisorio", "Asegurar que no haya conflictos de intereses"] },
+            { nombre: "Control de pericias y oposición", art: "Arts. 661-665 CPC; Ley IV-N.15 art.118 inc.4", instrucciones: "Revisar dictámenes, participar en audiencia con fiscal y familiares. Si existen indicios de capacidad, oponerse a la declaración.", controles: ["Garantizar contradicción", "Solicitar entrevista personal del juez", "Proponer inhabilitación si corresponde"] },
+            { nombre: "Rendición de cuentas y cese", art: "Arts. 670-673 CPC; Ley IV-N.15 art.118 inc.23", instrucciones: "Supervisar inventario de bienes, controlar rendición anual del curador. Promover revisión periódica y cese si desaparecen causales.", controles: ["Oponerse a actos de disposición no autorizados", "Denunciar irregularidades", "Impulsar rehabilitación"] }
+        ] 
+    };
     
-    db.inhabilitacion = { title: "Declaración de Inhabilitación", ref: "Arts. 674-678 CPC", etapas: [
-        { nombre: "Defender al presunto inhabilitando", art: "Arts. 674-675", instrucciones: "Si el juez designa defensor, entrevistarlo, solicitar pericia y testigos que acrediten su capacidad parcial.", controles: ["Cuestionar la demanda si es abusiva", "Ofrecer prueba de actos de administración normal"] },
-        { nombre: "Delimitar actos con apoyo", art: "Arts. 676-678", instrucciones: "Negociar con el juez que los actos restringidos sean los estrictamente necesarios. Verificar nombramiento de curador.", controles: ["Exigir revisión anual", "Solicitar inscripción solo para actos determinados"] }
-    ] };
+    db.inhabilitacion = { 
+        title: "Declaración de Inhabilitación", 
+        ref: "Arts. 674-678 CPC; Ley IV-N.15 arts.113,118", 
+        etapas: [
+            getPasoImposibilidad(),
+            { nombre: "Defender al presunto inhabilitando", art: "Arts. 674-675 CPC; Ley IV-N.15 art.118 inc.1", instrucciones: "Si el juez designa defensor, entrevistarlo, solicitar pericia y testigos que acrediten su capacidad parcial.", controles: ["Cuestionar la demanda si es abusiva", "Ofrecer prueba de actos de administración normal"] },
+            { nombre: "Delimitar actos con apoyo", art: "Arts. 676-678 CPC", instrucciones: "Negociar con el juez que los actos restringidos sean los estrictamente necesarios. Verificar nombramiento de curador.", controles: ["Exigir revisión anual", "Solicitar inscripción solo para actos determinados"] }
+        ] 
+    };
     
-    db.restitucionMenores = { title: "Restitución de Menores", ref: "Arts. 679-695 CPC", etapas: [
-        { nombre: "Representar al menor o a la familia retenedora", art: "Arts. 679-682", instrucciones: "Si se designa defensor al niño, solicitar allanamiento y restitución inmediata si hay peligro. Si se defiende al tenedor, acreditar riesgo para el menor.", controles: ["Pedir informe socioambiental", "Citar al Ministerio Pupilar", "Evitar sustracción internacional"] },
-        { nombre: "Intervenir en audiencia y excepciones", art: "Arts. 683-690", instrucciones: "Ofrecer prueba de que la restitución implica grave riesgo para la salud o integridad del niño.", controles: ["Priorizar interés superior", "Solicitar evaluación por equipo técnico", "Actuar en horas hábiles"] }
-    ] };
+    db.restitucionMenores = { 
+        title: "Restitución de Menores", 
+        ref: "Arts. 679-695 CPC; Ley IV-N.15 art.118", 
+        etapas: [
+            getPasoImposibilidad(),
+            { nombre: "Representar al menor o a la familia retenedora", art: "Arts. 679-682 CPC; Ley IV-N.15 art.118 inc.1,8", instrucciones: "Si se designa defensor al niño, solicitar allanamiento y restitución inmediata si hay peligro. Si se defiende al tenedor, acreditar riesgo para el menor.", controles: ["Pedir informe socioambiental", "Citar al Ministerio Pupilar", "Evitar sustracción internacional"] },
+            { nombre: "Intervenir en audiencia y excepciones", art: "Arts. 683-690 CPC", instrucciones: "Ofrecer prueba de que la restitución implica grave riesgo para la salud o integridad del niño.", controles: ["Priorizar interés superior", "Solicitar evaluación por equipo técnico", "Actuar en horas hábiles"] }
+        ] 
+    };
     
-    db.adopcion = { title: "Adopción", ref: "Ley XII-20 / Art. 654 CPC", etapas: [
-        { nombre: "Asumir defensoría del niño en estado de adoptabilidad", art: "Ley XII-20 art. 10", instrucciones: "Controlar que se hayan agotado las medidas de reintegro familiar. Acompañar al niño en el proceso, expresando su opinión según edad.", controles: ["Impugnar declaración de adoptabilidad si es prematura", "Solicitar informe de organismo administrativo"] },
-        { nombre: "Participar en la guarda con fines de adopción", art: "Ley XII-20 arts. 20-30", instrucciones: "Controlar la idoneidad de los pretensos adoptantes, seguir el vínculo durante la guarda de 6 meses.", controles: ["Pedir informes psicosociales", "Verificar que no haya vínculos previos", "Asegurar la escucha del niño"] },
-        { nombre: "Dictamen sobre adopción plena", art: "Art. 654 CPC", instrucciones: "Emitir dictamen fundado si la adopción beneficia al niño. Controlar la inscripción y el cese de la patria potestad anterior.", controles: ["Exigir partida de nacimiento rectificada", "Notificar a registros", "Verificar plazos legales"] }
-    ] };
+    db.adopcion = { 
+        title: "Adopción", 
+        ref: "Ley XII-20 / Art. 654 CPC; Ley IV-N.15 art.118", 
+        etapas: [
+            getPasoImposibilidad(),
+            { nombre: "Asumir defensoría del niño en estado de adoptabilidad", art: "Ley XII-20 art. 10; Ley IV-N.15 art.118 inc.1", instrucciones: "Controlar que se hayan agotado las medidas de reintegro familiar. Acompañar al niño en el proceso, expresando su opinión según edad.", controles: ["Impugnar declaración de adoptabilidad si es prematura", "Solicitar informe de organismo administrativo"] },
+            { nombre: "Participar en la guarda con fines de adopción", art: "Ley XII-20 arts. 20-30", instrucciones: "Controlar la idoneidad de los pretensos adoptantes, seguir el vínculo durante la guarda de 6 meses.", controles: ["Pedir informes psicosociales", "Verificar que no haya vínculos previos", "Asegurar la escucha del niño"] },
+            { nombre: "Dictamen sobre adopción plena", art: "Art. 654 CPC; Ley IV-N.15 art.118 inc.8", instrucciones: "Emitir dictamen fundado si la adopción beneficia al niño. Controlar la inscripción y el cese de la patria potestad anterior.", controles: ["Exigir partida de nacimiento rectificada", "Notificar a registros", "Verificar plazos legales"] }
+        ] 
+    };
     
-    db.cuidadoPersonal = { title: "Cuidado Personal / Régimen", ref: "Arts. 648, 715 CPC", etapas: [
-        { nombre: "Defender el interés del niño en la fijación del cuidado", art: "Art. 648", instrucciones: "Proponer plan de parentalidad, cuidado compartido o unilateral según necesidad del niño. Entrevistar al niño y transmitir su opinión al juez.", controles: ["Solicitar informe psicológico", "Evitar judicialización innecesaria", "Promover acuerdos"] },
-        { nombre: "Controlar régimen de comunicación y provisionalidad", art: "Art. 715", instrucciones: "Verificar que el régimen provisorio no dañe al niño. Denunciar incumplimientos y pedir sanciones.", controles: ["Garantizar derecho a alimentos y salud", "Solicitar medidas cautelares si hay riesgo de sustracción"] }
-    ] };
+    db.cuidadoPersonal = { 
+        title: "Cuidado Personal / Régimen", 
+        ref: "Arts. 648,715 CPC; Ley IV-N.15 art.118", 
+        etapas: [
+            getPasoImposibilidad(),
+            { nombre: "Defender el interés del niño en la fijación del cuidado", art: "Art. 648 CPC; Ley IV-N.15 art.118 inc.1", instrucciones: "Proponer plan de parentalidad, cuidado compartido o unilateral según necesidad del niño. Entrevistar al niño y transmitir su opinión al juez.", controles: ["Solicitar informe psicológico", "Evitar judicialización innecesaria", "Promover acuerdos"] },
+            { nombre: "Controlar régimen de comunicación y provisionalidad", art: "Art. 715 CPC; Ley IV-N.15 art.118 inc.18", instrucciones: "Verificar que el régimen provisorio no dañe al niño. Denunciar incumplimientos y pedir sanciones.", controles: ["Garantizar derecho a alimentos y salud", "Solicitar medidas cautelares si hay riesgo de sustracción"] }
+        ] 
+    };
     
-    db.divorcio = { title: "Divorcio y Nulidad", ref: "Arts. 641, 648, 715-716 CPC", etapas: [
-        { nombre: "Asumir defensa de uno de los cónyuges o del niño", art: "Art. 641", instrucciones: "Si se representa a parte vulnerable (ej. cónyuge con discapacidad o hijo), controlar el convenio regulador: equidad en alimentos, liquidación de sociedad conyugal, uso de vivienda.", controles: ["Oponerse a cláusulas abusivas", "Solicitar homologación parcial", "Notificar al Ministerio Pupilar"] },
-        { nombre: "Intervenir en sentencia y efectos patrimoniales", art: "Arts. 715-716", instrucciones: "Controlar la disolución de la sociedad conyugal y la liquidación. Si hay niños, pedir medidas sobre cuidado personal.", controles: ["Verificar plazos de separación", "Impugnar partición desigual", "Inscribir sentencia en registro"] }
-    ] };
+    db.divorcio = { 
+        title: "Divorcio y Nulidad", 
+        ref: "Arts. 641,648,715-716 CPC; Ley IV-N.15 art.118", 
+        etapas: [
+            getPasoImposibilidad(),
+            { nombre: "Asumir defensa de uno de los cónyuges o del niño", art: "Art. 641 CPC; Ley IV-N.15 art.118 inc.2", instrucciones: "Si se representa a parte vulnerable (ej. cónyuge con discapacidad o hijo), controlar el convenio regulador: equidad en alimentos, liquidación de sociedad conyugal, uso de vivienda.", controles: ["Oponerse a cláusulas abusivas", "Solicitar homologación parcial", "Notificar al Ministerio Pupilar"] },
+            { nombre: "Intervenir en sentencia y efectos patrimoniales", art: "Arts. 715-716 CPC", instrucciones: "Controlar la disolución de la sociedad conyugal y la liquidación. Si hay niños, pedir medidas sobre cuidado personal.", controles: ["Verificar plazos de separación", "Impugnar partición desigual", "Inscribir sentencia en registro"] }
+        ] 
+    };
     
-    db.tutelaCuratela = { title: "Tutela y Curatela", ref: "Arts. 713-714 CPC", etapas: [
-        { nombre: "Controlar la designación del tutor o curador", art: "Arts. 713", instrucciones: "Si se designa defensor al menor o incapaz, evaluar la idoneidad del propuesto. Solicinar entrevista y aceptación del cargo.", controles: ["Pedir antecedentes penales del tutor", "Verificar inventario de bienes", "Oponerse a designación inidónea"] },
-        { nombre: "Supervisar rendición de cuentas", art: "Art. 714", instrucciones: "Exigir cuentas anuales y finales. Impugnar partidas injustificadas y solicitar remoción por mala gestión.", controles: ["Plazo 10 días para observaciones", "Controlar inversiones autorizadas"] }
-    ] };
+    db.tutelaCuratela = { 
+        title: "Tutela y Curatela", 
+        ref: "Arts. 713-714 CPC; Ley IV-N.15 arts.113,118", 
+        etapas: [
+            getPasoImposibilidad(),
+            { nombre: "Controlar la designación del tutor o curador", art: "Arts. 713 CPC; Ley IV-N.15 art.118 inc.1,23", instrucciones: "Si se designa defensor al menor o incapaz, evaluar la idoneidad del propuesto. Solicinar entrevista y aceptación del cargo.", controles: ["Pedir antecedentes penales del tutor", "Verificar inventario de bienes", "Oponerse a designación inidónea"] },
+            { nombre: "Supervisar rendición de cuentas", art: "Art. 714 CPC; Ley IV-N.15 art.118 inc.23", instrucciones: "Exigir cuentas anuales y finales. Impugnar partidas injustificadas y solicitar remoción por mala gestión.", controles: ["Plazo 10 días para observaciones", "Controlar inversiones autorizadas"] }
+        ] 
+    };
     
-    db.homologacion = { title: "Homologación de Acuerdos", ref: "Arts. 311, 648 CPC", etapas: [
-        { nombre: "Dictaminar sobre acuerdo extrajudicial", art: "Art. 311", instrucciones: "Cuando interviene defensor del niño o de parte vulnerable, revisar que el acuerdo no vulnere derechos irrenunciables.", controles: ["Verificar capacidad de las partes", "Solicitar informes si hay niños", "Rechazar cláusulas lesivas al alimentario"] },
-        { nombre: "Solicitar medidas complementarias", art: "Art. 648", instrucciones: "Si el acuerdo es parcialmente homologable, pedir al juez que fije pautas para completarlo.", controles: ["Exigir inscripción si modifica estado civil", "Notificar al Ministerio Pupilar"] }
-    ] };
+    db.homologacion = { 
+        title: "Homologación de Acuerdos", 
+        ref: "Arts. 311,648 CPC; Ley IV-N.15 art.118", 
+        etapas: [
+            getPasoImposibilidad(),
+            { nombre: "Dictaminar sobre acuerdo extrajudicial", art: "Art. 311 CPC; Ley IV-N.15 art.118 inc.4", instrucciones: "Cuando interviene defensor del niño o de parte vulnerable, revisar que el acuerdo no vulnere derechos irrenunciables.", controles: ["Verificar capacidad de las partes", "Solicitar informes si hay niños", "Rechazar cláusulas lesivas al alimentario"] },
+            { nombre: "Solicitar medidas complementarias", art: "Art. 648 CPC; Ley IV-N.15 art.118 inc.5", instrucciones: "Si el acuerdo es parcialmente homologable, pedir al juez que fije pautas para completarlo.", controles: ["Exigir inscripción si modifica estado civil", "Notificar al Ministerio Pupilar"] }
+        ] 
+    };
     
     // ============================================================
-    // PROCESOS CIVILES
+    // PROCESOS CIVILES (con paso de imposibilidad)
     // ============================================================
-    db.desalojo = { title: "Desalojo", ref: "Arts. 623-635 CPC", etapas: [
-        { nombre: "Defender al ocupante vulnerable", art: "Art. 623", instrucciones: "Si se designa defensor al ocupante carenciado, contestar demanda, oponer excepciones (falta de título, precario, etc.) y solicitar audiencia.", controles: ["Verificar legitimación activa del actor", "Ofrecer prueba de mejor derecho", "Pedir beneficio de litigar sin gastos"] },
-        { nombre: "Actuar en etapa de sentencia y lanzamiento", art: "Arts. 628-633", instrucciones: "Impugnar liquidación de daños, solicitar plazo prudencial para desocupar o relocalización.", controles: ["Controlar que no haya violencia", "Solicitar suspensión del lanzamiento si hay niños o personas mayores"] }
-    ] };
+    db.desalojo = { 
+        title: "Desalojo", 
+        ref: "Arts. 623-635 CPC; Ley IV-N.15 arts.113,118", 
+        etapas: [
+            getPasoImposibilidad(),
+            { nombre: "Defender al ocupante vulnerable", art: "Art. 623 CPC; Ley IV-N.15 art.118 inc.2", instrucciones: "Si se designa defensor al ocupante carenciado, contestar demanda, oponer excepciones (falta de título, precario, etc.) y solicitar audiencia.", controles: ["Verificar legitimación activa del actor", "Ofrecer prueba de mejor derecho", "Pedir beneficio de litigar sin gastos"] },
+            { nombre: "Actuar en etapa de sentencia y lanzamiento", art: "Arts. 628-633 CPC", instrucciones: "Impugnar liquidación de daños, solicitar plazo prudencial para desocupar o relocalización.", controles: ["Controlar que no haya violencia", "Solicitar suspensión del lanzamiento si hay niños o personas mayores"] }
+        ] 
+    };
     
-    db.interdictos = { title: "Interdictos Posesorios", ref: "Arts. 576-592 CPC", etapas: [
-        { nombre: "Representar al poseedor despojado", art: "Arts. 576-580", instrucciones: "Redactar demanda interdictal dentro del año de despojo. Acreditar posesión anterior y despojo. Solicitar restitución inmediata.", controles: ["Ofrecer prueba testimonial y documental", "Pedir medida cautelar de restitución", "Actuar con celeridad"] },
-        { nombre: "Contestar si se defiende al despojante", art: "Arts. 581-592", instrucciones: "Probar mejor derecho a poseer o que no hubo despojo. Asistir a audiencia única.", controles: ["Controlar que no se discuta dominio", "Solicitar contracautela si pide suspensión"] }
-    ] };
+    db.interdictos = { 
+        title: "Interdictos Posesorios", 
+        ref: "Arts. 576-592 CPC; Ley IV-N.15 art.118", 
+        etapas: [
+            getPasoImposibilidad(),
+            { nombre: "Representar al poseedor despojado", art: "Arts. 576-580 CPC; Ley IV-N.15 art.118 inc.2", instrucciones: "Redactar demanda interdictal dentro del año de despojo. Acreditar posesión anterior y despojo. Solicitar restitución inmediata.", controles: ["Ofrecer prueba testimonial y documental", "Pedir medida cautelar de restitución", "Actuar con celeridad"] },
+            { nombre: "Contestar si se defiende al despojante", art: "Arts. 581-592 CPC", instrucciones: "Probar mejor derecho a poseer o que no hubo despojo. Asistir a audiencia única.", controles: ["Controlar que no se discuta dominio", "Solicitar contracautela si pide suspensión"] }
+        ] 
+    };
     
-    db.rendicionCuentas = { title: "Rendición de Cuentas", ref: "Arts. 596-601 CPC", etapas: [
-        { nombre: "Exigir cuentas al gestor", art: "Arts. 596-597", instrucciones: "En representación del interesado, demandar la rendición de cuentas a quien administró bienes sin mandato.", controles: ["Acreditar calidad de gestor", "Solicitar exhibición de libros y comprobantes"] },
-        { nombre: "Impugnar cuentas rendidas", art: "Arts. 598-601", instrucciones: "Si las cuentas son oscuras o falsas, objetar partidas y pedir pericia contable.", controles: ["Plazo de 20 días para oposición", "Solicitar aprobación parcial con reserva"] }
-    ] };
+    db.rendicionCuentas = { 
+        title: "Rendición de Cuentas", 
+        ref: "Arts. 596-601 CPC; Ley IV-N.15 art.118", 
+        etapas: [
+            getPasoImposibilidad(),
+            { nombre: "Exigir cuentas al gestor", art: "Arts. 596-597 CPC; Ley IV-N.15 art.118 inc.2", instrucciones: "En representación del interesado, demandar la rendición de cuentas a quien administró bienes sin mandato.", controles: ["Acreditar calidad de gestor", "Solicitar exhibición de libros y comprobantes"] },
+            { nombre: "Impugnar cuentas rendidas", art: "Arts. 598-601 CPC", instrucciones: "Si las cuentas son oscuras o falsas, objetar partidas y pedir pericia contable.", controles: ["Plazo de 20 días para oposición", "Solicitar aprobación parcial con reserva"] }
+        ] 
+    };
     
-    db.divisionCondominio = { title: "División de Cosas Comunes", ref: "Arts. 620-622 CPC", etapas: [
-        { nombre: "Asistir al condómino para promover partición", art: "Arts. 620", instrucciones: "Demandar división si no hay acuerdo. Designar partidor. Citar a todos los condóminos.", controles: ["Verificar indivisibilidad forzosa", "Pedir venta en subasta si es indivisible"] },
-        { nombre: "Controlar operaciones particionales", art: "Arts. 621-622", instrucciones: "Impugnar avalúo o proyecto de división si perjudica a nuestro representado.", controles: ["Sorteo de adjudicatario si es indivisible", "Solicitar homologación judicial"] }
-    ] };
+    db.divisionCondominio = { 
+        title: "División de Cosas Comunes", 
+        ref: "Arts. 620-622 CPC; Ley IV-N.15 art.118", 
+        etapas: [
+            getPasoImposibilidad(),
+            { nombre: "Asistir al condómino para promover partición", art: "Arts. 620 CPC; Ley IV-N.15 art.118 inc.2", instrucciones: "Demandar división si no hay acuerdo. Designar partidor. Citar a todos los condóminos.", controles: ["Verificar indivisibilidad forzosa", "Pedir venta en subasta si es indivisible"] },
+            { nombre: "Controlar operaciones particionales", art: "Arts. 621-622 CPC", instrucciones: "Impugnar avalúo o proyecto de división si perjudica a nuestro representado.", controles: ["Sorteo de adjudicatario si es indivisible", "Solicitar homologación judicial"] }
+        ] 
+    };
     
-    db.mensuraDeslinde = { title: "Mensura y Deslinde", ref: "Arts. 602-619 CPC", etapas: [
-        { nombre: "Instar el deslinde como colindante", art: "Arts. 602-606", instrucciones: "Demandar mensura cuando los linderos sean inciertos. Designar agrimensor y notificar a todos los colindantes.", controles: ["Acompañar títulos de propiedad", "Solicitar perito de oficio si hay oposición"] },
-        { nombre: "Impugnar el proyecto de deslinde", art: "Arts. 607-615", instrucciones: "Si el perito propone un deslinde erróneo, observarlo en audiencia y ofrecer prueba pericial de parte.", controles: ["Participar en operaciones de campo", "Si no hay acuerdo, solicitar juicio ordinario posterior"] }
-    ] };
+    db.mensuraDeslinde = { 
+        title: "Mensura y Deslinde", 
+        ref: "Arts. 602-619 CPC; Ley IV-N.15 art.118", 
+        etapas: [
+            getPasoImposibilidad(),
+            { nombre: "Instar el deslinde como colindante", art: "Arts. 602-606 CPC; Ley IV-N.15 art.118 inc.2", instrucciones: "Demandar mensura cuando los linderos sean inciertos. Designar agrimensor y notificar a todos los colindantes.", controles: ["Acompañar títulos de propiedad", "Solicitar perito de oficio si hay oposición"] },
+            { nombre: "Impugnar el proyecto de deslinde", art: "Arts. 607-615 CPC", instrucciones: "Si el perito propone un deslinde erróneo, observarlo en audiencia y ofrecer prueba pericial de parte.", controles: ["Participar en operaciones de campo", "Si no hay acuerdo, solicitar juicio ordinario posterior"] }
+        ] 
+    };
     
-    db.ejecutivo = { title: "Juicio Ejecutivo", ref: "Arts. 489-528 CPC", etapas: [
-        { nombre: "Defender al ejecutado", art: "Arts. 489-497", instrucciones: "Si se designa defensor al demandado carenciado, oponer excepciones legales (pago, prescripción, falsedad, inhabilidad de título).", controles: ["Verificar que el título no sea ejecutable", "Solicitar embargo de bienes inembargables", "Plazo de oposición 5 días"] },
-        { nombre: "Actuar en ejecución de sentencia", art: "Arts. 498-510", instrucciones: "Si se rechazan las excepciones, controlar la subasta, pedir que se respete la inembargabilidad del salario.", controles: ["Solicitar moratoria o plan de pagos", "Apelar si la ejecución es abusiva"] }
-    ] };
+    db.ejecutivo = { 
+        title: "Juicio Ejecutivo", 
+        ref: "Arts. 489-528 CPC; Ley IV-N.15 arts.113,118", 
+        etapas: [
+            getPasoImposibilidad(),
+            { nombre: "Defender al ejecutado", art: "Arts. 489-497 CPC; Ley IV-N.15 art.118 inc.2", instrucciones: "Si se designa defensor al demandado carenciado, oponer excepciones legales (pago, prescripción, falsedad, inhabilidad de título).", controles: ["Verificar que el título no sea ejecutable", "Solicitar embargo de bienes inembargables", "Plazo de oposición 5 días"] },
+            { nombre: "Actuar en ejecución de sentencia", art: "Arts. 498-510 CPC", instrucciones: "Si se rechazan las excepciones, controlar la subasta, pedir que se respete la inembargabilidad del salario.", controles: ["Solicitar moratoria o plan de pagos", "Apelar si la ejecución es abusiva"] }
+        ] 
+    };
     
-    db.ejecucionHipotecaria = { title: "Ejecución Hipotecaria", ref: "Arts. 567-569 CPC", etapas: [
-        { nombre: "Defender al deudor hipotecario", art: "Arts. 567", instrucciones: "Oponer excepciones de pago, prescripción, o nulidad de la escritura. Verificar que la deuda esté correctamente liquidada.", controles: ["Cuestionar la tasa de interés si es usuraria", "Pedir tasación actualizada"] },
-        { nombre: "Controlar subasta y tercerías", art: "Arts. 568-569", instrucciones: "Impugnar la publicidad y el remate si hay vicios. Interponer tercería de dominio si el bien pertenece a un tercero.", controles: ["Notificar a ocupantes para que no se vean sorprendidos", "Solicitar suspensión de subasta si hay convenio de pago"] }
-    ] };
+    db.ejecucionHipotecaria = { 
+        title: "Ejecución Hipotecaria", 
+        ref: "Arts. 567-569 CPC; Ley IV-N.15 art.118", 
+        etapas: [
+            getPasoImposibilidad(),
+            { nombre: "Defender al deudor hipotecario", art: "Arts. 567 CPC; Ley IV-N.15 art.118 inc.2", instrucciones: "Oponer excepciones de pago, prescripción, o nulidad de la escritura. Verificar que la deuda esté correctamente liquidada.", controles: ["Cuestionar la tasa de interés si es usuraria", "Pedir tasación actualizada"] },
+            { nombre: "Controlar subasta y tercerías", art: "Arts. 568-569 CPC", instrucciones: "Impugnar la publicidad y el remate si hay vicios. Interponer tercería de dominio si el bien pertenece a un tercero.", controles: ["Notificar a ocupantes para que no se vean sorprendidos", "Solicitar suspensión de subasta si hay convenio de pago"] }
+        ] 
+    };
     
-    db.sucesorio = { title: "Proceso Sucesorio", ref: "Arts. 717-763 CPC", etapas: [
-        { nombre: "Asumir defensoría de ausentes o herederos menores", art: "Arts. 717-727", instrucciones: "Designado como defensor de ausentes, representar a herederos desconocidos. Verificar edictos y citaciones.", controles: ["Controlar que se incluya a todos los herederos forzosos", "Solicitar declaratoria de herederos"] },
-        { nombre: "Intervenir en inventario y avalúo", art: "Arts. 728-745", instrucciones: "Revisar que se incluyan todos los bienes y que el avalúo se ajuste a la realidad. Impugnar omisiones.", controles: ["Plazo de 60 días para presentar inventario", "Designar perito partidor si corresponde"] },
-        { nombre: "Controlar partición y adjudicación", art: "Arts. 746-763", instrucciones: "Impugnar proyecto si es lesivo para los representados. Rendir cuentas finales.", controles: ["Pago de impuestos", "Cancelación de derechos hereditarios", "Inscribir adjudicaciones"] }
-    ] };
+    db.sucesorio = { 
+        title: "Proceso Sucesorio", 
+        ref: "Arts. 717-763 CPC; Ley IV-N.15 arts.113,118", 
+        etapas: [
+            getPasoImposibilidad(),
+            { nombre: "Asumir defensoría de ausentes o herederos menores", art: "Arts. 717-727 CPC; Ley IV-N.15 art.118 inc.1,3", instrucciones: "Designado como defensor de ausentes, representar a herederos desconocidos. Verificar edictos y citaciones.", controles: ["Controlar que se incluya a todos los herederos forzosos", "Solicitar declaratoria de herederos"] },
+            { nombre: "Intervenir en inventario y avalúo", art: "Arts. 728-745 CPC", instrucciones: "Revisar que se incluyan todos los bienes y que el avalúo se ajuste a la realidad. Impugnar omisiones.", controles: ["Plazo de 60 días para presentar inventario", "Designar perito partidor si corresponde"] },
+            { nombre: "Controlar partición y adjudicación", art: "Arts. 746-763 CPC; Ley IV-N.15 art.118 inc.23", instrucciones: "Impugnar proyecto si es lesivo para los representados. Rendir cuentas finales.", controles: ["Pago de impuestos", "Cancelación de derechos hereditarios", "Inscribir adjudicaciones"] }
+        ] 
+    };
     
-    db.ausentes = { title: "Defensor de Ausentes", ref: "Arts. 344, 521, 560, 805 CPC", etapas: [
-        { nombre: "Aceptar cargo y representar al ausente", art: "Art. 344", instrucciones: "Cuando se designa defensor al demandado con paradero desconocido, comparecer, contestar demanda y ofrecer prueba en su defensa.", controles: ["Verificar que se haya declarado la rebeldía", "Solicitar medidas conservatorias de sus bienes", "No allanarse sin instrucciones del juez"] },
-        { nombre: "Rendir cuentas al cesar", art: "Arts. 521, 560, 805", instrucciones: "Al finalizar la representación (por comparecencia del ausente o por conclusión del proceso), presentar liquidación de lo actuado.", controles: ["Archivar copias de escritos", "Solicitar honorarios si corresponde", "Comunicar al juez cualquier irregularidad"] }
-    ] };
+    // DEFENSOR DE AUSENTES (ya tiene su propio paso de imposibilidad, se deja intacto)
+    db.ausentes = {
+        title: "Defensor de Ausentes",
+        ref: "Arts. 344, 521, 560, 805 CPC; Ley IV-N.15 arts. 113, 114, 118",
+        etapas: [
+            {
+                nombre: "Imposibilidad de asumir la defensa",
+                art: "Ley IV-N.15 arts. 21, 28; CPC arts. 17, 39; Ley IV-N.15 art. 118 inc.4",
+                instrucciones: "El Defensor Oficial debe analizar si existe alguna causal que le impida intervenir como defensor de ausentes. En caso afirmativo, debe excusarse inmediatamente y ponerlo en conocimiento del juez para que designe a otro defensor. Las causales son:",
+                controles: [
+                    "Parentesco con alguna de las partes (hasta 4° grado de consanguinidad o 2° de afinidad) - análogo Art. 17 CPC",
+                    "Tener interés directo o indirecto en el proceso (Art. 118 inc.4 Ley Orgánica)",
+                    "Haber sido defensor o representante de la parte contraria (Art. 17 inc.7 CPC)",
+                    "Enemistad manifiesta o amistad íntima con alguna de las partes (Art. 17 inc.9-10 CPC)",
+                    "Estar encausado por delito doloso o condenado por delito doloso (Art. 28 inc.1-2 Ley Orgánica)",
+                    "Ser fallido no rehabilitado (Art. 28 inc.3 Ley Orgánica)",
+                    "Estar inhabilitado judicialmente (Art. 28 inc.4 Ley Orgánica)",
+                    "Ejercer simultáneamente actividad incompatible (comercio, política, otra profesión - Art. 21 Ley Orgánica)",
+                    "Haberse desempeñado como funcionario o empleado en el mismo asunto (Art. 21 último párrafo)"
+                ]
+            },
+            {
+                nombre: "Aceptar el cargo y comparecer en juicio",
+                art: "Art. 344 CPC; Ley IV-N.15 arts. 113, 118 inc.3",
+                instrucciones: "Designado por el juez para representar al demandado con paradero desconocido (citado por edictos sin comparecencia), el defensor debe comparecer, contestar la demanda y ofrecer prueba en defensa del ausente. Debe realizar gestiones para hacer llegar al interesado la existencia del juicio.",
+                controles: [
+                    "Verificar que se haya agotado la citación por edictos (Arts. 147-149 CPC)",
+                    "Constituir domicilio procesal y electrónico (Art. 40 CPC)",
+                    "Intentar localizar al ausente por medios razonables",
+                    "No allanarse sin instrucción judicial expresa"
+                ]
+            },
+            {
+                nombre: "Actuación durante el proceso",
+                art: "Arts. 344, 521 CPC; Ley IV-N.15 art. 114",
+                instrucciones: "El defensor ejerce todos los actos necesarios para proteger los bienes y derechos del ausente, pudiendo solicitar medidas conservatorias. Debe estar atento a cualquier comparecencia del ausente o de sus herederos.",
+                controles: [
+                    "Solicitar medidas cautelares para evitar deterioro de bienes (Arts. 196 y ss. CPC)",
+                    "Impulsar el proceso para evitar la caducidad de instancia",
+                    "Recurrir la sentencia si es desfavorable y existen agravios"
+                ]
+            },
+            {
+                nombre: "Notificación de la sentencia",
+                art: "Art. 521 CPC",
+                instrucciones: "Si el deudor ausente no se ha presentado, la sentencia debe ser notificada al Defensor Oficial. Este debe analizar la procedencia de recursos.",
+                controles: [
+                    "Evaluar si existen agravios y apelar en tiempo (5 días, Art. 251 CPC)",
+                    "Solicitar aclaratoria si corresponde (Art. 274 CPC)",
+                    "Informar al juez sobre cualquier novedad respecto del ausente"
+                ]
+            },
+            {
+                nombre: "Cese de la representación y rendición de cuentas",
+                art: "Arts. 521, 560 CPC; Ley IV-N.15 art. 118",
+                instrucciones: "Al finalizar la representación (por comparecencia del ausente, sus herederos, o conclusión del proceso), el defensor debe rendir cuentas de su gestión. No puede cobrar honorarios al ejecutado por su intervención.",
+                controles: [
+                    "Presentar liquidación de lo actuado y de los fondos administrados",
+                    "Solicitar la devolución de documentación y bienes al ausente o herederos",
+                    "No percibir honorarios del ejecutado (Art. 560 CPC)",
+                    "Archivar copias de escritos y notificaciones"
+                ]
+            }
+        ]
+    };
     
-    db.medidasAutosatisfactivas = { title: "Medidas Autosatisfactivas", ref: "Arts. 636-639 CPC", etapas: [
-        { nombre: "Solicitar medida autosatisfactiva", art: "Art. 636", instrucciones: "Cuando el defensor representa a una persona en situación de urgencia (ej. acceso a medicación, cesación de actos de violencia sin contraparte), peticionar medida sin notificar a la contraria.", controles: ["Acreditar verosimilitud del derecho", "Peligro en la demora", "Ofrecer caución juratoria"] },
-        { nombre: "Controlar eventual apelación", art: "Arts. 637-639", instrucciones: "Una vez ejecutada la medida, si la contraria apela, contestar el recurso y solicitar que se mantenga hasta sentencia firme.", controles: ["Verificar caducidad a los 30 días si no se inicia proceso principal", "Requerir prórroga si es necesario"] }
-    ] };
+    db.medidasAutosatisfactivas = { 
+        title: "Medidas Autosatisfactivas", 
+        ref: "Arts. 636-639 CPC; Ley IV-N.15 art.118", 
+        etapas: [
+            getPasoImposibilidad(),
+            { nombre: "Solicitar medida autosatisfactiva", art: "Art. 636 CPC; Ley IV-N.15 art.118 inc.2", instrucciones: "Cuando el defensor representa a una persona en situación de urgencia (ej. acceso a medicación, cesación de actos de violencia sin contraparte), peticionar medida sin notificar a la contraria.", controles: ["Acreditar verosimilitud del derecho", "Peligro en la demora", "Ofrecer caución juratoria"] },
+            { nombre: "Controlar eventual apelación", art: "Arts. 637-639 CPC", instrucciones: "Una vez ejecutada la medida, si la contraria apela, contestar el recurso y solicitar que se mantenga hasta sentencia firme.", controles: ["Verificar caducidad a los 30 días si no se inicia proceso principal", "Requerir prórroga si es necesario"] }
+        ] 
+    };
     
-    // ============================================================
-    // NUEVAS LEYES (actuación del defensor)
-    // ============================================================
+    // NUEVAS LEYES (con paso de imposibilidad)
     db.proteccionIntegridadSexual = {
         title: "Protección y Asistencia a Víctimas de Delitos contra la Integridad Sexual",
-        ref: "Ley XVII-37 (ex Ley 4013) - Arts. 1 a 4",
+        ref: "Ley XVII-37 (ex Ley 4013) Arts. 1 a 4; Ley IV-N.15 arts.113,118",
         etapas: [
-            { nombre: "Recibir denuncia y activar mecanismos de protección", art: "Art. 1, 2", instrucciones: "El defensor debe asesorar a la víctima, informarle sobre derechos y derivar a la autoridad de aplicación (Ministerio de Salud). Acompañar en la realización de la denuncia penal.", controles: ["Perspectiva de género", "Evitar revictimización", "Garantizar atención inmediata"] },
+            getPasoImposibilidad(),
+            { nombre: "Recibir denuncia y activar mecanismos de protección", art: "Art. 1,2; Ley IV-N.15 art.118 inc.2", instrucciones: "El defensor debe asesorar a la víctima, informarle sobre derechos y derivar a la autoridad de aplicación (Ministerio de Salud). Acompañar en la realización de la denuncia penal.", controles: ["Perspectiva de género", "Evitar revictimización", "Garantizar atención inmediata"] },
             { nombre: "Solicitar atención integral y pericial", art: "Art. 2 inc. b", instrucciones: "Requerir al Estado provincial asistencia médica, psicológica y social gratuita. Pedir diagnóstico interdisciplinario que determine daños y situación de riesgo.", controles: ["Oficiar a peritos forenses", "Coordinar con el Cuerpo Médico Forense", "Solicitar medidas de protección urgente"] },
-            { nombre: "Exigir el cumplimiento de funciones de la autoridad de aplicación", art: "Art. 4", instrucciones: "Impulsar políticas de prevención, capacitación de fuerzas de seguridad, salud y justicia. Denunciar la falta de respuesta.", controles: ["Solicitar informes periódicos", "Requerir la creación de redes intersectoriales", "Acompañar a la víctima hasta la rehabilitación"] }
+            { nombre: "Exigir el cumplimiento de funciones de la autoridad de aplicación", art: "Art. 4; Ley IV-N.15 art.118 inc.22", instrucciones: "Impulsar políticas de prevención, capacitación de fuerzas de seguridad, salud y justicia. Denunciar la falta de respuesta.", controles: ["Solicitar informes periódicos", "Requerir la creación de redes intersectoriales", "Acompañar a la víctima hasta la rehabilitación"] }
         ]
     };
     
     db.pensionGraciableMenores = {
         title: "Pensión Graciable de Asistencia a Menores Víctimas de Delitos contra la Integridad Sexual",
-        ref: "Ley XIX-51 - Arts. 1 a 8",
+        ref: "Ley XIX-51 Arts. 1 a 8; Ley IV-N.15 arts.113,118",
         etapas: [
-            { nombre: "Informar y gestionar el beneficio", art: "Arts. 2, 4", instrucciones: "Asesorar al adulto responsable (madre, padre, tutor) no imputado. Acreditar la minoridad de la víctima y el hecho delictivo (indagatoria o comprobación sumarial).", controles: ["Verificar que el adulto solicitante no esté imputado", "Recolectar partida de nacimiento y copia de actuaciones judiciales", "Si el hecho es anterior, que la víctima no haya cumplido 18 años"] },
-            { nombre: "Iniciar trámite ante el Ministerio de Gobierno", art: "Art. 5, 7", instrucciones: "Presentar la solicitud con documentación respaldatoria. Exigir resolución en 30 días administrativos.", controles: ["Interponer recurso de reconsideración si es denegada", "Actualizar el monto (70% SMVM) según variaciones", "Imputar partida al Ministerio de Gobierno"] },
-            { nombre: "Controlar el pago mensual y su extensión", art: "Arts. 3, 5", instrucciones: "Verificar el depósito mensual hasta la mayoría de edad de la víctima. Denunciar cualquier retraso o suspensión injustificada.", controles: ["Solicitar indexación", "Promover incidente de ejecución si no se paga"] }
+            getPasoImposibilidad(),
+            { nombre: "Informar y gestionar el beneficio", art: "Arts. 2,4; Ley IV-N.15 art.118 inc.2", instrucciones: "Asesorar al adulto responsable (madre, padre, tutor) no imputado. Acreditar la minoridad de la víctima y el hecho delictivo (indagatoria o comprobación sumarial).", controles: ["Verificar que el adulto solicitante no esté imputado", "Recolectar partida de nacimiento y copia de actuaciones judiciales", "Si el hecho es anterior, que la víctima no haya cumplido 18 años"] },
+            { nombre: "Iniciar trámite ante el Ministerio de Gobierno", art: "Art. 5,7", instrucciones: "Presentar la solicitud con documentación respaldatoria. Exigir resolución en 30 días administrativos.", controles: ["Interponer recurso de reconsideración si es denegada", "Actualizar el monto (70% SMVM) según variaciones", "Imputar partida al Ministerio de Gobierno"] },
+            { nombre: "Controlar el pago mensual y su extensión", art: "Arts. 3,5; Ley IV-N.15 art.118 inc.5", instrucciones: "Verificar el depósito mensual hasta la mayoría de edad de la víctima. Denunciar cualquier retraso o suspensión injustificada.", controles: ["Solicitar indexación", "Promover incidente de ejecución si no se paga"] }
         ]
     };
     
     db.proteccionPersonasMayores = {
         title: "Protección Integral de las Personas Mayores",
-        ref: "Ley XIX-41 (ex Ley 3920) - Arts. 1 a 27",
+        ref: "Ley XIX-41 (ex Ley 3920) Arts. 1 a 27; Ley IV-N.15 arts.113,118",
         etapas: [
-            { nombre: "Denunciar abuso o maltrato", art: "Arts. 19, 20", instrucciones: "Recibir la denuncia de la persona mayor o familiar. Actuar de oficio si se detecta situación de riesgo. Aplicar protocolo de intervención.", controles: ["Remitir al Juzgado de Familia o Violencia Familiar", "Solicitar trato preferencial (Art. 21)", "Impulsar medidas urgentes si hay peligro para salud o vida"] },
-            { nombre: "Gestionar medidas de protección y acceso a servicios", art: "Arts. 11-16, 22", instrucciones: "Solicitar ingreso a Centros de Día o sistema asistencial. Obtener evaluación gerontológica. Requerir asistencia jurídica gratuita.", controles: ["Verificar accesibilidad e inclusión", "Coordinar con Ministerio de Desarrollo Social", "Oficiar a la Defensoría del Pueblo si hay omisión"] },
-            { nombre: "Promover derechos y capacitación", art: "Arts. 7-10, 22-24", instrucciones: "Solicitar alfabetización digital, carnet sanitario provincial, campañas de concientización. Denunciar violencia institucional.", controles: ["Derivar a programas educativos", "Exigir trato digno en todos los ámbitos", "Participar en el Consejo Provincial de Personas Mayores"] }
+            getPasoImposibilidad(),
+            { nombre: "Denunciar abuso o maltrato", art: "Arts. 19,20; Ley IV-N.15 art.118 inc.2", instrucciones: "Recibir la denuncia de la persona mayor o familiar. Actuar de oficio si se detecta situación de riesgo. Aplicar protocolo de intervención.", controles: ["Remitir al Juzgado de Familia o Violencia Familiar", "Solicitar trato preferencial (Art. 21)", "Impulsar medidas urgentes si hay peligro para salud o vida"] },
+            { nombre: "Gestionar medidas de protección y acceso a servicios", art: "Arts. 11-16,22", instrucciones: "Solicitar ingreso a Centros de Día o sistema asistencial. Obtener evaluación gerontológica. Requerir asistencia jurídica gratuita.", controles: ["Verificar accesibilidad e inclusión", "Coordinar con Ministerio de Desarrollo Social", "Oficiar a la Defensoría del Pueblo si hay omisión"] },
+            { nombre: "Promover derechos y capacitación", art: "Arts. 7-10,22-24; Ley IV-N.15 art.118 inc.22", instrucciones: "Solicitar alfabetización digital, carnet sanitario provincial, campañas de concientización. Denunciar violencia institucional.", controles: ["Derivar a programas educativos", "Exigir trato digno en todos los ámbitos", "Participar en el Consejo Provincial de Personas Mayores"] }
         ]
     };
 
-    // Función auxiliar de seguridad (ningún proceso debería usarla)
+    // Función de seguridad (por si algún proceso no tiene etapas)
     function generarEtapasBase(titulo, ref) {
-        return [{ nombre: "Intervención genérica", art: ref, instrucciones: "El defensor debe verificar competencia y personería. Actuar según las reglas generales del CPC.", controles: ["Constituir domicilio electrónico", "Acompañar prueba documental", "Plazos generales"] }];
+        return [getPasoImposibilidad(), { nombre: "Intervención genérica", art: ref, instrucciones: "El defensor debe verificar competencia y personería. Actuar según las reglas generales del CPC y la Ley Orgánica.", controles: ["Constituir domicilio electrónico", "Acompañar prueba documental", "Plazos generales"] }];
     }
     for (let key in db) {
         if (!db[key].etapas) db[key].etapas = generarEtapasBase(db[key].title, db[key].ref);
     }
 
-    // ------------------ UI (sin cambios) ------------------
+    // ------------------ UI ------------------
     function generarBotones(filtro = "") {
         const container = document.getElementById('buttons-container');
         if (!container) return;
@@ -346,7 +547,7 @@
     function renderProceso(key) {
         const proc = db[key];
         if (!proc) return;
-        const etapas = proc.etapas || [{ nombre: "Instrucción general", art: proc.ref, instrucciones: "Consultar la ley para más detalles.", controles: ["Verificar plazos", "Constituir domicilio"] }];
+        const etapas = proc.etapas || [getPasoImposibilidad(), { nombre: "Instrucción general", art: proc.ref, instrucciones: "Consultar la ley para más detalles.", controles: ["Verificar plazos", "Constituir domicilio"] }];
         const container = document.getElementById('main-content');
         let html = `
             <div class="mb-6 flex justify-between items-start flex-wrap gap-2">
@@ -377,14 +578,19 @@
         const searchInput = document.getElementById('searchProceso');
         if (searchInput) searchInput.value = '';
         generarBotones('');
-        renderProceso('alimentos');
+        // Página principal con mensaje informativo actualizado
+        document.getElementById('main-content').innerHTML = `
+            <div class="inicio-container">
+                <strong>Esta guía permite conocer los pasos a seguir en la intervención de la Defensoría Oficial en cada proceso judicial. Usa el filtro de búsqueda para encontrar el proceso y los detalles a tener en cuenta.</strong>
+            </div>
+        `;
     }
 
     document.addEventListener('DOMContentLoaded', () => {
         generarBotones('');
         const searchInput = document.getElementById('searchProceso');
         if (searchInput) searchInput.addEventListener('input', e => generarBotones(e.target.value));
-        renderProceso('alimentos');
+        resetApp();
         const resetBtn = document.getElementById('resetAppButton');
         if (resetBtn) resetBtn.addEventListener('click', resetApp);
     });
