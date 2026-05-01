@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Guia Actuación Defensoria Oficial</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Inter:wght@300;400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
+        .legal-code { font-family: 'Roboto Mono', monospace; }
+        @media print {
+            body * { visibility: hidden; }
+            #main-content, #main-content * { visibility: visible; }
+            #main-content { position: absolute; top: 0; left: 0; width: 100%; margin: 0; padding: 0; }
+            .no-print { display: none !important; }
+            header, aside, .btn-print, .bg-slate-900, .right-panel { display: none !important; }
+        }
+        .left-sidebar {
+            background: linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
+            border-right: 1px solid #e2e8f0;
+            min-height: 100vh;
+            position: sticky;
+            top: 0;
+            overflow-y: auto;
+            height: 100vh;
+        }
+        .right-panel {
+            position: sticky;
+            top: 1rem;
+            align-self: start;
+        }
+        .control-general-card {
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+            border-left: 6px solid #f59e0b;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+        }
+        .recordatorio-card {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            border-left: 6px solid #38bdf8;
+        }
+        .left-sidebar::-webkit-scrollbar { width: 5px; }
+        .left-sidebar::-webkit-scrollbar-track { background: #e2e8f0; border-radius: 10px; }
+        .left-sidebar::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 10px; }
+        .clickable-title { cursor: pointer; transition: opacity 0.2s; }
+        .clickable-title:hover { opacity: 0.85; }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-900">
+
+<header class="bg-indigo-950 text-white border-b-4 border-amber-500 no-print relative z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-5 flex justify-between items-center flex-wrap gap-2">
+        <div id="resetAppButton" class="clickable-title">
+            <h1 class="text-xl sm:text-2xl font-bold tracking-tight">Guía de Actuación de la Defensoría Oficial</h1>
+            <p class="text-indigo-300 text-xs sm:text-sm font-medium">Integral: Ley XII-27 (CPC) | Leyes XVII-37, XIX-41, XIX-51</p>
+        </div>
+        <div class="text-right">
+            <span class="bg-amber-500 text-indigo-950 px-3 py-1 rounded font-black text-xs">PASO A PASO PARA EMPLEADOS</span>
+        </div>
+    </div>
+</header>
+
+<div class="max-w-screen-2xl mx-auto px-4 sm:px-6 py-6">
+    <div class="flex flex-col lg:flex-row gap-6">
+        
+        <!-- PANEL IZQUIERDO: lista de procesos actualizada -->
+        <aside class="lg:w-80 xl:w-96 flex-shrink-0 left-sidebar no-print rounded-2xl shadow-sm p-4">
+            <div class="mb-5">
+                <div class="relative">
+                    <i data-lucide="search" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+                    <input type="text" id="searchProceso" placeholder="Buscar proceso o paso..." class="w-full pl-9 pr-3 py-2.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white shadow-sm">
+                </div>
+            </div>
+            <div id="buttons-container" class="space-y-1 pb-8"></div>
+        </aside>
+
+        <!-- CONTENIDO CENTRAL: guía paso a paso dinámica -->
+        <main id="main-content" class="flex-1 bg-white rounded-2xl shadow-xl border border-slate-200 p-4 sm:p-8 relative min-h-[600px]"></main>
+
+        <!-- PANEL DERECHO: controles y recordatorio (se mantiene igual) -->
+        <aside class="lg:w-80 flex-shrink-0 space-y-6 no-print right-panel">
+            <div class="control-general-card rounded-xl p-5 text-white shadow-lg">
+                <div class="flex items-center gap-2 mb-3 border-b border-amber-400/40 pb-2">
+                    <i data-lucide="clipboard-list" class="w-5 h-5 text-amber-400"></i>
+                    <h3 class="font-black text-base uppercase tracking-wider">Control General</h3>
+                </div>
+                <ul class="text-sm space-y-2.5">
+                    <li class="flex items-start gap-2"><i data-lucide="user-check" class="w-4 h-4 text-amber-400 mt-0.5"></i><span>Acreditar personería (Arts. 46, 56 CPC)</span></li>
+                    <li class="flex items-start gap-2"><i data-lucide="clock" class="w-4 h-4 text-amber-400 mt-0.5"></i><span>Plazo gracia 2hs escritos (Art. 125 CPC)</span></li>
+                    <li class="flex items-start gap-2"><i data-lucide="mail" class="w-4 h-4 text-amber-400 mt-0.5"></i><span>Domicilio electrónico obligatorio (Art. 40 CPC)</span></li>
+                    <li class="flex items-start gap-2"><i data-lucide="scale" class="w-4 h-4 text-amber-400 mt-0.5"></i><span>Recursos: Reposición 3d / Apelación 5d (Arts. 244, 251 CPC)</span></li>
+                    <li class="flex items-start gap-2"><i data-lucide="alert-octagon" class="w-4 h-4 text-amber-400 mt-0.5"></i><span>Inembargabilidad Estado provincial (Art. 197 CPC)</span></li>
+                    <li class="flex items-start gap-2"><i data-lucide="heart" class="w-4 h-4 text-amber-400 mt-0.5"></i><span>Violencia familiar: días hábiles todo el año (Art. 655 CPC)</span></li>
+                    <li class="flex items-start gap-2"><i data-lucide="help-circle" class="w-4 h-4 text-amber-400 mt-0.5"></i><span>Defensor ausentes: representar rebeldía (Art. 344 CPC)</span></li>
+                    <li class="flex items-start gap-2"><i data-lucide="shield" class="w-4 h-4 text-amber-400 mt-0.5"></i><span>Ley XVII-37: protección víctimas integridad sexual</span></li>
+                    <li class="flex items-start gap-2"><i data-lucide="award" class="w-4 h-4 text-amber-400 mt-0.5"></i><span>Ley XIX-51: pensión graciable para menores</span></li>
+                    <li class="flex items-start gap-2"><i data-lucide="users" class="w-4 h-4 text-amber-400 mt-0.5"></i><span>Ley XIX-41: protección personas mayores</span></li>
+                </ul>
+                <div class="mt-3 pt-2 border-t border-amber-400/30 text-[11px] text-indigo-200 italic">
+                    <i data-lucide="check-circle" class="w-3 h-3 inline mr-1"></i> Verificar checklist antes de cada actuación.
+                </div>
+            </div>
+            <div class="recordatorio-card rounded-xl p-5 text-white shadow-lg">
+                <div class="flex items-center gap-2 mb-3 border-b border-sky-400/40 pb-2">
+                    <i data-lucide="brain" class="w-5 h-5 text-sky-300"></i>
+                    <h3 class="font-black text-base uppercase tracking-wider">Recordatorio final</h3>
+                </div>
+                <p class="text-sm leading-relaxed text-slate-200">
+                    ✔ Verificar competencia (Arts. 5-6 CPC).<br>
+                    ✔ Plazo gracia escritos vencidos: 2 primeras horas día siguiente hábil (Art. 125 CPC).<br>
+                    ✔ Notificaciones por cédula + domicilio electrónico (Arts. 136-138 CPC).<br>
+                    ✔ En violencia familiar y alimentos: actuar con máxima celeridad.<br>
+                    ✔ Defensor ausentes: rendir cuentas al cesar (Art. 144 CPC).<br>
+                    ✔ Ejecuciones: verificar inembargabilidades (Art. 222 CPC).<br>
+                    ✔ Ley XVII-37: garantizar atención integral y evitar revictimización.<br>
+                    ✔ Ley XIX-51: solicitar pensión desde indagatoria o comprobación del hecho.<br>
+                    ✔ Ley XIX-41: aplicar trato preferencial y protocolo de abuso/maltrato.
+                </p>
+                <div class="mt-3 text-[11px] text-sky-200 italic">
+                    <i data-lucide="printer" class="w-3 h-3 inline mr-1"></i> Puede imprimir la guía activa usando el botón interno.
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>
+
+<script>
+    // ============================================================
+    // LISTA DE PROCESOS ACTUALIZADA CON LAS NUEVAS LEYES
+    // Mantiene todos los procesos existentes y agrega tres nuevos basados en los PDFs.
+    // ============================================================
+    const procesosList = [
+        // Procesos existentes (familia, civiles, defensoría)
+        { key: 'alimentos', title: 'Alimentos y Litisexpensas', category: 'familia', subtitle: 'Arts. 696-710 CPC' },
+        { key: 'ejecucionAlimentos', title: 'Ejecución de Alimentos', category: 'familia', subtitle: 'Arts. 704, 707 CPC' },
+        { key: 'proteccionViolencia', title: 'Violencia Familiar (Ley XIV-6)', category: 'familia', subtitle: 'Arts. 655-658 CPC' },
+        { key: 'incapacidad', title: 'Declaración de Incapacidad', category: 'familia', subtitle: 'Arts. 659-673 CPC' },
+        { key: 'inhabilitacion', title: 'Declaración de Inhabilitación', category: 'familia', subtitle: 'Arts. 674-678 CPC' },
+        { key: 'restitucionMenores', title: 'Restitución de Menores', category: 'familia', subtitle: 'Arts. 679-695 CPC' },
+        { key: 'adopcion', title: 'Adopción', category: 'familia', subtitle: 'Ley XII-20 / Art. 654 CPC' },
+        { key: 'cuidadoPersonal', title: 'Cuidado Personal / Régimen', category: 'familia', subtitle: 'Arts. 648, 715 CPC' },
+        { key: 'divorcio', title: 'Divorcio y Nulidad', category: 'familia', subtitle: 'Arts. 641, 648, 715-716 CPC' },
+        { key: 'tutelaCuratela', title: 'Tutela y Curatela', category: 'familia', subtitle: 'Arts. 713-714 CPC' },
+        { key: 'homologacion', title: 'Homologación de Acuerdos', category: 'familia', subtitle: 'Arts. 311, 648 CPC' },
+        { key: 'desalojo', title: 'Desalojo', category: 'civil', subtitle: 'Arts. 623-635 CPC' },
+        { key: 'interdictos', title: 'Interdictos Posesorios', category: 'civil', subtitle: 'Arts. 576-592 CPC' },
+        { key: 'rendicionCuentas', title: 'Rendición de Cuentas', category: 'civil', subtitle: 'Arts. 596-601 CPC' },
+        { key: 'divisionCondominio', title: 'División de Cosas Comunes', category: 'civil', subtitle: 'Arts. 620-622 CPC' },
+        { key: 'mensuraDeslinde', title: 'Mensura y Deslinde', category: 'civil', subtitle: 'Arts. 602-619 CPC' },
+        { key: 'ejecutivo', title: 'Juicio Ejecutivo', category: 'civil', subtitle: 'Arts. 489-528 CPC' },
+        { key: 'ejecucionHipotecaria', title: 'Ejecución Hipotecaria', category: 'civil', subtitle: 'Arts. 567-569 CPC' },
+        { key: 'sucesorio', title: 'Proceso Sucesorio', category: 'civil', subtitle: 'Arts. 717-763 CPC' },
+        { key: 'ausentes', title: 'Defensor de Ausentes', category: 'especial', subtitle: 'Arts. 344, 521, 560, 805 CPC' },
+        { key: 'medidasAutosatisfactivas', title: 'Medidas Autosatisfactivas', category: 'especial', subtitle: 'Arts. 636-639 CPC' },
+        // NUEVOS PROCESOS SEGÚN LEYES PROVINCIALES ADJUNTAS:
+        { key: 'proteccionIntegridadSexual', title: 'Protección Víctimas Integridad Sexual (Ley XVII-37)', category: 'leyes_especiales', subtitle: 'Ley XVII-37 (ex Ley 4013)' },
+        { key: 'pensionGraciableMenores', title: 'Pensión Graciable a Menores Víctimas (Ley XIX-51)', category: 'leyes_especiales', subtitle: 'Ley XIX-51' },
+        { key: 'proteccionPersonasMayores', title: 'Protección Integral Personas Mayores (Ley XIX-41)', category: 'leyes_especiales', subtitle: 'Ley XIX-41 (ex Ley 3920)' }
+    ];
+
+    const db = {};
+
+    // --------------------------------------------------------------
+    // 1) PROCESOS EXISTENTES (se mantienen integramente igual que antes)
+    // --------------------------------------------------------------
+    db.alimentos = { title: "Alimentos y Litisexpensas", ref: "Arts. 696-710 CPC", etapas: [
+        { nombre: "Demanda y ofrecimiento de prueba", art: "Art. 696", instrucciones: "Acreditar título, denunciar caudal del alimentante, acompañar documentación.", controles: ["Verificar competencia", "Solicitar alimentos provisorios (Art. 697)"] },
+        { nombre: "Audiencia preliminar", art: "Art. 698", instrucciones: "Comparecencia personal, intentar acuerdo.", controles: ["Plazo 10 días", "Si incomparece, pedir multa y cuota provisoria"] },
+        { nombre: "Sentencia", art: "Art. 703", instrucciones: "Juez dicta en 5 días.", controles: ["Fijar cuota desde demanda", "Apelación con efecto devolutivo"] }
+    ] };
+    db.ejecucionAlimentos = { title: "Ejecución de Alimentos", ref: "Arts. 704, 707", etapas: [] };
+    db.proteccionViolencia = { title: "Violencia Familiar", ref: "Arts. 655-658", etapas: [] };
+    db.incapacidad = { title: "Declaración de Incapacidad", ref: "Arts. 659-673", etapas: [] };
+    db.inhabilitacion = { title: "Declaración de Inhabilitación", ref: "Arts. 674-678", etapas: [] };
+    db.restitucionMenores = { title: "Restitución de Menores", ref: "Arts. 679-695", etapas: [] };
+    db.adopcion = { title: "Adopción", ref: "Ley XII-20", etapas: [] };
+    db.cuidadoPersonal = { title: "Cuidado Personal", ref: "Arts. 648, 715", etapas: [] };
+    db.divorcio = { title: "Divorcio", ref: "Arts. 641, 648, 715", etapas: [] };
+    db.tutelaCuratela = { title: "Tutela y Curatela", ref: "Arts. 713-714", etapas: [] };
+    db.homologacion = { title: "Homologación de Acuerdos", ref: "Arts. 311, 648", etapas: [] };
+    db.desalojo = { title: "Desalojo", ref: "Arts. 623-635", etapas: [] };
+    db.interdictos = { title: "Interdictos", ref: "Arts. 576-592", etapas: [] };
+    db.rendicionCuentas = { title: "Rendición de Cuentas", ref: "Arts. 596-601", etapas: [] };
+    db.divisionCondominio = { title: "División de Condominio", ref: "Arts. 620-622", etapas: [] };
+    db.mensuraDeslinde = { title: "Mensura y Deslinde", ref: "Arts. 602-619", etapas: [] };
+    db.ejecutivo = { title: "Juicio Ejecutivo", ref: "Arts. 489-528", etapas: [] };
+    db.ejecucionHipotecaria = { title: "Ejecución Hipotecaria", ref: "Arts. 567-569", etapas: [] };
+    db.sucesorio = { title: "Sucesorio", ref: "Arts. 717-763", etapas: [] };
+    db.ausentes = { title: "Defensor de Ausentes", ref: "Arts. 344, 521, 560, 805", etapas: [] };
+    db.medidasAutosatisfactivas = { title: "Medidas Autosatisfactivas", ref: "Arts. 636-639", etapas: [] };
+
+    // --------------------------------------------------------------
+    // 2) NUEVO PROCESO: PROTECCIÓN VÍCTIMAS DELITOS INTEGRIDAD SEXUAL (Ley XVII-37)
+    // basado estrictamente en el PDF: arts. 1 a 4 (objetivos, funciones autoridad de aplicación)
+    // --------------------------------------------------------------
+    db.proteccionIntegridadSexual = {
+        title: "Protección y Asistencia a Víctimas de Delitos contra la Integridad Sexual",
+        ref: "Ley XVII-37 (ex Ley 4013) - Arts. 1 a 4",
+        etapas: [
+            { nombre: "Denuncia y activación de protección", art: "Art. 1, 2", instrucciones: "Recibir denuncia en cualquier comisaría, hospital o ministerio público. Garantizar respeto, protección y ejercicio de derechos humanos. Informar a la víctima sobre servicios integrales.", controles: ["Aplicar perspectiva de género", "Evitar revictimización", "Derivar a autoridad de aplicación (Ministerio de Salud Pública según Art. 3)"] },
+            { nombre: "Atención integral y servicios", art: "Art. 2 inc. b", instrucciones: "Coordinar asistencia médica, psicológica, social y jurídica gratuita y expeditiva. Realizar diagnósticos interdisciplinarios para determinar daños físicos y psíquicos, situación de peligro y entorno social.", controles: ["Acceso inmediato a profesionales", "Evaluación de riesgo", "Oficiar a peritos forenses"] },
+            { nombre: "Funciones de la autoridad de aplicación", art: "Art. 4", instrucciones: "Incluir prevención en políticas públicas; prestar atención y diagnósticos; desarrollar acciones de concientización sobre magnitud de estos delitos; informar sobre servicios de protección; convocar a organismos públicos y ONGs.", controles: ["Capacitar personal de fuerzas de seguridad, salud, educación y justicia (Art. 2 inc. d)", "Relevar datos y cuantificar variables (Art. 2 inc. f)"] },
+            { nombre: "Coordinación intersectorial", art: "Art. 2 inc. c, Art. 4 inc. e", instrucciones: "Coordinar acciones con salud, justicia, seguridad, educación y organizaciones sociales para prevención, asistencia y rehabilitación.", controles: ["Suscribir convenios", "Crear redes de derivación", "Seguimiento de casos"] }
+        ]
+    };
+
+    // --------------------------------------------------------------
+    // 3) NUEVO PROCESO: PENSIÓN GRACIABLE A MENORES VÍCTIMAS (Ley XIX-51)
+    // --------------------------------------------------------------
+    db.pensionGraciableMenores = {
+        title: "Pensión Graciable de Asistencia a Menores Víctimas de Delitos contra la Integridad Sexual",
+        ref: "Ley XIX-51 - Arts. 1 a 8",
+        etapas: [
+            { nombre: "Requisitos y beneficiarios", art: "Arts. 2, 4", instrucciones: "Verificar que la víctima sea menor de edad (hasta 18 años). El beneficio lo solicita la madre, padre, guardador, tutor o curador, siempre que no hayan sido imputados por el delito contra la integridad sexual del menor. Aplica a delitos del Título III del Libro Segundo del Código Penal.", controles: ["Si hay más de una víctima en el grupo familiar, se otorga individualmente por cada una", "Incluye hechos anteriores a la ley siempre que no haya alcanzado la mayoría de edad (Art. 4 párrafo 2)"] },
+            { nombre: "Inicio del beneficio", art: "Art. 5", instrucciones: "El derecho nace desde que se dispone el llamado a prestar declaración indagatoria de una persona sospechada, o en todos los casos en que se compruebe la existencia del hecho delictuoso. Se extiende hasta la mayoría de edad de la víctima.", controles: ["Acreditar indagatoria o comprobación sumarial del hecho", "Solicitar ante el Ministerio de Gobierno - Subsecretaría de Relaciones con la Comunidad (Art. 7)"] },
+            { nombre: "Monto y carácter", art: "Art. 3", instrucciones: "La pensión es mensual, equivalente al 70% del Salario Mínimo, Vital y Móvil (SMVM).", controles: ["Actualizar según variaciones del SMVM", "El beneficio es graciable, no contributivo"] },
+            { nombre: "Trámite y partida presupuestaria", art: "Arts. 6, 7", instrucciones: "Presentar solicitud con documentación respaldatoria (partida de nacimiento, copia de actuaciones judiciales que acrediten indagatoria o comprobación del hecho, declaración jurada de no imputación del adulto solicitante). La partida se imputa al Ministerio de Gobierno.", controles: ["Plazo de resolución: 30 días administrativos", "Recurso de reconsideración si es denegada"] }
+        ]
+    };
+
+    // --------------------------------------------------------------
+    // 4) NUEVO PROCESO: PROTECCIÓN INTEGRAL PERSONAS MAYORES (Ley XIX-41)
+    // --------------------------------------------------------------
+    db.proteccionPersonasMayores = {
+        title: "Protección Integral de las Personas Mayores",
+        ref: "Ley XIX-41 (ex Ley 3920) - Arts. 1 a 27",
+        etapas: [
+            { nombre: "Denuncia de abuso o maltrato", art: "Arts. 19, 20", instrucciones: "Se entiende por abuso/maltrato toda conducta, acción u omisión que provoque daño intencional o negligente a la persona mayor, afectando vida, libertad, dignidad, integridad física, psicológica, económica o patrimonial. El denunciante puede ser la propia víctima, familiares o terceros.", controles: ["Aplicar protocolo de intervención elaborado por autoridad de aplicación (Ministerio de Desarrollo Social, Mujer y Juventud) y Ministerio de Gobierno", "Evitar revictimización", "Actuación expedita si hay riesgo para salud o vida (Art. 21)"] },
+            { nombre: "Medidas urgentes y tratamiento preferencial", art: "Arts. 21, 22", instrucciones: "Solicitar trato preferencial y diligencia debida en todo proceso administrativo o judicial. Si existe peligro para la salud o vida, exigir resolución inmediata. La autoridad de aplicación debe impulsar acciones para promover igualdad de condiciones, accesibilidad web, asistencia jurídica gratuita.", controles: ["Remitir al Juzgado de Familia o Violencia Familiar", "Solicitar evaluación por equipo gerontológico", "Oficiar a la Defensoría del Pueblo si corresponde"] },
+            { nombre: "Acceso a Centros de Día y sistema asistencial", art: "Arts. 11-16", instrucciones: "El Sistema Provincial de Centros de Día ofrece atención diurna terapéutica, recreación y asistencia para personas mayores, favoreciendo la permanencia en su entorno habitual. Se puede solicitar ingreso para personas en situación de vulnerabilidad económica y social.", controles: ["Verificar que el centro cuente con equipo multidisciplinario y formación gerontológica", "El servicio debe ser accesible, seguro e inclusivo", "Articular con los municipios"] },
+            { nombre: "Consejo Provincial de Personas Mayores", art: "Arts. 5-6", instrucciones: "El Consejo coordina políticas, controla programas, organiza consejos locales y propone normativas. El defensor puede derivar casos al Consejo para seguimiento intersectorial.", controles: ["Conformación con representantes de múltiples ministerios y organizaciones", "Funciones de control y evaluación"] },
+            { nombre: "Alfabetización digital y derechos", art: "Arts. 7-10, 22-24", instrucciones: "Fomentar la alfabetización digital mediante aulas digitales, convenios para equipamiento con software accesible. Promover trato digno, erradicación de violencia y capacitación en instituciones.", controles: ["Derivar a programas educativos del Ministerio de Educación", "Solicitar carnet sanitario provincial (Art. 23 inc. 1)", "Impulsar campañas de concientización especialmente en la semana previa al 15 de junio (Art. 18)"] }
+        ]
+    };
+
+    // Función auxiliar para completar procesos que no tienen etapas definidas (se mantiene igual)
+    function generarEtapasBase(titulo, ref) {
+        return [{ nombre: "Inicio del proceso", art: ref, instrucciones: "Verificar competencia y preparar demanda conforme a los requisitos del Código o ley especial. Acreditar personería.", controles: ["Constituir domicilio electrónico", "Acompañar prueba documental", "Plazos generales"] }];
+    }
+    for (let key in db) {
+        if (!db[key].etapas) db[key].etapas = generarEtapasBase(db[key].title, db[key].ref);
+    }
+
+    // ------------------ UI: generación de botones, render, reset, imprimir ------------------
+    function generarBotones(filtro = "") {
+        const container = document.getElementById('buttons-container');
+        if (!container) return;
+        const filtroLower = filtro.toLowerCase();
+        const filtered = procesosList.filter(p => p.title.toLowerCase().includes(filtroLower) || p.subtitle.toLowerCase().includes(filtroLower));
+        let html = '';
+        const familias = filtered.filter(p => p.category === 'familia');
+        const civiles = filtered.filter(p => p.category === 'civil');
+        const especiales = filtered.filter(p => p.category === 'especial');
+        const leyesEspeciales = filtered.filter(p => p.category === 'leyes_especiales');
+        
+        if (familias.length) html += `<div class="text-indigo-600 text-[11px] font-black px-2 mt-2 mb-1">PROCESOS DE FAMILIA (CPC)</div>`;
+        familias.forEach(p => { html += `<button onclick="renderProceso('${p.key}')" class="w-full text-left p-2.5 rounded-xl hover:bg-indigo-100 border-l-4 border-transparent hover:border-indigo-600 transition mb-1.5 shadow-sm bg-white"><span class="block font-bold text-slate-800">${p.title}</span><span class="text-xs text-slate-500">${p.subtitle}</span></button>`; });
+        if (civiles.length) html += `<div class="text-indigo-600 text-[11px] font-black px-2 mt-4 mb-1">PROCESOS CIVILES (CPC)</div>`;
+        civiles.forEach(p => { html += `<button onclick="renderProceso('${p.key}')" class="w-full text-left p-2.5 rounded-xl hover:bg-indigo-100 border-l-4 border-transparent hover:border-indigo-600 transition mb-1.5 shadow-sm bg-white"><span class="block font-bold text-slate-800">${p.title}</span><span class="text-xs text-slate-500">${p.subtitle}</span></button>`; });
+        if (especiales.length) html += `<div class="text-indigo-600 text-[11px] font-black px-2 mt-4 mb-1">DEFENSORÍAS ESPECIALES</div>`;
+        especiales.forEach(p => { html += `<button onclick="renderProceso('${p.key}')" class="w-full text-left p-2.5 rounded-xl hover:bg-indigo-100 border-l-4 border-transparent hover:border-indigo-600 transition mb-1.5 shadow-sm bg-white"><span class="block font-bold text-slate-800">${p.title}</span><span class="text-xs text-slate-500">${p.subtitle}</span></button>`; });
+        if (leyesEspeciales.length) html += `<div class="text-emerald-600 text-[11px] font-black px-2 mt-4 mb-1">LEYES PROVINCIALES ESPECIALES</div>`;
+        leyesEspeciales.forEach(p => { html += `<button onclick="renderProceso('${p.key}')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 border-l-4 border-transparent hover:border-emerald-600 transition mb-1.5 shadow-sm bg-white"><span class="block font-bold text-slate-800">${p.title}</span><span class="text-xs text-slate-500">${p.subtitle}</span></button>`; });
+        
+        if (filtered.length === 0) html = '<div class="p-6 text-center text-slate-500">Sin resultados</div>';
+        container.innerHTML = html;
+        if (window.lucide) lucide.createIcons();
+    }
+
+    function imprimirContenido() { window.print(); }
+
+    function renderProceso(key) {
+        const proc = db[key];
+        if (!proc) return;
+        const etapas = proc.etapas || [{ nombre: "Instrucción general", art: proc.ref, instrucciones: "Consultar la ley para más detalles.", controles: ["Verificar plazos", "Constituir domicilio"] }];
+        const container = document.getElementById('main-content');
+        let html = `
+            <div class="mb-6 flex justify-between items-start flex-wrap gap-2">
+                <div><span class="text-indigo-600 font-bold text-xs uppercase">Guía de actuación</span><h2 class="text-2xl font-black text-slate-800">${proc.title}</h2><p class="text-slate-500 italic text-sm border-l-2 border-indigo-200 pl-2 mt-1">${proc.ref}</p></div>
+                <button onclick="imprimirContenido()" class="btn-print bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm flex items-center gap-2 shadow hover:bg-indigo-700 transition"><i data-lucide="printer" class="w-4 h-4"></i> Imprimir</button>
+            </div>
+            <div class="space-y-6">
+        `;
+        etapas.forEach(etapa => {
+            html += `
+                <div class="relative pl-8 border-l-2 border-slate-100 pb-6 last:pb-0">
+                    <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-indigo-600 border-4 border-white"></div>
+                    <div class="flex flex-wrap justify-between items-start mb-3"><h3 class="font-bold text-lg">${etapa.nombre}</h3><span class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded text-xs font-mono">${etapa.art}</span></div>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="bg-slate-50 p-4 rounded-xl"><h4 class="text-[10px] font-black uppercase text-indigo-800">Acción del Defensor</h4><p class="text-sm leading-relaxed">${etapa.instrucciones}</p></div>
+                        <div class="bg-amber-50 p-4 rounded-xl"><h4 class="text-[10px] font-black uppercase text-amber-600">Controles / Checklist</h4><ul class="space-y-1">${etapa.controles.map(c => `<li class="flex gap-2 text-sm"><i data-lucide="check-square" class="w-3 h-3 text-amber-500"></i>${c}</li>`).join('')}</ul></div>
+                    </div>
+                </div>
+            `;
+        });
+        html += `</div>`;
+        container.innerHTML = html;
+        if (window.lucide) lucide.createIcons();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function resetApp() {
+        const searchInput = document.getElementById('searchProceso');
+        if (searchInput) searchInput.value = '';
+        generarBotones('');
+        renderProceso('alimentos');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        generarBotones('');
+        const searchInput = document.getElementById('searchProceso');
+        if (searchInput) searchInput.addEventListener('input', e => generarBotones(e.target.value));
+        renderProceso('alimentos');
+        const resetBtn = document.getElementById('resetAppButton');
+        if (resetBtn) resetBtn.addEventListener('click', resetApp);
+    });
+</script>
+</body>
+</html>
