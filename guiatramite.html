@@ -606,11 +606,24 @@
         if (!proc) return;
         const etapas = proc.etapas || [getPasoImposibilidad(), { nombre: "Instrucción general", art: proc.ref, instrucciones: "Consultar la ley para más detalles.", controles: ["Verificar plazos", "Constituir domicilio"] }];
         const container = document.getElementById('main-content');
+        
+        const pasosPrevios = `
+            <div class="mb-6 bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-xl shadow-sm">
+                <h3 class="text-sm font-bold text-blue-800 mb-2 uppercase tracking-wide">Pasos previos a tener en cuenta:</h3>
+                <ul class="space-y-2 text-sm text-blue-900">
+                    <li><strong class="text-blue-700">Paso 1.</strong> Control de expediente en SIGED, verificar datos personales (nombre y apellido) en "Historial de partes". Luego verificar causas mas antigua, cual Defensoria intervino en el patrocinio, MPC, o MPP.</li>
+                    <li><strong class="text-blue-700">Paso 2.</strong> Charla previa con la persona.</li>
+                    <li><strong class="text-blue-700">Paso 3.</strong> Redacción del Escrito (tener en cuenta el modelo autorizado como plantilla, consultar al Secretario respecto a la normativa aplicable).</li>
+                </ul>
+            </div>
+        `;
+
         let html = `
             <div class="mb-6 flex justify-between items-start flex-wrap gap-2">
                 <div><span class="text-indigo-600 font-bold text-xs uppercase">Guía de actuación</span><h2 class="text-2xl font-black text-slate-800">${proc.title}</h2><p class="text-slate-500 italic text-sm border-l-2 border-indigo-200 pl-2 mt-1">${proc.ref}</p></div>
                 <button onclick="imprimirContenido()" class="btn-print bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm flex items-center gap-2 shadow hover:bg-indigo-700 transition"><i data-lucide="printer" class="w-4 h-4"></i> Imprimir</button>
             </div>
+            ${pasosPrevios}
             <div class="space-y-6">
         `;
         etapas.forEach(etapa => {
