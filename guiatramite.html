@@ -3,36 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Guía Defensoría Oficial</title>
+    <title>Guía Defensoría Oficial - Panel de Procesos</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Inter:wght@300;400;600;700&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
         .legal-code { font-family: 'Roboto Mono', monospace; }
-        
-        .view-transition {
-            transition: opacity 0.2s ease;
+
+        /* Panel de círculos laterales */
+        .circles-panel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            padding-top: 2rem;
         }
-        
-        /* Checklist destacada */
-        .checklist-highlight {
-            background: #fffbeb;
-            border-left: 6px solid #f59e0b;
-            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.15);
+        .circle {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             transition: transform 0.1s ease;
         }
-        .checklist-highlight:hover {
-            transform: translateX(4px);
+        .circle:hover { transform: scale(1.05); }
+        .circle-red { background-color: #dc2626; }
+        .circle-orange { background-color: #f97316; }
+        .circle-green { background-color: #10b981; }
+
+        /* Tarjetas de proceso (igual que antes) */
+        .proceso-card {
+            cursor: default; /* ya no es clickeable para ver detalle */
+            transition: all 0.2s ease;
+            border-left: 4px solid transparent;
         }
-        .badge-importante {
-            background: #dc2626;
-            color: white;
-            font-size: 0.6rem;
-            font-weight: 800;
-            padding: 0.2rem 0.6rem;
-            border-radius: 20px;
-            letter-spacing: 0.5px;
+        .proceso-card:hover {
+            transform: translateX(4px);
+            border-left-color: #4f46e5;
+            background-color: #fefce8;
+            box-shadow: 0 6px 14px -6px rgba(0,0,0,0.08);
         }
         .normativa-destacada {
             display: inline-block;
@@ -45,31 +60,56 @@
             border-radius: 1rem;
             border-left: 3px solid #f59e0b;
         }
-        .proceso-card {
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border-left: 4px solid transparent;
+        .badge-importante {
+            background: #dc2626;
+            color: white;
+            font-size: 0.6rem;
+            font-weight: 800;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
         }
-        .proceso-card:hover {
-            transform: translateX(4px);
-            border-left-color: #4f46e5;
-            background-color: #fefce8;
-            box-shadow: 0 6px 14px -6px rgba(0,0,0,0.08);
+        /* Ajuste de la grilla principal */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 80px 360px 1fr;
+            gap: 1.5rem;
+            align-items: start;
         }
-        .btn-volver {
-            background: #1e293b;
-            transition: all 0.2s;
+        @media (max-width: 768px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .circles-panel {
+                flex-direction: row;
+                justify-content: center;
+                padding-top: 0;
+            }
         }
-        .btn-volver:hover {
-            background: #0f172a;
-            transform: translateX(-3px);
+        .central-empty {
+            background: #ffffffcc;
+            backdrop-filter: blur(2px);
+            border-radius: 2rem;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border: 2px dashed #cbd5e1;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.02);
+        }
+        .empty-message {
+            color: #94a3b8;
+            font-weight: 500;
+            padding: 2rem;
         }
     </style>
 </head>
 <body class="bg-slate-100 text-slate-900">
 
 <header class="bg-indigo-950 text-white border-b-4 border-amber-500 no-print relative z-10 shadow-md">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-5 flex justify-between items-center flex-wrap gap-3">
+    <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 py-5 flex justify-between items-center flex-wrap gap-3">
         <div id="resetAppButton" class="cursor-pointer">
             <h1 class="text-xl sm:text-2xl font-bold tracking-tight">Guía de Actuación de la Defensoría Oficial</h1>
             <p class="text-indigo-300 text-xs sm:text-sm font-medium">Integral: Ley XII-27 CPC | Ley Orgánica IV-N.15 | Leyes especiales</p>
@@ -85,8 +125,16 @@
 </header>
 
 <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 py-6">
-    <!-- VISTA DE LISTADO -->
-    <div id="listView" class="w-full">
+    <!-- NUEVA ESTRUCTURA: CÍRCULOS | PANEL PROCESOS | CENTRAL VACÍO -->
+    <div class="main-grid">
+        <!-- Columna 1: Círculos enumerados -->
+        <div class="circles-panel">
+            <div class="circle circle-red">1</div>
+            <div class="circle circle-orange">2</div>
+            <div class="circle circle-green">3</div>
+        </div>
+
+        <!-- Columna 2: Panel contenedor de procesos y referencias normativas (ex listView) -->
         <aside class="w-full bg-gradient-to-b from-slate-50 to-indigo-50 rounded-2xl shadow-xl border border-slate-200 p-4 md:p-6">
             <div class="mb-5 border-b border-indigo-200 pb-2 flex justify-between items-center">
                 <h2 class="text-indigo-800 font-black text-xl flex items-center gap-2">
@@ -96,44 +144,24 @@
             </div>
             <div id="buttons-container" class="space-y-2"></div>
             <div class="mt-8 text-center text-xs text-slate-400 border-t pt-4">
-                <i data-lucide="maximize-2" class="inline w-3 h-3 mr-1"></i> Haga clic en cualquier proceso → vista completa con checklist destacada
+                <i data-lucide="maximize-2" class="inline w-3 h-3 mr-1"></i> Listado completo de procesos y normativas
             </div>
         </aside>
-    </div>
 
-    <!-- VISTA DE DETALLE (fullscreen) -->
-    <div id="detailView" class="hidden w-full bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden">
-        <div class="sticky top-0 bg-white border-b border-slate-200 px-5 py-4 flex flex-wrap justify-between items-center gap-3 z-10">
-            <div>
-                <span class="text-indigo-600 text-xs font-bold uppercase tracking-wider flex items-center gap-1"><i data-lucide="file-check" class="w-3 h-3"></i> Guía de actuación</span>
-                <h2 id="detailTitulo" class="text-2xl md:text-3xl font-black text-slate-800">Título del proceso</h2>
-                <p id="detailRef" class="text-slate-500 text-sm font-mono mt-1"></p>
+        <!-- Columna 3: Contenedor principal central vacío (sin detalle de proceso) -->
+        <div class="central-empty">
+            <div class="empty-message">
+                <i data-lucide="file-question" class="w-12 h-12 mx-auto mb-3 text-slate-300"></i>
+                <p class="text-base font-semibold">Panel central sin contenido</p>
+                <p class="text-sm">No se muestran detalles de procesos.<br>Consulte la lista lateral de guías.</p>
             </div>
-            <button id="backToListBtn" class="btn-volver bg-slate-800 text-white px-5 py-2 rounded-full text-sm font-semibold flex items-center gap-2 shadow-md transition">
-                <i data-lucide="arrow-left" class="w-4 h-4"></i> Volver al listado
-            </button>
-        </div>
-        <div class="p-6 md:p-8 max-h-[calc(100vh-130px)] overflow-y-auto">
-            <!-- Pasos previos generales -->
-            <div class="mb-8 bg-blue-50 border-l-4 border-blue-600 p-5 rounded-xl shadow-sm">
-                <h3 class="text-md font-black text-blue-800 mb-2 uppercase tracking-wide flex items-center gap-2"><i data-lucide="clipboard-list" class="w-4 h-4"></i> Pasos previos a toda actuación</h3>
-                <ul class="space-y-1.5 text-sm text-blue-900 list-disc pl-5 font-medium">
-                    <li>🔍 Control de expediente en SIGED, verificar datos personales en "Historial de partes".</li>
-                    <li>🗣️ Charla previa con la persona asistida (derechos, alcances).</li>
-                    <li>✍️ Redacción del escrito (consultar modelo autorizado y normativa aplicable).</li>
-                </ul>
-            </div>
-            <div id="detailEtapas" class="space-y-8"></div>
-        </div>
-        <div class="bg-slate-50 px-6 py-3 border-t text-right text-xs text-slate-400">
-            <i data-lucide="check-circle" class="inline w-3 h-3 mr-1"></i> Checklist prioritaria - seguir cada punto obligatoriamente
         </div>
     </div>
 </div>
 
 <script>
     // ============================================================
-    // LISTA DE PROCESOS
+    // LISTA DE PROCESOS (exactamente igual que el original)
     // ============================================================
     const procesosList = [
         { key: 'alimentos', title: 'Alimentos y Litisexpensas', category: 'familia', subtitle: 'Arts. 696-710 CPC; Ley IV-N.15 arts.113,118' },
@@ -163,231 +191,9 @@
         { key: 'mediacionHomologacion', title: 'Mediación y Homologación de Acuerdos (Ley XII-19)', category: 'leyes_especiales', subtitle: 'Ley XII-19 arts. 15,28,34,35,36; Ley IV-N.15 arts.113,118' }
     ];
 
-    const db = {};
-
-    // Paso base "Imposibilidad"
-    function getPasoImposibilidad() {
-        return {
-            nombre: "Imposibilidad de asumir la defensa",
-            art: "Ley IV-N.15 arts. 21, 28; CPC arts. 17, 39",
-            instrucciones: "El Defensor Oficial debe analizar si existe alguna causal que le impida intervenir. En caso afirmativo, excusarse inmediatamente y ponerlo en conocimiento del juez. Causales: parentesco, interés directo, enemistad, condena dolosa, incompatibilidad, etc.",
-            controles: [
-                "✅ Verificar parentesco con las partes (hasta 4° grado consanguinidad)",
-                "✅ Evaluar existencia de interés personal en el resultado del proceso",
-                "✅ Comprobar si se ha tenido intervención previa en el mismo asunto",
-                "✅ Revisar situación personal (condenas, quiebra, inhabilitaciones)",
-                "✅ Consultar si existe incompatibilidad horaria o funcional"
-            ]
-        };
-    }
-
-    // ============================================================
-    // PROCESO DEFENSOR DE AUSENTES (ACTUALIZADO SEGÚN NORMATIVA NACIONAL Y MISIONES)
-    // ============================================================
-    const ausentesActualizado = {
-        title: "Defensor de Ausentes",
-        ref: "Arts. 344, 521, 560, 805 CPC; Ley IV-N.15 arts. 113,114,118; CPCCN arts. 47, 340, 344; Ley XII-N.27 (Misiones)",
-        etapas: [
-            getPasoImposibilidad(),
-            {
-                nombre: "1. Condición previa: Citación por edictos y ausencia del demandado",
-                art: "CPC Arts. 147-149; CPCCN Art. 340; Ley XII-N.27",
-                instrucciones: "Para que proceda la designación del Defensor de Ausentes, debe haberse cumplido la citación por edictos (generalmente por un día en el Boletín Oficial y diario local) y el demandado no debe haber comparecido tras el vencimiento del plazo legal. Sin este requisito, la designación es nula. La figura del ausente es subsidiaria y excepcional.",
-                controles: [
-                    "🔹 Verificar que se hayan publicado edictos en legal forma",
-                    "🔹 Controlar el vencimiento del plazo sin comparecencia",
-                    "🔹 Acreditar que se agotaron los medios razonables para hallar al demandado",
-                    "🔹 Si falta edictos, solicitar al juez que se complete el trámite previo"
-                ]
-            },
-            {
-                nombre: "2. Designación y aceptación automática del cargo (Defensor Oficial)",
-                art: "CPCCN Art. 47 (aceptación tácita); Ley Orgánica IV-N.15 art. 113",
-                instrucciones: "El Defensor Oficial de Pobres y Ausentes tiene el deber legal de intervenir sin necesidad de un acto formal de aceptación. Basta la notificación de su designación para que deba asumir la representación por la naturaleza obligatoria de sus funciones. En Misiones, el funcionario ya cumplió requisitos previos (ser argentino, abogado con 2 años de ejercicio). En cambio, si se designa a un abogado particular (sustituto o ad hoc), la aceptación es obligatoria y debe formalizarse con juramento o promesa de fiel desempeño ante el secretario del juzgado, pudiendo rechazar solo por causa justificada.",
-                controles: [
-                    "🔹 El Defensor Oficial actúa automáticamente desde la notificación",
-                    "🔹 Si es abogado particular, exigir juramento y aceptación expresa dentro del plazo",
-                    "🔹 Analizar si existe conflicto de intereses para excusarse",
-                    "🔹 Constituir domicilio procesal y electrónico"
-                ]
-            },
-            {
-                nombre: "3. Intervención en el proceso y deberes de representación",
-                art: "Arts. 344, 521 CPC; CPCCN Art. 344",
-                instrucciones: "El defensor debe comparecer, contestar la demanda, oponer excepciones y ofrecer prueba en defensa del ausente. Tiene la carga de realizar todas las gestiones razonables para localizar al ausente o a sus herederos. Debe impulsar el proceso para evitar la caducidad de instancia y solicitar medidas conservatorias para proteger bienes.",
-                controles: [
-                    "🔹 Contestar demanda en tiempo y forma (plazos procesales)",
-                    "🔹 Ofrecer toda la prueba disponible que favorezca al ausente",
-                    "🔹 Solicitar medidas cautelares para evitar deterioro de bienes (arts. 196 CPC)",
-                    "🔹 Denunciar cualquier novedad sobre el paradero del ausente"
-                ]
-            },
-            {
-                nombre: "4. Causales de cese o imposibilidad de intervención",
-                art: "Arts. 521, 560 CPC; CPCCN Arts. 344, 345; jurisprudencia",
-                instrucciones: "La intervención del Defensor de Ausentes es imposible o debe cesar en los siguientes supuestos: a) Comparecencia del interesado o su apoderado particular (cesa de pleno derecho); b) Identificación del domicilio real del demandado; c) Conflicto de intereses del defensor (excusación); d) Muerte del ausente (debe citarse a herederos); e) Falta de citación por edictos (nulidad de la designación); f) En procesos de orden privado sin orden público, si no se cumplieron estrictamente los requisitos de citación.",
-                controles: [
-                    "🔹 Si el ausente comparece, solicitar al juez el cese inmediato de la representación",
-                    "🔹 Si se descubre el domicilio real, notificar allí y apartarse del proceso",
-                    "🔹 Verificar existencia de causales de excusación (parentesco, interés personal)",
-                    "🔹 Si fallece el ausente, pedir citación de herederos",
-                    "🔹 Controlar que no haya vicios en la citación por edictos que anulen la designación"
-                ]
-            },
-            {
-                nombre: "5. Notificación de la sentencia y recursos",
-                art: "Art. 521 CPC; CPCCN Art. 344",
-                instrucciones: "La sentencia recaída en el proceso debe ser notificada al Defensor Oficial. Este debe analizar si existen agravios y, en su caso, interponer los recursos pertinentes (reposición, apelación) dentro de los plazos legales. No puede allanarse sin instrucción judicial expresa.",
-                controles: [
-                    "🔹 Recibir la cédula de notificación de la sentencia",
-                    "🔹 Evaluar si la sentencia es gravosa para el ausente",
-                    "🔹 Interponer apelación en 5 días (Art. 251 CPC) si corresponde",
-                    "🔹 Informar al juzgado sobre cualquier novedad respecto del ausente"
-                ]
-            },
-            {
-                nombre: "6. Cese definitivo, rendición de cuentas y honorarios",
-                art: "Arts. 521, 560 CPC; Ley IV-N.15 art. 118 inc.23",
-                instrucciones: "Al finalizar la representación (por comparecencia del ausente, sus herederos, o por conclusión del proceso), el defensor debe rendir cuentas de su gestión y devolver la documentación. El Defensor Oficial no puede cobrar honorarios al ausente o al ejecutado por su intervención (art. 560 CPC). Si se trató de un abogado particular, deberá regular sus honorarios conforme a la ley arancelaria.",
-                controles: [
-                    "🔹 Presentar liquidación de lo actuado y de fondos administrados",
-                    "🔹 Devolver bienes y documentación al ausente o herederos",
-                    "🔹 El Defensor Oficial no percibe honorarios del ausente (carácter gratuito)",
-                    "🔹 Archivar copias de escritos y notificaciones en la defensoría"
-                ]
-            }
-        ]
-    };
-
-    // PROCESO ESPECIAL ALIMENTOS (ya existente)
-    const alimentosEspecial = {
-        title: "Alimentos y Litisexpensas",
-        ref: "Arts. 696-710 CPC; Ley IV-N.15 arts.113,118 | Ley Provincial arts.4,18,19,22,34,141,142,153,155,157,158,162",
-        etapas: [
-            getPasoImposibilidad(),
-            {
-                nombre: "1. Acreditación y Representación",
-                art: "Arts. 18 y 19 (Código Procesal)",
-                instrucciones: "El Art. 18 regula la 'Carta Poder' ante Secretario o Juez de Paz. El Art. 19 establece la intervención obligatoria de los Defensores Oficiales para quienes tienen el beneficio de litigar sin gastos o ante ausencia de representación técnica.",
-                controles: ["🔹 Verificar concesión de beneficio de litigar sin gastos", "🔹 Solicitar Carta Poder si el representado no puede asistir", "🔹 Acreditar personería ante el juzgado"]
-            },
-            {
-                nombre: "2. Etapa de Inicio y Competencia",
-                art: "Arts. 4, 153 y 155 CPC",
-                instrucciones: "Competencia por centro de vida. El juez debe fijar alimentos provisorios al inicio si el vínculo está acreditado.",
-                controles: ["🔹 Determinar juez competente", "🔹 Solicitar alimentos provisorios", "🔹 Cumplir requisitos del art. 155"]
-            },
-            {
-                nombre: "3. Actuación en Caso de Ausencia (Rebeldía)",
-                art: "Art. 158 CPC",
-                instrucciones: "Si el demandado no comparece, se da intervención al Defensor Oficial para que lo represente.",
-                controles: ["🔹 Acreditar notificación válida", "🔹 Presentar defensa", "🔹 Evitar allanamiento tácito"]
-            },
-            {
-                nombre: "4. Consideraciones Probatorias y Tuitivas",
-                art: "Arts. 141, 142 y 157 CPC",
-                instrucciones: "Tutela Judicial Efectiva e interés superior del niño. Carga dinámica de la prueba.",
-                controles: ["🔹 Solicitar informes a empleadores, AFIP", "🔹 Pedir pericia contable", "🔹 Invocar interés superior del niño"]
-            },
-            {
-                nombre: "5. Medidas de Ejecución y Urgencia",
-                art: "Arts. 22 y 162 CPC",
-                instrucciones: "Ejecución de sentencia con retención directa de haberes, embargos.",
-                controles: ["🔹 Oficio a empleador", "🔹 Embargo de cuentas", "🔹 Gestor para trámites urgentes"]
-            },
-            {
-                nombre: "6. Artículo 157 - Prueba y Carga Dinámica",
-                art: "Art. 157, 34 y 141 CPC",
-                instrucciones: "Si el demandado no comparece, el juez puede dictar sentencia inmediata. El alimentante debe colaborar.",
-                controles: ["🔹 Aplicar apercibimiento art. 157", "🔹 Ordenar informes de oficio", "🔹 Exigir colaboración probatoria"]
-            }
-        ]
-    };
-
-    // Cargar DB con todos los procesos (genéricos + especiales)
-    function cargarDBGenerica() {
-        db.alimentos = alimentosEspecial;
-        db.ausentes = ausentesActualizado;   // <--- Actualizado con normativa nacional y de Misiones
-        
-        // Resto de procesos (genéricos pero funcionales)
-        db.ejecucionAlimentos = { title:"Ejecución de Alimentos", ref:"Arts. 704,707 CPC", etapas:[getPasoImposibilidad(),{nombre:"Iniciar ejecución",art:"Art. 704 CPC",instrucciones:"Presentar sentencia firme o acta de acuerdo.",controles:["🔸 Acreditar falta de pago","🔸 Calcular intereses"]}] };
-        db.proteccionViolencia = { title:"Violencia Familiar", ref:"Arts. 655-658 CPC", etapas:[getPasoImposibilidad(),{nombre:"Asistir a la víctima",art:"Art. 655 CPC",instrucciones:"Solicitar exclusión del agresor.",controles:["🔸 Entrevista reservada","🔸 Informe interdisciplinario"]}] };
-        db.incapacidad = { title:"Declaración de Incapacidad", ref:"Arts. 659-673 CPC", etapas:[getPasoImposibilidad(),{nombre:"Asumir defensoría",art:"Arts. 659-660 CPC",instrucciones:"Entrevistar al causante.",controles:["🔸 Curador provisorio","🔸 Revisión anual"]}] };
-        db.inhabilitacion = { title:"Declaración de Inhabilitación", ref:"Arts. 674-678 CPC", etapas:[getPasoImposibilidad(),{nombre:"Defender al inhabilitando",art:"Arts. 674-675 CPC",instrucciones:"Solicitar pericia.",controles:["🔸 Delimitar actos con apoyo"]}] };
-        db.restitucionMenores = { title:"Restitución de Menores", ref:"Arts. 679-695 CPC", etapas:[getPasoImposibilidad(),{nombre:"Representar al menor",art:"Arts. 679-682 CPC",instrucciones:"Solicitar restitución.",controles:["🔸 Informe socioambiental"]}] };
-        db.adopcion = { title:"Adopción", ref:"Ley XII-20 / Art. 654 CPC", etapas:[getPasoImposibilidad(),{nombre:"Defensoría del niño",art:"Ley XII-20 art. 10",instrucciones:"Controlar adoptabilidad.",controles:["🔸 Idoneidad adoptantes"]}] };
-        db.cuidadoPersonal = { title:"Cuidado Personal", ref:"Arts. 648,715 CPC", etapas:[getPasoImposibilidad(),{nombre:"Defender interés del niño",art:"Art. 648 CPC",instrucciones:"Proponer plan de parentalidad.",controles:["🔸 Informe psicológico","🔸 Formulario 7B"]}] };
-        db.divorcio = { title:"Divorcio", ref:"Arts. 641,648,715-716 CPC", etapas:[getPasoImposibilidad(),{nombre:"Asumir defensa",art:"Art. 641 CPC",instrucciones:"Controlar convenio regulador.",controles:["🔸 Homologación equitativa"]}] };
-        db.tutelaCuratela = { title:"Tutela y Curatela", ref:"Arts. 713-714 CPC", etapas:[getPasoImposibilidad(),{nombre:"Controlar designación",art:"Arts. 713 CPC",instrucciones:"Evaluar idoneidad.",controles:["🔸 Inventario de bienes"]}] };
-        db.homologacion = { title:"Homologación de Acuerdos", ref:"Arts. 311,648 CPC", etapas:[getPasoImposibilidad(),{nombre:"Dictaminar acuerdo",art:"Art. 311 CPC",instrucciones:"Revisar cláusulas lesivas.",controles:["🔸 Formulario 7B"]}] };
-        db.desalojo = { title:"Desalojo", ref:"Arts. 623-635 CPC", etapas:[getPasoImposibilidad(),{nombre:"Defender ocupante",art:"Art. 623 CPC",instrucciones:"Oponer excepciones.",controles:["🔸 Beneficio litigar sin gastos"]}] };
-        db.interdictos = { title:"Interdictos", ref:"Arts. 576-592 CPC", etapas:[getPasoImposibilidad(),{nombre:"Representar despojado",art:"Arts. 576-580 CPC",instrucciones:"Demandar dentro del año.",controles:["🔸 Medida cautelar"]}] };
-        db.rendicionCuentas = { title:"Rendición de Cuentas", ref:"Arts. 596-601 CPC", etapas:[getPasoImposibilidad(),{nombre:"Exigir cuentas",art:"Arts. 596-597 CPC",instrucciones:"Demandar a quien administró bienes.",controles:["🔸 Pericia contable"]}] };
-        db.divisionCondominio = { title:"División de Cosas Comunes", ref:"Arts. 620-622 CPC", etapas:[getPasoImposibilidad(),{nombre:"Asistir condómino",art:"Arts. 620 CPC",instrucciones:"Demandar partición.",controles:["🔸 Designar partidor"]}] };
-        db.mensuraDeslinde = { title:"Mensura y Deslinde", ref:"Arts. 602-619 CPC", etapas:[getPasoImposibilidad(),{nombre:"Instar deslinde",art:"Arts. 602-606 CPC",instrucciones:"Designar agrimensor.",controles:["🔸 Perito de oficio"]}] };
-        db.ejecutivo = { title:"Juicio Ejecutivo", ref:"Arts. 489-528 CPC", etapas:[getPasoImposibilidad(),{nombre:"Defender ejecutado",art:"Arts. 489-497 CPC",instrucciones:"Oponer excepciones.",controles:["🔸 Inembargabilidad salario"]}] };
-        db.ejecucionHipotecaria = { title:"Ejecución Hipotecaria", ref:"Arts. 567-569 CPC", etapas:[getPasoImposibilidad(),{nombre:"Defender deudor",art:"Arts. 567 CPC",instrucciones:"Cuestionar liquidación.",controles:["🔸 Tasación actualizada"]}] };
-        db.sucesorio = { title:"Proceso Sucesorio", ref:"Arts. 717-763 CPC", etapas:[getPasoImposibilidad(),{nombre:"Defensor de ausentes",art:"Arts. 717-727 CPC",instrucciones:"Representar herederos.",controles:["🔸 Inventario"]}] };
-        db.medidasAutosatisfactivas = { title:"Medidas Autosatisfactivas", ref:"Arts. 636-639 CPC", etapas:[getPasoImposibilidad(),{nombre:"Solicitar medida urgente",art:"Art. 636 CPC",instrucciones:"Sin contraparte.",controles:["🔸 Verosimilitud"]}] };
-        db.proteccionIntegridadSexual = { title:"Protección Víctimas Integridad Sexual", ref:"Ley XVII-37", etapas:[getPasoImposibilidad(),{nombre:"Denuncia y atención",art:"Art. 1,2",instrucciones:"Asesorar, derivar a salud.",controles:["🔸 Perspectiva de género"]}] };
-        db.pensionGraciableMenores = { title:"Pensión Graciable a Menores", ref:"Ley XIX-51", etapas:[getPasoImposibilidad(),{nombre:"Gestionar beneficio",art:"Arts. 2,4",instrucciones:"Acreditar hecho delictivo.",controles:["🔸 70% SMVM"]}] };
-        db.proteccionPersonasMayores = { title:"Protección Personas Mayores", ref:"Ley XIX-41", etapas:[getPasoImposibilidad(),{nombre:"Denunciar abuso",art:"Arts. 19,20",instrucciones:"Protocolo de maltrato.",controles:["🔸 Trato preferencial"]}] };
-        db.mediacionHomologacion = { title:"Mediación y Homologación", ref:"Ley XII-19 arts.15,28,34,35,36", etapas:[getPasoImposibilidad(),{nombre:"Evaluar mediación",art:"Art. 15",instrucciones:"Asesorar sobre alcances.",controles:["🔸 Formulario 7B"]},{nombre:"Dictamen previo",art:"Art. 34",instrucciones:"Revisar acuerdo.",controles:["🔸 Interés superior"]}] };
-        
-        for (let key in db) if (!db[key].etapas) db[key].etapas = [getPasoImposibilidad(), { nombre: "Actuación general", art: db[key].ref, instrucciones: "Seguir lineamientos del CPC.", controles: ["🔸 Verificar plazos","🔸 Domicilio electrónico"] }];
-    }
-    cargarDBGenerica();
-
-    // ============================================================
-    // LOGICA DE VISTAS
-    // ============================================================
-    const listView = document.getElementById('listView');
-    const detailView = document.getElementById('detailView');
-    const detailTitulo = document.getElementById('detailTitulo');
-    const detailRef = document.getElementById('detailRef');
-    const detailEtapas = document.getElementById('detailEtapas');
-    const backBtn = document.getElementById('backToListBtn');
-
-    function mostrarListado() {
-        listView.classList.remove('hidden');
-        detailView.classList.add('hidden');
-        generarBotones(document.getElementById('searchProceso')?.value || '');
-    }
-
-    function mostrarDetalle(key) {
-        const proc = db[key];
-        if (!proc) return;
-        detailTitulo.innerText = proc.title;
-        detailRef.innerText = proc.ref;
-        
-        let etapasHtml = '';
-        (proc.etapas || []).forEach(etapa => {
-            const controlesHtml = (etapa.controles || []).map(c => `<li class="flex gap-3 items-start text-sm mb-2"><i data-lucide="alert-circle" class="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0"></i><span class="text-slate-800 font-medium">${c}</span></li>`).join('');
-            etapasHtml += `
-                <div class="relative pl-6 border-l-2 border-indigo-300 pb-7 last:pb-0">
-                    <div class="absolute -left-[10px] top-1 w-4 h-4 rounded-full bg-indigo-600 border-2 border-white shadow"></div>
-                    <div class="flex flex-wrap justify-between items-start gap-2 mb-2">
-                        <h3 class="font-black text-indigo-800 text-xl">${etapa.nombre}</h3>
-                        <span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded text-xs font-mono">${etapa.art}</span>
-                    </div>
-                    <div class="grid md:grid-cols-2 gap-5 mt-2">
-                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                            <div class="flex items-center gap-2 mb-2"><i data-lucide="briefcase" class="w-4 h-4 text-indigo-500"></i><h4 class="text-xs font-black uppercase text-indigo-700">Acción del Defensor</h4></div>
-                            <p class="text-sm leading-relaxed text-slate-700">${etapa.instrucciones}</p>
-                        </div>
-                        <div class="checklist-highlight p-4 rounded-xl border border-amber-200 bg-amber-50/90">
-                            <div class="flex items-center justify-between mb-2"><div class="flex items-center gap-2"><i data-lucide="check-square" class="w-4 h-4 text-amber-700"></i><h4 class="text-xs font-black uppercase text-amber-800 tracking-wide">📋 CHECKLIST OBLIGATORIA</h4></div><span class="badge-importante">prioritario</span></div>
-                            <ul class="space-y-1.5">${controlesHtml}</ul>
-                        </div>
-                    </div>
-                </div>
-            `;
-        });
-        detailEtapas.innerHTML = etapasHtml;
-        listView.classList.add('hidden');
-        detailView.classList.remove('hidden');
-        if (window.lucide) lucide.createIcons();
-    }
+    // No se necesita DB de detalles porque no mostraremos contenido central,
+    // pero mantenemos la generación de botones con la info de normativas.
+    // Simplemente los botones no realizan ninguna acción de detalle.
 
     function generarBotones(filtro = "") {
         const container = document.getElementById('buttons-container');
@@ -401,13 +207,33 @@
         const leyesEspeciales = filtered.filter(p => p.category === 'leyes_especiales');
         
         if (familias.length) html += `<div class="text-indigo-700 text-[11px] font-black px-2 mt-1 mb-2">👨‍👩‍👧 PROCESOS DE FAMILIA</div>`;
-        familias.forEach(p => { html += `<button onclick="mostrarDetalle('${p.key}')" class="proceso-card w-full text-left p-3 rounded-xl hover:bg-white bg-white/80 transition-all mb-2 shadow-sm border border-slate-100"><span class="block font-bold text-slate-800">${p.title}</span><div class="normativa-destacada mt-1"><i data-lucide="book-open" class="w-3 h-3 inline mr-1"></i> ${p.subtitle}</div></button>`; });
+        familias.forEach(p => { 
+            html += `<div class="proceso-card w-full text-left p-3 rounded-xl hover:bg-white bg-white/80 transition-all mb-2 shadow-sm border border-slate-100">
+                        <span class="block font-bold text-slate-800">${p.title}</span>
+                        <div class="normativa-destacada mt-1"><i data-lucide="book-open" class="w-3 h-3 inline mr-1"></i> ${p.subtitle}</div>
+                     </div>`; 
+        });
         if (civiles.length) html += `<div class="text-indigo-700 text-[11px] font-black px-2 mt-4 mb-2">⚖️ PROCESOS CIVILES</div>`;
-        civiles.forEach(p => { html += `<button onclick="mostrarDetalle('${p.key}')" class="proceso-card w-full text-left p-3 rounded-xl hover:bg-white bg-white/80 transition-all mb-2 shadow-sm"><span class="block font-bold text-slate-800">${p.title}</span><div class="normativa-destacada mt-1">📌 ${p.subtitle}</div></button>`; });
+        civiles.forEach(p => { 
+            html += `<div class="proceso-card w-full text-left p-3 rounded-xl hover:bg-white bg-white/80 transition-all mb-2 shadow-sm">
+                        <span class="block font-bold text-slate-800">${p.title}</span>
+                        <div class="normativa-destacada mt-1">📌 ${p.subtitle}</div>
+                     </div>`; 
+        });
         if (especiales.length) html += `<div class="text-emerald-700 text-[11px] font-black px-2 mt-4 mb-2">🛡️ DEFENSORÍAS ESPECIALES</div>`;
-        especiales.forEach(p => { html += `<button onclick="mostrarDetalle('${p.key}')" class="proceso-card w-full text-left p-3 rounded-xl hover:bg-white bg-white/80 transition-all mb-2 shadow-sm"><span class="block font-bold text-slate-800">${p.title}</span><div class="normativa-destacada mt-1">⚡ ${p.subtitle}</div></button>`; });
+        especiales.forEach(p => { 
+            html += `<div class="proceso-card w-full text-left p-3 rounded-xl hover:bg-white bg-white/80 transition-all mb-2 shadow-sm">
+                        <span class="block font-bold text-slate-800">${p.title}</span>
+                        <div class="normativa-destacada mt-1">⚡ ${p.subtitle}</div>
+                     </div>`; 
+        });
         if (leyesEspeciales.length) html += `<div class="text-purple-700 text-[11px] font-black px-2 mt-4 mb-2">📜 LEYES PROVINCIALES ESPECIALES</div>`;
-        leyesEspeciales.forEach(p => { html += `<button onclick="mostrarDetalle('${p.key}')" class="proceso-card w-full text-left p-3 rounded-xl hover:bg-white bg-white/80 transition-all mb-2 shadow-sm"><span class="block font-bold text-slate-800">${p.title}</span><div class="normativa-destacada mt-1">📖 ${p.subtitle}</div></button>`; });
+        leyesEspeciales.forEach(p => { 
+            html += `<div class="proceso-card w-full text-left p-3 rounded-xl hover:bg-white bg-white/80 transition-all mb-2 shadow-sm">
+                        <span class="block font-bold text-slate-800">${p.title}</span>
+                        <div class="normativa-destacada mt-1">📖 ${p.subtitle}</div>
+                     </div>`; 
+        });
         
         if (filtered.length === 0) html = '<div class="p-8 text-center bg-white rounded-2xl text-slate-400">🔍 Sin resultados</div>';
         container.innerHTML = html;
@@ -418,15 +244,18 @@
         const searchInput = document.getElementById('searchProceso');
         if (searchInput) searchInput.value = '';
         generarBotones('');
-        mostrarListado();
     }
 
-    backBtn.addEventListener('click', mostrarListado);
-    document.getElementById('resetAppButton')?.addEventListener('click', resetApp);
+    // Eventos: búsqueda en tiempo real, reset del header
     document.addEventListener('DOMContentLoaded', () => {
         generarBotones('');
         const searchInput = document.getElementById('searchProceso');
         if (searchInput) searchInput.addEventListener('input', e => generarBotones(e.target.value));
+        const resetBtn = document.getElementById('resetAppButton');
+        if (resetBtn) resetBtn.addEventListener('click', resetApp);
+        
+        // Inicializar iconos de Lucide
+        if (window.lucide) lucide.createIcons();
     });
 </script>
 </body>
