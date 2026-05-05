@@ -199,6 +199,18 @@
             padding: 0.75rem 1rem;
             border-radius: 0.75rem;
         }
+        .red-warning {
+            background: #ffebee;
+            border-left: 6px solid #d32f2f;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            color: #b71c1c;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        .red-warning strong {
+            color: #d32f2f;
+        }
     </style>
 </head>
 <body class="bg-slate-100 text-slate-900">
@@ -245,8 +257,7 @@
 
 <script>
     // ============================================================
-    // CONTENIDO ACTUALIZADO: nuevo apartado "Procesos de Violencia Familiar"
-    // Se agregó paso 5: Solicitar vinculación en SIGED para denunciados
+    // CONTENIDO ACTUALIZADO: se agregó advertencia roja para fallecimiento en Defensor de Ausentes
     // ============================================================
     
     const oficinaDeutContent = `
@@ -400,7 +411,7 @@
         `;
     }
 
-    // Contenido específico para Violencia Familiar (con el nuevo paso de SIGED para denunciados)
+    // Contenido específico para Violencia Familiar (con paso SIGED)
     function buildViolenciaFamiliarDetailedContent() {
         return `
             <div class="space-y-5">
@@ -428,6 +439,62 @@
                     </ol>
                     <div class="mt-5 bg-red-50 p-4 rounded-lg border-l-4 border-red-500 text-xs">
                         <i data-lucide="gavel" class="w-3 h-3 inline text-red-700"></i> <strong class="text-red-800">Normativa destacada:</strong> Ley Provincial XIV-6 (Protección Integral contra la Violencia Familiar), arts. 655 a 658 CPC. La intervención del Defensor Oficial se rige por la Ley Orgánica IV-N.15 y debe respetar la ética profesional y la perspectiva de género.
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // NUEVO: Contenido detallado para DEFENSOR DE AUSENTES con advertencia roja sobre fallecimiento
+    function buildDefensorAusentesDetailedContent() {
+        return `
+            <div class="space-y-5">
+                <div class="bg-gradient-to-r from-slate-100 to-gray-100 rounded-xl p-5 border-l-8 border-gray-700 shadow-sm">
+                    <h3 class="text-xl font-black text-gray-800 flex items-center gap-3"><i data-lucide="help-circle" class="w-6 h-6"></i> Defensor de Ausentes</h3>
+                    <p class="text-sm text-slate-600 mt-1">Arts. 344, 521, 560, 805 CPC (Ley XII-27) · Ley Orgánica IV-N.15 arts. 113, 114, 118</p>
+                    <div class="mt-3 bg-gray-200/50 p-2 rounded-md text-xs font-mono text-gray-700">Procedimiento especial para representación de personas inciertas o ausentes</div>
+                </div>
+                <!-- ADVERTENCIA ROJA DESTACADA -->
+                <div class="red-warning flex items-start gap-2">
+                    <i data-lucide="alert-circle" class="w-5 h-5 flex-shrink-0 mt-0.5"></i>
+                    <span><strong class="text-red-800">IMPORTANTE:</strong> No se puede asumir la defensa del ausente si se comprueba fehacientemente el <strong class="text-red-800">fallecimiento del ausente</strong>. En tal caso, debe informarse al Juzgado para que se designe a los herederos o un curador de la herencia yacente.</span>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+                    <h4 class="font-black text-slate-800 flex items-center gap-2 text-lg mb-4"><i data-lucide="list-ordered" class="w-5 h-5 text-gray-700"></i> Pasos para el empleado de la Defensoría (análisis y decisión)</h4>
+                    <ol class="ordered-step-list text-slate-700 text-sm space-y-4">
+                        <li><strong class="text-gray-800">Recepción del expediente por Mesa de Entradas de la Defensoría</strong><br>El expediente proviene del Juzgado de origen (generalmente Juzgados Civiles, Comerciales o Laborales), donde se ha ordenado la designación de un defensor para persona incierta o ausente (art. 344 CPC). Mesa de Entradas registra el ingreso y lo asigna al área correspondiente.</li>
+                        <li><strong class="text-gray-800">Asignación interna por el operador de la Defensoría</strong><br>El operador designa a un empleado/a abogado para que realice el análisis preliminar del caso, verificando la documentación y los motivos de la solicitud judicial.</li>
+                        <li><strong class="text-gray-800">Verificación de los presupuestos legales (arts. 344, 521, 560 CPC)</strong><br>El empleado debe comprobar:<br>
+                            - Que efectivamente se trate de una persona ausente con domicilio ignorado o incierto, o que no pueda comparecer por sí misma (art. 344).<br>
+                            - Que la designación se haya solicitado en un proceso en el que sea necesaria la representación (ejecución, sucesión, etc.).<br>
+                            - Que no exista ya un representante voluntario o legal designado (art. 560).<br>
+                            <span class="text-red-700 font-semibold">- Que no se haya acreditado el fallecimiento de la persona ausente.</span>
+                        </li>
+                        <li><strong class="text-gray-800">Análisis de competencia y deber de asumir (Ley Orgánica IV-N.15 arts. 113, 114, 118)</strong><br>Conforme al art. 113 de la Ley Orgánica, la Defensoría Oficial tiene la función indelegable de representar a ausentes e incapaces cuando así lo ordene el tribunal. El empleado debe evaluar:<br>
+                            - Si el caso encuadra en las competencias materiales de la Defensoría (art. 113 incs.).<br>
+                            - Si existe algún impedimento o excusación válida (art. 114: parentesco, interés personal, amistad íntima, etc.).<br>
+                            - Si la designación se ajusta a la distribución interna de trabajo.
+                        </li>
+                        <li><strong class="text-gray-800">Decisión motivada: asumir o declinar el cargo</strong><br>
+                            <span class="font-semibold">✅ Si corresponde asumir:</span> El empleado redacta el escrito de aceptación del cargo, con fundamento en los arts. 805 CPC y 113 Ley Orgánica, y lo presenta ante el Juzgado de origen. Se solicita tener por designado al Defensor Oficial y se notifica el expediente para comenzar la actuación.<br>
+                            <span class="font-semibold">❌ Si no corresponde:</span> Se elabora un informe dirigido al Juzgado, explicando las causales. <strong class="text-red-700">En particular, si se comprueba el fallecimiento del ausente, no se puede asumir la defensa</strong> (debe informarse al Juzgado para que se declare la herencia yacente o se cite a los herederos).
+                        </li>
+                        <li><strong class="text-gray-800">Una vez aceptado el cargo: actuación conforme al art. 805 CPC</strong><br>El Defensor Oficial debe:<br>
+                            - Tomar conocimiento del proceso, revisando todas las actuaciones.<br>
+                            - Realizar todas las diligencias necesarias para la defensa de los derechos del ausente (contestar demandas, ofrecer pruebas, interponer recursos, etc.).<br>
+                            - Mantener contacto con el Juzgado y las demás partes, actuando con la lealtad y buena fe propias del deber público.
+                        </li>
+                        <li><strong class="text-gray-800">Seguimiento y control de plazos procesales</strong><br>El empleado asignado debe llevar un registro de las providencias, notificaciones y audiencias, asegurando la continuidad de la representación. Se debe informar al superior jerárquico sobre el estado del expediente periódicamente (art. 118 Ley Orgánica).</li>
+                        <li><strong class="text-gray-800">Finalización del cargo de defensor de ausentes</strong><br>El cargo cesa cuando:<br>
+                            - El ausente comparece personalmente o designa apoderado (art. 805 CPC).<br>
+                            - Se prueba que la persona tiene domicilio conocido o se presenta un representante voluntario.<br>
+                            - El proceso principal finaliza por sentencia firme o archivo.<br>
+                            - <strong class="text-red-700">Se acredita fehacientemente el fallecimiento del ausente</strong>, debiendo comunicarse al Juzgado a los fines pertinentes.<br>
+                            El empleado debe solicitar al Juzgado que tenga por concluida la intervención de la Defensoría y, en su caso, rendir cuenta de su actuación si correspondiere.
+                        </li>
+                    </ol>
+                    <div class="mt-5 bg-gray-100 p-4 rounded-lg border-l-4 border-gray-500 text-xs">
+                        <i data-lucide="book-open" class="w-3 h-3 inline text-gray-700"></i> <strong class="text-gray-800">Normativa de referencia:</strong> Ley XII-27 (Código Procesal Civil y Comercial de Misiones), arts. 344, 521, 560, 805; Ley Orgánica del Ministerio Público de la Defensa IV-N.15, arts. 113, 114, 118. 
                     </div>
                 </div>
             </div>
@@ -492,7 +559,7 @@
         </div>
     `;
 
-    // MATERIAS: se agrega "PROCESOS DE VIOLENCIA FAMILIAR"
+    // MATERIAS: ya existe ausentes en CASOS ESPECIALES
     const materias = [
         { nombreCategoria: "⚖️ ETAPA PREJUDICIAL", id: "prejudicial", procesos: [ { key: "cejume", title: "(DEUT - CEJUME) - Instancia Prejudicial Obligatoria", subtitle: "Avenimiento Prejudicial Obligatorio (APO) | Leyes XII-19, IV-N.15", contenidoEspecial: true } ] },
         { nombreCategoria: "⚖️ PROCESOS DE FAMILIA", id: "familia", procesos: [ { key: 'alimentos', title: 'Alimentos y Litisexpensas', subtitle: 'Arts. 696-710 CPC; Ley IV-N.15 arts.113,118' }, { key: 'ejecucionAlimentos', title: 'Ejecución de Alimentos', subtitle: 'Arts. 704,707 CPC; Ley IV-N.15 art.118' }, { key: 'incapacidad', title: 'Declaración de Incapacidad', subtitle: 'Arts. 659-673 CPC; Ley IV-N.15 arts.113,118' }, { key: 'inhabilitacion', title: 'Declaración de Inhabilitación', subtitle: 'Arts. 674-678 CPC; Ley IV-N.15 arts.113,118' }, { key: 'restitucionMenores', title: 'Restitución de Menores', subtitle: 'Arts. 679-695 CPC; Ley IV-N.15 art.118' }, { key: 'adopcion', title: 'Adopción', subtitle: 'Ley XII-20 / Art. 654 CPC; Ley IV-N.15 art.118' }, { key: 'cuidadoPersonal', title: 'Cuidado Personal / Régimen', subtitle: 'Arts. 648,715 CPC; Ley IV-N.15 art.118' }, { key: 'divorcio', title: 'Divorcio y Nulidad', subtitle: 'Arts. 641,648,715-716 CPC; Ley IV-N.15 art.118' }, { key: 'tutelaCuratela', title: 'Tutela y Curatela', subtitle: 'Arts. 713-714 CPC; Ley IV-N.15 arts.113,118' }, { key: 'homologacion', title: 'Homologación de Acuerdos', subtitle: 'Arts. 311,648 CPC; Ley IV-N.15 art.118' } ] },
@@ -584,6 +651,10 @@
         }
         else if (procesoData.key === 'proteccionViolencia') {
             area.innerHTML = buildViolenciaFamiliarDetailedContent();
+            if (window.lucide) lucide.createIcons();
+        }
+        else if (procesoData.key === 'ausentes') {
+            area.innerHTML = buildDefensorAusentesDetailedContent();
             if (window.lucide) lucide.createIcons();
         }
         else if (procesoData.title) {
