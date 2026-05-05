@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Guía Defensoría Oficial - Panel de Procesos</title>
+    <title>Defensoría Oficial - Guía de Actuación</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -37,17 +37,26 @@
         .circle-orange { background-color: #f97316; }
         .circle-green { background-color: #10b981; }
 
-        /* Tarjetas de proceso (igual que antes) */
+        /* Tarjetas de proceso dentro del acordeón lateral */
         .proceso-card {
-            cursor: default; /* ya no es clickeable para ver detalle */
+            cursor: pointer;
             transition: all 0.2s ease;
-            border-left: 4px solid transparent;
+            border-left: 3px solid transparent;
+            background: white;
         }
         .proceso-card:hover {
             transform: translateX(4px);
             border-left-color: #4f46e5;
             background-color: #fefce8;
-            box-shadow: 0 6px 14px -6px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 10px -4px rgba(0,0,0,0.05);
+        }
+        .accordion-header {
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.2s;
+        }
+        .accordion-header:hover {
+            background-color: #eef2ff;
         }
         .normativa-destacada {
             display: inline-block;
@@ -60,21 +69,16 @@
             border-radius: 1rem;
             border-left: 3px solid #f59e0b;
         }
-        .badge-importante {
-            background: #dc2626;
-            color: white;
-            font-size: 0.6rem;
-            font-weight: 800;
-            padding: 0.2rem 0.6rem;
-            border-radius: 20px;
-            letter-spacing: 0.5px;
-        }
-        /* Ajuste de la grilla principal */
         .main-grid {
             display: grid;
-            grid-template-columns: 80px 360px 1fr;
+            grid-template-columns: 80px 380px 1fr;
             gap: 1.5rem;
             align-items: start;
+        }
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 70px 320px 1fr;
+            }
         }
         @media (max-width: 768px) {
             .main-grid {
@@ -87,22 +91,92 @@
                 padding-top: 0;
             }
         }
-        .central-empty {
-            background: #ffffffcc;
-            backdrop-filter: blur(2px);
-            border-radius: 2rem;
-            min-height: 400px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            border: 2px dashed #cbd5e1;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.02);
+        .central-card {
+            background: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.05);
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
         }
-        .empty-message {
-            color: #94a3b8;
-            font-weight: 500;
-            padding: 2rem;
+        /* Acordeón dentro del contenido central */
+        .inner-accordion-item {
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .inner-accordion-header {
+            cursor: pointer;
+            padding: 1rem 1.25rem;
+            background-color: #faf9fe;
+            transition: background 0.2s;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .inner-accordion-header:hover {
+            background-color: #f1f0ff;
+        }
+        .inner-accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            background-color: white;
+        }
+        .inner-accordion-content.open {
+            max-height: 1200px;
+            transition: max-height 0.45s ease-in;
+        }
+        .rotate-chevron {
+            transition: transform 0.2s ease;
+        }
+        .rotate-chevron.open {
+            transform: rotate(180deg);
+        }
+        .step-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        .step-list li {
+            margin-bottom: 0.75rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        .step-list li::before {
+            content: "•";
+            color: #4f46e5;
+            font-weight: bold;
+            font-size: 1.2rem;
+            position: absolute;
+            left: 0;
+            top: -2px;
+        }
+        .table-themes {
+            background: #f8fafc;
+            border-radius: 1rem;
+            overflow: hidden;
+            border: 1px solid #e0e7ff;
+        }
+        .badge-theme {
+            background: #e0e7ff;
+            color: #3730a3;
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .accordion-content.open {
+            max-height: 800px;
+            transition: max-height 0.4s ease-in;
+        }
+        .rotate-icon {
+            transition: transform 0.2s ease;
+        }
+        .rotate-icon.open {
+            transform: rotate(180deg);
         }
     </style>
 </head>
@@ -125,7 +199,6 @@
 </header>
 
 <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 py-6">
-    <!-- NUEVA ESTRUCTURA: CÍRCULOS | PANEL PROCESOS | CENTRAL VACÍO -->
     <div class="main-grid">
         <!-- Columna 1: Círculos enumerados -->
         <div class="circles-panel">
@@ -134,26 +207,24 @@
             <div class="circle circle-green">3</div>
         </div>
 
-        <!-- Columna 2: Panel contenedor de procesos y referencias normativas (ex listView) -->
+        <!-- Columna 2: Acordeón de materias -->
         <aside class="w-full bg-gradient-to-b from-slate-50 to-indigo-50 rounded-2xl shadow-xl border border-slate-200 p-4 md:p-6">
             <div class="mb-5 border-b border-indigo-200 pb-2 flex justify-between items-center">
                 <h2 class="text-indigo-800 font-black text-xl flex items-center gap-2">
-                    <i data-lucide="gavel" class="w-5 h-5"></i> Procesos Judiciales
+                    <i data-lucide="gavel" class="w-5 h-5"></i> Materias y Procesos
                 </h2>
-                <span class="text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded-full">25+ guías normativas</span>
+                <!-- Se eliminó la etiqueta "Accordion" -->
             </div>
-            <div id="buttons-container" class="space-y-2"></div>
+            <div id="accordion-container" class="space-y-3"></div>
             <div class="mt-8 text-center text-xs text-slate-400 border-t pt-4">
-                <i data-lucide="maximize-2" class="inline w-3 h-3 mr-1"></i> Listado completo de procesos y normativas
+                <i data-lucide="mouse-pointer-click" class="inline w-3 h-3 mr-1"></i> Haga clic en cada materia para desplegar sus procesos
             </div>
         </aside>
 
-        <!-- Columna 3: Contenedor principal central vacío (sin detalle de proceso) -->
-        <div class="central-empty">
-            <div class="empty-message">
-                <i data-lucide="file-question" class="w-12 h-12 mx-auto mb-3 text-slate-300"></i>
-                <p class="text-base font-semibold">Panel central sin contenido</p>
-                <p class="text-sm">No se muestran detalles de procesos.<br>Consulte la lista lateral de guías.</p>
+        <!-- Columna 3: Contenedor central dinámico con acordeones internos -->
+        <div id="central-dynamic-content" class="central-card">
+            <div class="p-5 md:p-7" id="detail-content-area">
+                <!-- Se llena con JS -->
             </div>
         </div>
     </div>
@@ -161,100 +232,320 @@
 
 <script>
     // ============================================================
-    // LISTA DE PROCESOS (exactamente igual que el original)
+    // CONTENIDO ACTUALIZADO PARA DEUT (según Acordada 4/09 y Res. 26/2009)
     // ============================================================
-    const procesosList = [
-        { key: 'alimentos', title: 'Alimentos y Litisexpensas', category: 'familia', subtitle: 'Arts. 696-710 CPC; Ley IV-N.15 arts.113,118' },
-        { key: 'ejecucionAlimentos', title: 'Ejecución de Alimentos', category: 'familia', subtitle: 'Arts. 704,707 CPC; Ley IV-N.15 art.118' },
-        { key: 'proteccionViolencia', title: 'Violencia Familiar (Ley XIV-6)', category: 'familia', subtitle: 'Arts. 655-658 CPC; Ley IV-N.15 arts.113,118' },
-        { key: 'incapacidad', title: 'Declaración de Incapacidad', category: 'familia', subtitle: 'Arts. 659-673 CPC; Ley IV-N.15 arts.113,118' },
-        { key: 'inhabilitacion', title: 'Declaración de Inhabilitación', category: 'familia', subtitle: 'Arts. 674-678 CPC; Ley IV-N.15 arts.113,118' },
-        { key: 'restitucionMenores', title: 'Restitución de Menores', category: 'familia', subtitle: 'Arts. 679-695 CPC; Ley IV-N.15 art.118' },
-        { key: 'adopcion', title: 'Adopción', category: 'familia', subtitle: 'Ley XII-20 / Art. 654 CPC; Ley IV-N.15 art.118' },
-        { key: 'cuidadoPersonal', title: 'Cuidado Personal / Régimen', category: 'familia', subtitle: 'Arts. 648,715 CPC; Ley IV-N.15 art.118' },
-        { key: 'divorcio', title: 'Divorcio y Nulidad', category: 'familia', subtitle: 'Arts. 641,648,715-716 CPC; Ley IV-N.15 art.118' },
-        { key: 'tutelaCuratela', title: 'Tutela y Curatela', category: 'familia', subtitle: 'Arts. 713-714 CPC; Ley IV-N.15 arts.113,118' },
-        { key: 'homologacion', title: 'Homologación de Acuerdos', category: 'familia', subtitle: 'Arts. 311,648 CPC; Ley IV-N.15 art.118' },
-        { key: 'desalojo', title: 'Desalojo', category: 'civil', subtitle: 'Arts. 623-635 CPC; Ley IV-N.15 arts.113,118' },
-        { key: 'interdictos', title: 'Interdictos Posesorios', category: 'civil', subtitle: 'Arts. 576-592 CPC; Ley IV-N.15 art.118' },
-        { key: 'rendicionCuentas', title: 'Rendición de Cuentas', category: 'civil', subtitle: 'Arts. 596-601 CPC; Ley IV-N.15 art.118' },
-        { key: 'divisionCondominio', title: 'División de Cosas Comunes', category: 'civil', subtitle: 'Arts. 620-622 CPC; Ley IV-N.15 art.118' },
-        { key: 'mensuraDeslinde', title: 'Mensura y Deslinde', category: 'civil', subtitle: 'Arts. 602-619 CPC; Ley IV-N.15 art.118' },
-        { key: 'ejecutivo', title: 'Juicio Ejecutivo', category: 'civil', subtitle: 'Arts. 489-528 CPC; Ley IV-N.15 arts.113,118' },
-        { key: 'ejecucionHipotecaria', title: 'Ejecución Hipotecaria', category: 'civil', subtitle: 'Arts. 567-569 CPC; Ley IV-N.15 art.118' },
-        { key: 'sucesorio', title: 'Proceso Sucesorio', category: 'civil', subtitle: 'Arts. 717-763 CPC; Ley IV-N.15 arts.113,118' },
-        { key: 'ausentes', title: 'Defensor de Ausentes', category: 'especial', subtitle: 'Arts. 344,521,560,805 CPC; Ley IV-N.15 arts.113,114,118' },
-        { key: 'medidasAutosatisfactivas', title: 'Medidas Autosatisfactivas', category: 'especial', subtitle: 'Arts. 636-639 CPC; Ley IV-N.15 art.118' },
-        { key: 'proteccionIntegridadSexual', title: 'Protección Víctimas Integridad Sexual (Ley XVII-37)', category: 'leyes_especiales', subtitle: 'Ley XVII-37; Ley IV-N.15 arts.113,118' },
-        { key: 'pensionGraciableMenores', title: 'Pensión Graciable a Menores Víctimas (Ley XIX-51)', category: 'leyes_especiales', subtitle: 'Ley XIX-51; Ley IV-N.15 arts.113,118' },
-        { key: 'proteccionPersonasMayores', title: 'Protección Integral Personas Mayores (Ley XIX-41)', category: 'leyes_especiales', subtitle: 'Ley XIX-41; Ley IV-N.15 arts.113,118' },
-        { key: 'mediacionHomologacion', title: 'Mediación y Homologación de Acuerdos (Ley XII-19)', category: 'leyes_especiales', subtitle: 'Ley XII-19 arts. 15,28,34,35,36; Ley IV-N.15 arts.113,118' }
+    
+    // Contenido oficial de la Oficina DEUT basado en el PDF reglamentario
+    const oficinaDeutContent = `
+        <div class="space-y-3 text-slate-700">
+            <p class="text-sm font-medium flex items-start gap-2"><span class="text-indigo-600 font-bold">📌 Definición oficial:</span> El <strong class="text-indigo-800">Departamento de Entrada Única de Trámites de las Defensorías Oficiales de Primera Instancia (DEUT)</strong> fue creado por Acordada del STJ del 28/05/2008 y reglamentado por Acordada N° 4/09 y Resolución de Procuración General N° 26/2009.</p>
+            <div class="bg-indigo-50 p-3 rounded-lg">
+                <p class="text-sm font-semibold flex items-center gap-2"><i data-lucide="building-2" class="w-4 h-4"></i> Áreas y funciones principales:</p>
+                <ul class="step-list mt-2 text-sm">
+                    <li><strong>Área Administrativa:</strong> Atención al público, entrega de instructivos de requisitos, carga de casos en sistema informático, asignación de la Defensoría correspondiente y remisión de informes periódicos a la Procuración General.</li>
+                    <li><strong>Área Legal:</strong> Evaluación de solicitudes, evacuación de trámites simples, conexión informática con Juzgados de Familia, fijación de audiencias, confección de escritos y oficios, y derivación del caso a la Defensoría que corresponda.</li>
+                </ul>
+            </div>
+            <div class="bg-amber-50 p-3 rounded-lg">
+                <p class="text-sm font-semibold flex items-center gap-2"><i data-lucide="clipboard-list" class="w-4 h-4"></i> Procedimiento paso a paso (arts. 3 a 6 del Reglamento):</p>
+                <ul class="step-list mt-2 text-sm">
+                    <li><strong>Paso 1:</strong> El requirente concurre al DEUT (lunes a viernes de 7 a 12 hs). Se le entrega un instructivo con los requisitos según su pretensión.</li>
+                    <li><strong>Paso 2:</strong> El personal evalúa la viabilidad y entrega un formulario específico para completar con la documentación requerida.</li>
+                    <li><strong>Paso 3:</strong> Recibido el formulario completo, se da de alta la solicitud en el sistema informático y en los libros habilitados, registrando datos de las partes y la pretensión.</li>
+                    <li><strong>Paso 4:</strong> En el mismo acto se determina la Defensoría Oficial que corresponderá (según materia, territorio y carga de trabajo). Se entrega constancia al interesado con el legajo asignado.</li>
+                    <li><strong>Paso 5:</strong> El DEUT remite las actuaciones a la Defensoría designada, la cual continuará con la gestión del caso. El interesado recibe notificación en un plazo de 48 hs hábiles.</li>
+                </ul>
+            </div>
+            <div class="text-xs text-slate-500 mt-1 border-t pt-2">
+                <i data-lucide="scale" class="w-3 h-3 inline"></i> <strong>Normativa aplicable:</strong> Acordada STJ N° 4/09 (Reglamento DEUT) y Resolución Procuración General N° 26/2009. El DEUT funciona en la Primera Circunscripción Judicial (Posadas) y su objetivo es descomprimir las Defensorías, brindar acceso rápido y eficaz a la justicia.
+            </div>
+        </div>
+    `;
+
+    // Contenido de Formulario CEJUME
+    const formularioCejumeContent = `
+        <div class="space-y-4">
+            <div class="bg-amber-50 p-4 rounded-xl border-l-4 border-amber-500">
+                <h4 class="font-black text-amber-800 flex items-center gap-2"><i data-lucide="file-plus" class="w-4 h-4"></i> Formulario N° 1A (avenimiento prejudicial)</h4>
+                <p class="text-sm mt-1">Se presenta firmado por la parte requirente y su asesor/a legal, en la mesa de entradas del CeJuMe, o por mail a <strong>mesadeentradascejume@jusmisiones.gov.ar</strong> (con firmas y foto del DNI).</p>
+                <a href="https://drive.google.com/uc?export=download&id=1Vd2oJUb2jomGe3ngkJ_F0wfsY4Uwc0ub" target="_blank" class="inline-flex items-center gap-1 mt-2 text-indigo-700 text-sm font-bold underline">📎 Descargar Formulario APO / Instructivo</a>
+            </div>
+            <div class="bg-sky-50 p-4 rounded-xl border-l-4 border-sky-600">
+                <h4 class="font-black text-sky-800 flex items-center gap-2"><i data-lucide="file-text" class="w-4 h-4"></i> Formulario N° 1 (derivación judicial)</h4>
+                <p class="text-sm">Al iniciar una demanda o durante el proceso, el juez puede derivar a mediación. El Juzgado presenta el formulario N° 1 en mesa de entradas del CeJuMe o al mail indicado.</p>
+                <p class="text-xs text-sky-700 mt-2">⚠️ Ambos formularios habilitan la instancia prejudicial obligatoria. Para mediación temática ver alcances por circunscripción.</p>
+            </div>
+            <div class="text-sm bg-white p-3 rounded-lg shadow-inner">
+                <i data-lucide="map-pin" class="w-4 h-4 inline text-gray-500"></i> Sedes habilitadas: Posadas, Garupá, Apóstoles, Alem (temas integrales). Oberá, Eldorado, Iguazú (solo familia/violencia). San Pedro, San Vicente (previo STJ).
+            </div>
+        </div>
+    `;
+
+    // Contenido CEJUME mediación (con normativa vigente agregada)
+    const cejumeMediacionContent = `
+        <div class="space-y-5">
+            <!-- Tabla de temas -->
+            <div class="table-themes p-4">
+                <p class="font-bold text-slate-800 mb-2"><i data-lucide="list-end" class="w-4 h-4 inline mr-1"></i> ¿Qué temas se pueden tratar en CEJUME?</p>
+                <div class="grid md:grid-cols-2 gap-4 text-sm">
+                    <div class="bg-white rounded-lg p-3 shadow-sm border-l-4 border-emerald-500">
+                        <div class="badge-theme inline-block mb-2">Por derivación judicial o avenimiento prejudicial</div>
+                        <ul class="step-list mt-1">
+                            <li>Cuestiones de familia: Alimentos, cuidado personal (tenencia), régimen de comunicación y contacto (régimen de visitas)</li>
+                            <li>Liquidación de sociedad conyugal</li>
+                            <li>Cuestiones atinentes al divorcio y a separaciones de hecho</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white rounded-lg p-3 shadow-sm border-l-4 border-purple-500">
+                        <div class="badge-theme inline-block mb-2">Únicamente por derivación judicial</div>
+                        <ul class="step-list mt-1">
+                            <li>Cuestiones patrimoniales: Locaciones, propiedad horizontal, ejecución y resolución de contratos</li>
+                            <li>Indemnizaciones por daños y perjuicios, conflictos societarios, conflictos sucesorios, etc.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Finalización de la mediación -->
+            <div class="bg-indigo-50 rounded-xl p-4">
+                <h4 class="font-black text-indigo-800 flex gap-2 items-center"><i data-lucide="flag" class="w-4 h-4"></i> Finalización de la Mediación</h4>
+                <p class="text-sm mt-2">Al finalizar el procedimiento, haya o no acuerdo, se redactará y firmará un acta. <strong>Las partes no están obligadas a llegar a un acuerdo.</strong></p>
+                <ul class="step-list text-sm mt-2">
+                    <li>Sin acuerdo: El acta da por finalizado el proceso de mediación. Los intervinientes pueden solicitar que el expediente vuelva al Juzgado (si es derivado) o iniciar el debido proceso judicial (en caso de avenimiento prejudicial).</li>
+                    <li>Con acuerdo total o parcial: El acta debe ser presentada para su homologación ante el Juez de la causa (en derivación judicial). Si la mediación se inició por Avenimiento Prejudicial Obligatorio, la homologación del acuerdo depende del interés de las partes.</li>
+                </ul>
+            </div>
+
+            <!-- Normativa vigente agregada -->
+            <div class="mt-4 text-sm border-t pt-3">
+                <i data-lucide="link" class="w-4 h-4 inline text-indigo-600"></i>
+                <strong class="text-indigo-800">Normativa vigente del CEJUME:</strong>
+                <a href="https://cejume.jusmisiones.gov.ar/index.php/organizacion/legislacion" target="_blank" class="text-indigo-600 underline break-all">https://cejume.jusmisiones.gov.ar/index.php/organizacion/legislacion</a>
+            </div>
+            
+            <div class="text-xs text-slate-500">
+                <i data-lucide="info" class="w-3 h-3 inline"></i> El Centro Judicial de Mediación funciona bajo supervisión del STJ, garantizando confidencialidad e imparcialidad.
+            </div>
+        </div>
+    `;
+
+    // Estructura final del contenido central con tres acordeones internos (todos cerrados al inicio)
+    function buildCentralCejumeWithAccordions() {
+        return `
+            <div class="inner-accordion-item">
+                <div class="inner-accordion-header" data-inner-target="inner-1">
+                    <span class="flex items-center gap-2"><i data-lucide="building-2" class="w-5 h-5 text-indigo-600"></i> 1. Oficina DEUT: Departamento de Entrada Única de Trámites</span>
+                    <i data-lucide="chevron-down" class="w-5 h-5 text-indigo-500 rotate-chevron" id="chevron-1"></i>
+                </div>
+                <div id="inner-1" class="inner-accordion-content">
+                    <div class="p-5 pt-2">${oficinaDeutContent}</div>
+                </div>
+            </div>
+            <div class="inner-accordion-item">
+                <div class="inner-accordion-header" data-inner-target="inner-2">
+                    <span class="flex items-center gap-2"><i data-lucide="file-edit" class="w-5 h-5 text-indigo-600"></i> 2. Formulario CEJUME (1A, APO, derivación)</span>
+                    <i data-lucide="chevron-down" class="w-5 h-5 text-indigo-500 rotate-chevron" id="chevron-2"></i>
+                </div>
+                <div id="inner-2" class="inner-accordion-content">
+                    <div class="p-5 pt-2">${formularioCejumeContent}</div>
+                </div>
+            </div>
+            <div class="inner-accordion-item">
+                <div class="inner-accordion-header" data-inner-target="inner-3">
+                    <span class="flex items-center gap-2"><i data-lucide="gavel" class="w-5 h-5 text-indigo-600"></i> 3. CEJUME - Centro Judicial de Mediación (etapa prejudicial)</span>
+                    <i data-lucide="chevron-down" class="w-5 h-5 text-indigo-500 rotate-chevron" id="chevron-3"></i>
+                </div>
+                <div id="inner-3" class="inner-accordion-content">
+                    <div class="p-5 pt-2">${cejumeMediacionContent}</div>
+                </div>
+            </div>
+        `;
+    }
+
+    // Placeholder para otros procesos
+    const placeholderContent = (title, normativa) => `
+        <div class="text-center py-10 px-4">
+            <i data-lucide="file-code" class="w-14 h-14 mx-auto text-slate-300 mb-3"></i>
+            <h3 class="text-xl font-bold text-slate-600">${title}</h3>
+            <div class="normativa-destacada mt-2 mx-auto inline-block">${normativa}</div>
+            <p class="mt-5 text-slate-500">📋 Próximamente: pasos a seguir detallados para este proceso.</p>
+            <p class="text-sm text-slate-400">Consulte normativa vigente y jurisprudencia aplicable.</p>
+        </div>
+    `;
+
+    // ============================================================
+    // MATERIAS Y PROCESOS (con categoría "CASOS ESPECIALES")
+    // ============================================================
+    const materias = [
+        {
+            nombreCategoria: "⚖️ ETAPA PREJUDICIAL (CEJUME)",
+            id: "prejudicial",
+            procesos: [
+                { 
+                    key: "cejume", 
+                    title: "Centro Judicial de Mediación (CEJUME) - Instancia Prejudicial Obligatoria", 
+                    subtitle: "Avenimiento Prejudicial Obligatorio (APO) | Leyes XII-19, IV-N.15",
+                    contenidoEspecial: true
+                }
+            ]
+        },
+        {
+            nombreCategoria: "👨‍👩‍👧 PROCESOS DE FAMILIA",
+            id: "familia",
+            procesos: [
+                { key: 'alimentos', title: 'Alimentos y Litisexpensas', subtitle: 'Arts. 696-710 CPC; Ley IV-N.15 arts.113,118' },
+                { key: 'ejecucionAlimentos', title: 'Ejecución de Alimentos', subtitle: 'Arts. 704,707 CPC; Ley IV-N.15 art.118' },
+                { key: 'proteccionViolencia', title: 'Violencia Familiar (Ley XIV-6)', subtitle: 'Arts. 655-658 CPC; Ley IV-N.15 arts.113,118' },
+                { key: 'incapacidad', title: 'Declaración de Incapacidad', subtitle: 'Arts. 659-673 CPC; Ley IV-N.15 arts.113,118' },
+                { key: 'inhabilitacion', title: 'Declaración de Inhabilitación', subtitle: 'Arts. 674-678 CPC; Ley IV-N.15 arts.113,118' },
+                { key: 'restitucionMenores', title: 'Restitución de Menores', subtitle: 'Arts. 679-695 CPC; Ley IV-N.15 art.118' },
+                { key: 'adopcion', title: 'Adopción', subtitle: 'Ley XII-20 / Art. 654 CPC; Ley IV-N.15 art.118' },
+                { key: 'cuidadoPersonal', title: 'Cuidado Personal / Régimen', subtitle: 'Arts. 648,715 CPC; Ley IV-N.15 art.118' },
+                { key: 'divorcio', title: 'Divorcio y Nulidad', subtitle: 'Arts. 641,648,715-716 CPC; Ley IV-N.15 art.118' },
+                { key: 'tutelaCuratela', title: 'Tutela y Curatela', subtitle: 'Arts. 713-714 CPC; Ley IV-N.15 arts.113,118' },
+                { key: 'homologacion', title: 'Homologación de Acuerdos', subtitle: 'Arts. 311,648 CPC; Ley IV-N.15 art.118' }
+            ]
+        },
+        {
+            nombreCategoria: "⚖️ PROCESOS CIVILES",
+            id: "civil",
+            procesos: [
+                { key: 'desalojo', title: 'Desalojo', subtitle: 'Arts. 623-635 CPC; Ley IV-N.15 arts.113,118' },
+                { key: 'interdictos', title: 'Interdictos Posesorios', subtitle: 'Arts. 576-592 CPC; Ley IV-N.15 art.118' },
+                { key: 'rendicionCuentas', title: 'Rendición de Cuentas', subtitle: 'Arts. 596-601 CPC; Ley IV-N.15 art.118' },
+                { key: 'divisionCondominio', title: 'División de Cosas Comunes', subtitle: 'Arts. 620-622 CPC; Ley IV-N.15 art.118' },
+                { key: 'mensuraDeslinde', title: 'Mensura y Deslinde', subtitle: 'Arts. 602-619 CPC; Ley IV-N.15 art.118' },
+                { key: 'ejecutivo', title: 'Juicio Ejecutivo', subtitle: 'Arts. 489-528 CPC; Ley IV-N.15 arts.113,118' },
+                { key: 'ejecucionHipotecaria', title: 'Ejecución Hipotecaria', subtitle: 'Arts. 567-569 CPC; Ley IV-N.15 art.118' },
+                { key: 'sucesorio', title: 'Proceso Sucesorio', subtitle: 'Arts. 717-763 CPC; Ley IV-N.15 arts.113,118' }
+            ]
+        },
+        {
+            nombreCategoria: "🛡️ CASOS ESPECIALES",
+            id: "especial",
+            procesos: [
+                { key: 'ausentes', title: 'Defensor de Ausentes', subtitle: 'Arts. 344,521,560,805 CPC; Ley IV-N.15 arts.113,114,118' },
+                { key: 'medidasAutosatisfactivas', title: 'Medidas Autosatisfactivas', subtitle: 'Arts. 636-639 CPC; Ley IV-N.15 art.118' }
+            ]
+        },
+        {
+            nombreCategoria: "📜 LEYES PROVINCIALES ESPECIALES",
+            id: "leyes_especiales",
+            procesos: [
+                { key: 'proteccionIntegridadSexual', title: 'Protección Víctimas Integridad Sexual (Ley XVII-37)', subtitle: 'Ley XVII-37; Ley IV-N.15 arts.113,118' },
+                { key: 'pensionGraciableMenores', title: 'Pensión Graciable a Menores Víctimas (Ley XIX-51)', subtitle: 'Ley XIX-51; Ley IV-N.15 arts.113,118' },
+                { key: 'proteccionPersonasMayores', title: 'Protección Integral Personas Mayores (Ley XIX-41)', subtitle: 'Ley XIX-41; Ley IV-N.15 arts.113,118' },
+                { key: 'mediacionHomologacion', title: 'Mediación y Homologación de Acuerdos (Ley XII-19)', subtitle: 'Ley XII-19 arts. 15,28,34,35,36; Ley IV-N.15 arts.113,118' }
+            ]
+        }
     ];
 
-    // No se necesita DB de detalles porque no mostraremos contenido central,
-    // pero mantenemos la generación de botones con la info de normativas.
-    // Simplemente los botones no realizan ninguna acción de detalle.
-
-    function generarBotones(filtro = "") {
-        const container = document.getElementById('buttons-container');
+    // Render acordeón lateral con filtro (todas las categorías cerradas por defecto)
+    let currentFilter = "";
+    function renderAccordion(filterText = "") {
+        const container = document.getElementById('accordion-container');
         if (!container) return;
-        const filtroLower = filtro.toLowerCase();
-        const filtered = procesosList.filter(p => p.title.toLowerCase().includes(filtroLower) || p.subtitle.toLowerCase().includes(filtroLower));
+        const filterLower = filterText.toLowerCase();
+        const filteredMaterias = materias.map(materia => {
+            const filteredProcesos = materia.procesos.filter(proc => 
+                proc.title.toLowerCase().includes(filterLower) || 
+                proc.subtitle.toLowerCase().includes(filterLower)
+            );
+            return { ...materia, procesos: filteredProcesos };
+        }).filter(materia => materia.procesos.length > 0);
+        
+        if (filteredMaterias.length === 0) {
+            container.innerHTML = `<div class="p-6 text-center bg-white rounded-2xl text-slate-400">🔍 Ningún proceso coincide con "${filterText}"</div>`;
+            return;
+        }
         let html = '';
-        const familias = filtered.filter(p => p.category === 'familia');
-        const civiles = filtered.filter(p => p.category === 'civil');
-        const especiales = filtered.filter(p => p.category === 'especial');
-        const leyesEspeciales = filtered.filter(p => p.category === 'leyes_especiales');
-        
-        if (familias.length) html += `<div class="text-indigo-700 text-[11px] font-black px-2 mt-1 mb-2">👨‍👩‍👧 PROCESOS DE FAMILIA</div>`;
-        familias.forEach(p => { 
-            html += `<div class="proceso-card w-full text-left p-3 rounded-xl hover:bg-white bg-white/80 transition-all mb-2 shadow-sm border border-slate-100">
-                        <span class="block font-bold text-slate-800">${p.title}</span>
-                        <div class="normativa-destacada mt-1"><i data-lucide="book-open" class="w-3 h-3 inline mr-1"></i> ${p.subtitle}</div>
-                     </div>`; 
+        filteredMaterias.forEach((materia, idx) => {
+            const accordionId = `accordion-${materia.id}-${idx}`;
+            const isOpen = false; // Todas cerradas por defecto
+            html += `
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="accordion-header flex justify-between items-center p-4 bg-slate-50 hover:bg-indigo-50 transition" data-target="${accordionId}">
+                        <span class="font-extrabold text-indigo-800 text-sm tracking-wide">${materia.nombreCategoria}</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 text-indigo-600 rotate-icon ${isOpen ? 'open' : ''} transition-transform"></i>
+                    </div>
+                    <div id="${accordionId}" class="accordion-content ${isOpen ? 'open' : ''} border-t border-slate-100">
+                        <div class="p-3 space-y-2 bg-white">
+                            ${materia.procesos.map(proc => `
+                                <div class="proceso-card w-full text-left p-3 rounded-xl hover:bg-indigo-50 transition-all shadow-sm border border-slate-100" data-proceso='${JSON.stringify({ title: proc.title, subtitle: proc.subtitle, especial: proc.contenidoEspecial || false, key: proc.key })}'>
+                                    <span class="block font-bold text-slate-800">${proc.title}</span>
+                                    <div class="normativa-destacada mt-1 text-xs"><i data-lucide="book-open" class="w-3 h-3 inline mr-1"></i> ${proc.subtitle}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
         });
-        if (civiles.length) html += `<div class="text-indigo-700 text-[11px] font-black px-2 mt-4 mb-2">⚖️ PROCESOS CIVILES</div>`;
-        civiles.forEach(p => { 
-            html += `<div class="proceso-card w-full text-left p-3 rounded-xl hover:bg-white bg-white/80 transition-all mb-2 shadow-sm">
-                        <span class="block font-bold text-slate-800">${p.title}</span>
-                        <div class="normativa-destacada mt-1">📌 ${p.subtitle}</div>
-                     </div>`; 
-        });
-        if (especiales.length) html += `<div class="text-emerald-700 text-[11px] font-black px-2 mt-4 mb-2">🛡️ DEFENSORÍAS ESPECIALES</div>`;
-        especiales.forEach(p => { 
-            html += `<div class="proceso-card w-full text-left p-3 rounded-xl hover:bg-white bg-white/80 transition-all mb-2 shadow-sm">
-                        <span class="block font-bold text-slate-800">${p.title}</span>
-                        <div class="normativa-destacada mt-1">⚡ ${p.subtitle}</div>
-                     </div>`; 
-        });
-        if (leyesEspeciales.length) html += `<div class="text-purple-700 text-[11px] font-black px-2 mt-4 mb-2">📜 LEYES PROVINCIALES ESPECIALES</div>`;
-        leyesEspeciales.forEach(p => { 
-            html += `<div class="proceso-card w-full text-left p-3 rounded-xl hover:bg-white bg-white/80 transition-all mb-2 shadow-sm">
-                        <span class="block font-bold text-slate-800">${p.title}</span>
-                        <div class="normativa-destacada mt-1">📖 ${p.subtitle}</div>
-                     </div>`; 
-        });
-        
-        if (filtered.length === 0) html = '<div class="p-8 text-center bg-white rounded-2xl text-slate-400">🔍 Sin resultados</div>';
         container.innerHTML = html;
         if (window.lucide) lucide.createIcons();
+        // Eventos acordeón lateral
+        document.querySelectorAll('.accordion-header').forEach(header => {
+            header.addEventListener('click', (e) => {
+                const targetId = header.getAttribute('data-target');
+                const contentDiv = document.getElementById(targetId);
+                const icon = header.querySelector('.rotate-icon');
+                if (contentDiv) {
+                    contentDiv.classList.toggle('open');
+                    if (icon) icon.classList.toggle('open');
+                }
+            });
+        });
+        // Eventos click en proceso
+        document.querySelectorAll('.proceso-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const data = JSON.parse(card.getAttribute('data-proceso'));
+                mostrarContenidoCentral(data);
+            });
+        });
     }
-
-    function resetApp() {
+    
+    function mostrarContenidoCentral(procesoData) {
+        const area = document.getElementById('detail-content-area');
+        if (!area) return;
+        if (procesoData.especial && procesoData.key === 'cejume') {
+            area.innerHTML = buildCentralCejumeWithAccordions();
+            if (window.lucide) lucide.createIcons();
+            document.querySelectorAll('.inner-accordion-header').forEach(header => {
+                const targetId = header.getAttribute('data-inner-target');
+                const targetDiv = document.getElementById(targetId);
+                const chevron = header.querySelector('.rotate-chevron');
+                header.addEventListener('click', () => {
+                    if (targetDiv) {
+                        targetDiv.classList.toggle('open');
+                        if (chevron) chevron.classList.toggle('open');
+                    }
+                });
+            });
+            // Los acordeones internos comienzan cerrados (no se abre ninguno automáticamente)
+        } else {
+            area.innerHTML = placeholderContent(procesoData.title, procesoData.subtitle);
+            if (window.lucide) lucide.createIcons();
+        }
+    }
+    
+    function resetAndShowDefault() {
+        currentFilter = "";
         const searchInput = document.getElementById('searchProceso');
         if (searchInput) searchInput.value = '';
-        generarBotones('');
+        renderAccordion('');
+        mostrarContenidoCentral({ especial: true, key: 'cejume', title: 'Centro Judicial de Mediación (CEJUME) - Instancia Prejudicial Obligatoria', subtitle: 'APO | Ley XII-19' });
     }
-
-    // Eventos: búsqueda en tiempo real, reset del header
+    
     document.addEventListener('DOMContentLoaded', () => {
-        generarBotones('');
+        resetAndShowDefault();
         const searchInput = document.getElementById('searchProceso');
-        if (searchInput) searchInput.addEventListener('input', e => generarBotones(e.target.value));
+        if (searchInput) searchInput.addEventListener('input', (e) => {
+            currentFilter = e.target.value;
+            renderAccordion(currentFilter);
+        });
         const resetBtn = document.getElementById('resetAppButton');
-        if (resetBtn) resetBtn.addEventListener('click', resetApp);
-        
-        // Inicializar iconos de Lucide
+        if (resetBtn) resetBtn.addEventListener('click', resetAndShowDefault);
         if (window.lucide) lucide.createIcons();
     });
 </script>
