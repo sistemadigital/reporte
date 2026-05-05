@@ -224,7 +224,7 @@
         <!-- Columna 3: Contenedor central dinámico con acordeones internos -->
         <div id="central-dynamic-content" class="central-card">
             <div class="p-5 md:p-7" id="detail-content-area">
-                <!-- Se llena con JS -->
+                <!-- Se llenará con JS; inicialmente mensaje en blanco -->
             </div>
         </div>
     </div>
@@ -370,6 +370,15 @@
             <div class="normativa-destacada mt-2 mx-auto inline-block">${normativa}</div>
             <p class="mt-5 text-slate-500">📋 Próximamente: pasos a seguir detallados para este proceso.</p>
             <p class="text-sm text-slate-400">Consulte normativa vigente y jurisprudencia aplicable.</p>
+        </div>
+    `;
+
+    // Mensaje inicial en blanco con borde azul
+    const emptyStateMessage = `
+        <div class="flex flex-col items-center justify-center text-center p-8 md:p-12 border-2 border-blue-300 rounded-xl bg-blue-50/30 shadow-sm min-h-[300px]">
+            <i data-lucide="search" class="w-12 h-12 text-blue-500 mb-4"></i>
+            <p class="text-blue-800 font-medium text-lg">Use el filtro de búsqueda o pulse sobre el proceso</p>
+            <p class="text-blue-600 text-sm mt-2">para ingresar al contenido de pasos de actuación.</p>
         </div>
     `;
 
@@ -522,9 +531,13 @@
                     }
                 });
             });
-            // Los acordeones internos comienzan cerrados (no se abre ninguno automáticamente)
-        } else {
+            // Los acordeones internos comienzan cerrados
+        } else if (procesoData.title) {
             area.innerHTML = placeholderContent(procesoData.title, procesoData.subtitle);
+            if (window.lucide) lucide.createIcons();
+        } else {
+            // Fallback: mostrar estado vacío
+            area.innerHTML = emptyStateMessage;
             if (window.lucide) lucide.createIcons();
         }
     }
@@ -534,7 +547,12 @@
         const searchInput = document.getElementById('searchProceso');
         if (searchInput) searchInput.value = '';
         renderAccordion('');
-        mostrarContenidoCentral({ especial: true, key: 'cejume', title: 'Centro Judicial de Mediación (CEJUME) - Instancia Prejudicial Obligatoria', subtitle: 'APO | Ley XII-19' });
+        // Mostrar mensaje de bienvenida en lugar del contenido de CEJUME
+        const area = document.getElementById('detail-content-area');
+        if (area) {
+            area.innerHTML = emptyStateMessage;
+            if (window.lucide) lucide.createIcons();
+        }
     }
     
     document.addEventListener('DOMContentLoaded', () => {
