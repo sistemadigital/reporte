@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>SPA - Guía de Actuación | Pantalla completa</title>
+    <style>
+        /* RESET y configuración base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Roboto', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(145deg, #eef2f5 0%, #d9e2e8 100%);
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* ========== PANTALLA DE INICIO: TARJETAS CENTRADAS ========== */
+        .home-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at 20% 30%, #f0f6fa, #e2eef5);
+            transition: opacity 0.35s ease, visibility 0.35s ease;
+            z-index: 10;
+            backdrop-filter: blur(2px);
+        }
+
+        /* cuando está oculto (para mostrar el visor fullscreen) */
+        .home-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .container-cards {
+            display: flex;
+            flex-direction: column;      /* Columna para que cada tarjeta ocupe el ancho deseado */
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            width: 100%;
+            padding: 1.5rem;
+        }
+
+        /* Tarjetas: ocupan el 60% del ancho de la pantalla (viewport width) */
+        .card {
+            background: white;
+            border-radius: 2rem;
+            padding: 2.2rem 1.5rem;
+            width: 60vw;                /* 60% del ancho de la pantalla */
+            max-width: 600px;           /* Evita que sea exageradamente ancha en monitores grandes */
+            min-width: 260px;           /* Mínimo para móviles muy pequeños */
+            cursor: pointer;
+            text-align: center;
+            box-shadow: 0 20px 35px -12px rgba(0, 45, 70, 0.25), 0 1px 3px rgba(0,0,0,0.05);
+            transition: all 0.25s ease;
+            border: 1px solid rgba(0, 86, 179, 0.25);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 30px 40px -14px rgba(0, 70, 120, 0.35);
+            border-color: #0056b3;
+            background: #ffffff;
+        }
+
+        .card:active {
+            transform: scale(0.97);
+            transition: 0.05s;
+        }
+
+        /* Solo el título en negrita azul, sin ningún otro texto */
+        .card h2 {
+            margin: 0;
+            font-size: 1.9rem;
+            font-weight: 700;
+            color: #0056b3;
+            letter-spacing: -0.2px;
+            line-height: 1.3;
+        }
+
+        /* adaptación móvil: igualmente 60vw, pero si es muy pequeño ajustamos un poco */
+        @media (max-width: 640px) {
+            .card {
+                width: 70vw;            /* En móviles más pequeños, 70vw para que no quede demasiado ajustado */
+                padding: 1.8rem 1rem;
+            }
+            .card h2 {
+                font-size: 1.6rem;
+            }
+        }
+
+        /* Para pantallas muy anchas, el max-width ya limita, pero mantenemos coherencia */
+        @media (min-width: 1200px) {
+            .card {
+                width: 50vw;            /* Ligeramente menos para no ser desproporcionado */
+                max-width: 580px;
+            }
+        }
+
+        /* ========== VISOR DE PANTALLA COMPLETA (OVERLAY) ========== */
+        .fullscreen-viewer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1), visibility 0.35s;
+            box-shadow: 0 -5px 30px rgba(0,0,0,0.2);
+        }
+
+        .fullscreen-viewer.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* barra superior: botón volver + indicador sutil */
+        .viewer-header {
+            background: #f8fafc;
+            padding: 0.9rem 1.5rem;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #e2edf2;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            flex-shrink: 0;
+        }
+
+        .back-button {
+            background: #0056b3;
+            border: none;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 0.6rem 1.2rem;
+            border-radius: 60px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            font-family: inherit;
+        }
+
+        .back-button:hover {
+            background: #003f7f;
+            transform: scale(1.02);
+        }
+
+        .back-button:active {
+            transform: scale(0.96);
+        }
+
+        /* Flecha simbólica */
+        .back-button::before {
+            content: "←";
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-right: 0.2rem;
+        }
+
+        .viewer-title {
+            margin-left: 1.2rem;
+            font-size: 0.85rem;
+            color: #2c5a7a;
+            font-weight: 500;
+            background: #eef3fc;
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            letter-spacing: 0.3px;
+        }
+
+        /* iframe ocupa todo el espacio restante */
+        .iframe-wrapper {
+            flex: 1;
+            width: 100%;
+            background: #1e2a32;
+            position: relative;
+        }
+
+        .iframe-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+            background: white;
+        }
+
+        /* para móviles, header más compacto pero fácil de tocar */
+        @media (max-width: 600px) {
+            .viewer-header {
+                padding: 0.7rem 1rem;
+            }
+            .back-button {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+            .viewer-title {
+                font-size: 0.7rem;
+                margin-left: 0.8rem;
+            }
+        }
+
+        /* animación sutil para tarjetas */
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            animation: fadeSlideUp 0.5s ease backwards;
+        }
+        .card:first-child { animation-delay: 0.05s; }
+        .card:last-child { animation-delay: 0.15s; }
+    </style>
+</head>
+<body>
+
+    <!-- PANTALLA DE INICIO: dos tarjetas centradas, sin iconos ni subtítulos, solo texto en negrita azul -->
+    <div class="home-screen" id="homeScreen">
+        <div class="container-cards">
+            <!-- Tarjeta 1: solo título -->
+            <div class="card" data-url="https://sistemadigital.github.io/reporte/guiatramite.html">
+                <h2>1. Guía de Actuación</h2>
+            </div>
+            <!-- Tarjeta 2: solo título -->
+            <div class="card" data-url="https://sistemadigital.github.io/reporte/modo.html">
+                <h2>2. Modos de Intervenir</h2>
+            </div>
+        </div>
+    </div>
+
+    <!-- VISOR DE PANTALLA COMPLETA (contenido iframe) -->
+    <div class="fullscreen-viewer" id="fullscreenViewer">
+        <div class="viewer-header">
+            <button class="back-button" id="closeFullscreenBtn">Volver al inicio</button>
+            <span class="viewer-title" id="viewerContextLabel">Contenido externo</span>
+        </div>
+        <div class="iframe-wrapper">
+            <iframe id="dynamicIframe" title="visor de contenido" src="about:blank"></iframe>
+        </div>
+    </div>
+
+    <script>
+        // Elementos del DOM
+        const homeScreen = document.getElementById('homeScreen');
+        const fullscreenViewer = document.getElementById('fullscreenViewer');
+        const dynamicIframe = document.getElementById('dynamicIframe');
+        const closeBtn = document.getElementById('closeFullscreenBtn');
+        const viewerContextLabel = document.getElementById('viewerContextLabel');
+
+        // URLs definidas (coinciden con las originales)
+        const URL_GUIA = 'https://sistemadigital.github.io/reporte/guiatramite.html';
+        const URL_MODO = 'https://sistemadigital.github.io/reporte/modo.html';
+
+        // Función para abrir pantalla completa con una URL específica
+        function openFullscreenContent(url, titleHint = '') {
+            if (!url) return;
+            
+            // Asignar URL al iframe (recargar contenido)
+            dynamicIframe.src = url;
+            
+            // Pequeño detalle visual: cambiamos el texto del contexto según la tarjeta
+            if (titleHint.includes('Guía') || url.includes('guiatramite')) {
+                viewerContextLabel.textContent = '📄 Guía de Actuación';
+            } else if (titleHint.includes('Modos') || url.includes('modo.html')) {
+                viewerContextLabel.textContent = '🔄 Modos de Intervenir';
+            } else {
+                viewerContextLabel.textContent = '📎 Documento oficial';
+            }
+            
+            // Ocultar la pantalla de inicio (tarjetas) con animación
+            homeScreen.classList.add('hidden');
+            
+            // Mostrar el visor fullscreen con transición activa
+            fullscreenViewer.classList.add('active');
+            
+            // Aseguramos que el scroll del body no interfiera
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // Función para cerrar el visor y volver a las tarjetas centradas
+        function closeFullscreenAndReturn() {
+            // Ocultar visor
+            fullscreenViewer.classList.remove('active');
+            
+            // Mostrar pantalla de inicio (tarjetas)
+            homeScreen.classList.remove('hidden');
+            
+            // Opcional: limpiar el iframe para evitar consumo en segundo plano o recarga no deseada
+            setTimeout(() => {
+                // Si el visor está cerrado y no activo, limpiamos el iframe
+                if (!fullscreenViewer.classList.contains('active')) {
+                    dynamicIframe.src = 'about:blank';
+                }
+            }, 300);
+            
+            // Restaurar scroll del body
+            document.body.style.overflow = '';
+            
+            // Forzamos que el body no tenga desplazamiento extra
+            window.scrollTo(0, 0);
+        }
+        
+        // ---- Asignar eventos a cada tarjeta (usando data-url) ----
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            let targetUrl = card.getAttribute('data-url');
+            const cardText = card.innerText || '';  // "1. Guía de Actuación" o "2. Modos de Intervenir"
+            
+            card.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (targetUrl) {
+                    openFullscreenContent(targetUrl, cardText);
+                } else {
+                    // Fallback de seguridad: detectar basado en el texto
+                    if (cardText.includes('Guía') || cardText.includes('1.')) {
+                        openFullscreenContent(URL_GUIA, cardText);
+                    } else if (cardText.includes('Modos') || cardText.includes('2.')) {
+                        openFullscreenContent(URL_MODO, cardText);
+                    } else {
+                        console.warn('URL no definida');
+                    }
+                }
+            });
+            
+            // Accesibilidad
+            card.setAttribute('role', 'button');
+            card.setAttribute('tabindex', '0');
+            card.style.cursor = 'pointer';
+            card.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    card.click();
+                }
+            });
+        });
+        
+        // Evento para el botón "Volver al inicio"
+        closeBtn.addEventListener('click', closeFullscreenAndReturn);
+        
+        // Manejo del botón "atrás" del navegador para cerrar el visor
+        window.addEventListener('popstate', (event) => {
+            if (fullscreenViewer.classList.contains('active')) {
+                closeFullscreenAndReturn();
+                // Reemplazamos estado para evitar conflictos
+                history.replaceState({ fromViewer: false }, '', window.location.href);
+            }
+        });
+        
+        // Lógica mejorada para historial al abrir fullscreen
+        const originalOpen = openFullscreenContent;
+        window.openFullscreenContent = function(url, titleHint) {
+            const wasActiveBefore = fullscreenViewer.classList.contains('active');
+            
+            if (wasActiveBefore) {
+                // Si ya está activo, solo cambiamos la URL y el contexto
+                dynamicIframe.src = url;
+                if (titleHint.includes('Guía') || url.includes('guiatramite')) {
+                    viewerContextLabel.textContent = '📄 Guía de Actuación';
+                } else if (titleHint.includes('Modos') || url.includes('modo.html')) {
+                    viewerContextLabel.textContent = '🔄 Modos de Intervenir';
+                } else {
+                    viewerContextLabel.textContent = '📎 Documento oficial';
+                }
+                return;
+            }
+            
+            // No estaba activo: ocultamos home y mostramos visor
+            homeScreen.classList.add('hidden');
+            fullscreenViewer.classList.add('active');
+            dynamicIframe.src = url;
+            document.body.style.overflow = 'hidden';
+            
+            if (titleHint.includes('Guía') || url.includes('guiatramite')) {
+                viewerContextLabel.textContent = '📄 Guía de Actuación';
+            } else if (titleHint.includes('Modos') || url.includes('modo.html')) {
+                viewerContextLabel.textContent = '🔄 Modos de Intervenir';
+            } else {
+                viewerContextLabel.textContent = '📎 Documento oficial';
+            }
+            
+            // Agregar estado en historial para permitir cerrar con "atrás"
+            history.pushState({ viewerOpen: true, url: url }, '', window.location.href);
+        };
+        
+        // Reemplazar la función global para que los eventos de tarjetas usen la versión mejorada
+        window.openFullscreenContent = openFullscreenContent;
+        
+        // Reasignamos closeFullscreenAndReturn para mantener historial limpio
+        const originalClose = closeFullscreenAndReturn;
+        window.closeFullscreenAndReturn = function() {
+            if (!fullscreenViewer.classList.contains('active')) return;
+            fullscreenViewer.classList.remove('active');
+            homeScreen.classList.remove('hidden');
+            setTimeout(() => {
+                if (!fullscreenViewer.classList.contains('active')) {
+                    dynamicIframe.src = 'about:blank';
+                }
+            }, 300);
+            document.body.style.overflow = '';
+            window.scrollTo(0, 0);
+            if (history.state && (history.state.viewerOpen === true)) {
+                history.replaceState({ viewerClosed: true }, '', window.location.href);
+            }
+        };
+        
+        // Actualizar el botón de cierre con la nueva versión
+        closeBtn.onclick = () => {
+            window.closeFullscreenAndReturn();
+        };
+        
+        // Reemplazar la referencia global de openFullscreenContent para que los cards usen la lógica final
+        window.openFullscreenContent = openFullscreenContent;
+        
+        // Manejo de error en iframe (solo advertencia)
+        dynamicIframe.addEventListener('error', () => {
+            console.warn('No se pudo cargar el recurso, verifica conexión o URL');
+            viewerContextLabel.textContent = '⚠️ Error de carga';
+        });
+        
+        // Inicialización: estado correcto
+        homeScreen.classList.remove('hidden');
+        fullscreenViewer.classList.remove('active');
+        document.body.style.overflow = '';
+        dynamicIframe.src = 'about:blank';
+        
+        // Ajuste adicional de accesibilidad para las tarjetas sin texto extra
+        console.log('✅ Modo actualizado: tarjetas limpias, tamaño 60% pantalla, fullscreen con retorno.');
+    </script>
+</body>
+</html>
