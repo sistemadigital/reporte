@@ -228,6 +228,13 @@
             border-radius: 0.75rem;
             margin-bottom: 1rem;
         }
+        .summary-box {
+            background: #f0fdf4;
+            border-left: 6px solid #22c55e;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            margin-bottom: 1rem;
+        }
     </style>
 </head>
 <body class="bg-slate-100 text-slate-900">
@@ -763,73 +770,170 @@
     }
 
     // ============================================================
-    // NUEVO CONTENIDO: LEY DE DEFENSA DEL CONSUMIDOR (VERSIÓN CORREGIDA)
+    // LEYES ESPECIALES CON RESUMEN EJECUTIVO (MÁXIMO 10 PUNTOS POR LEY)
     // ============================================================
-    function buildConsumidorContent() {
+    
+    // 1. Mediación y Homologación de Acuerdos (Ley XII-19)
+    function buildMediacionHomologacionContent() {
         return `
             <div class="space-y-5">
-                <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl p-5 border-l-8 border-orange-600 shadow-sm">
-                    <h3 class="text-xl font-black text-orange-800 flex items-center gap-3"><i data-lucide="shopping-bag" class="w-6 h-6"></i> Ley Nacional de Defensa del Consumidor N° 24.240</h3>
-                    <p class="text-sm text-slate-600 mt-1">Normas de Protección y Defensa de los Consumidores · Ley Provincial III – Nº 2 (antes 3811)</p>
-                    <div class="mt-3 normativa-destacada inline-flex">Régimen de Protección Integral · Art. 42 Constitución Nacional</div>
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-5 border-l-8 border-blue-700 shadow-sm">
+                    <h3 class="text-xl font-black text-blue-800 flex items-center gap-3"><i data-lucide="handshake" class="w-6 h-6"></i> Mediación y Homologación de Acuerdos</h3>
+                    <p class="text-sm text-slate-600 mt-1">Ley Provincial XII-19 (arts. 15, 28, 34, 35, 36) · Ley Orgánica IV-N.15 arts.113,118</p>
+                    <div class="mt-3 normativa-destacada inline-flex">Mediación prejudicial obligatoria · Homologación judicial</div>
                 </div>
                 
-                <!-- CRITERIO DE INTERVENCIÓN: PASO 0 (NUEVO) -->
-                <div class="criteria-box">
-                    <div class="flex items-center gap-2 mb-2">
-                        <i data-lucide="alert-circle" class="w-5 h-5 text-amber-700"></i>
-                        <h4 class="font-black text-amber-800">⚠️ Criterio de Intervención de la Defensoría Oficial</h4>
-                    </div>
-                    <p class="text-sm text-amber-800 mb-2"><strong>No debe intervenir en reclamos de consumo comunes.</strong> El consumidor particular debe ser derivado a la Dirección de Defensa del Consumidor de Misiones (DCI).</p>
-                    <p class="text-sm text-slate-700"><strong>La Defensoría Oficial interviene SOLO en casos de manifiesta vulnerabilidad del consumidor, tales como:</strong></p>
-                    <ul class="step-list text-sm mt-2">
-                        <li><strong>Consumidores hipervulnerables:</strong> Personas con discapacidad, adultos mayores, niños, niñas y adolescentes, personas con enfermedad grave o crónica que afecte su autonomía (Resolución 139/20).</li>
-                        <li><strong>Personas con padecimiento mental</strong> que afecte su capacidad de comprender el reclamo o tomar decisiones.</li>
-                        <li><strong>Personas en situación de extrema vulnerabilidad social o económica</strong> que carezcan de cualquier posibilidad de acceso autónomo a la justicia del consumo.</li>
-                        <li><strong>Personas con dificultades de comprensión o comunicación</strong> que requieran asistencia especial para poder ejercer sus derechos.</li>
-                        <li><strong>Casos donde exista un interés colectivo o difuso</strong> que requiera representación jurídica especializada.</li>
-                    </ul>
-                    <div class="mt-3 p-2 bg-red-100 rounded text-sm">
-                        <i data-lucide="x-circle" class="w-4 h-4 inline text-red-600 mr-1"></i> <strong class="text-red-800">NO intervenir:</strong> Un consumidor adulto, autónomo, sin discapacidad ni vulnerabilidad manifiesta. Debe ser derivado a Defensa del Consumidor.
-                    </div>
-                    <div class="mt-2 text-xs text-amber-700">
-                        📞 <strong>Defensa del Consumidor Misiones (DCI):</strong> Teléfono (0376) 4447625 | Línea gratuita: 0800-888-53267 | Correo: sucei_comint@misiones.gov.ar | Web: www.acmci.misiones.gob.ar/contacto
-                    </div>
+                <!-- RESUMEN EJECUTIVO (8 puntos) -->
+                <div class="summary-box">
+                    <h4 class="font-black text-green-800 flex items-center gap-2 mb-3"><i data-lucide="list-checks" class="w-5 h-5"></i> Resumen ejecutivo – Actuación del Defensor Oficial</h4>
+                    <ol class="ordered-step-list text-sm text-slate-700 space-y-2">
+                        <li><strong class="text-green-700">APO obligatorio:</strong> El Avenimiento Prejudicial Obligatorio (Ley XII-19) debe cumplirse antes de iniciar juicios de familia (alimentos, divorcio, tenencia, régimen de visitas, liquidación de sociedad conyugal, etc.).</li>
+                        <li><strong class="text-green-700">Derivación al CEJUME:</strong> El empleado debe asesorar al requirente sobre la obligación de pasar por mediación previa y acompañarlo en la presentación del Formulario 1A ante el CEJUME.</li>
+                        <li><strong class="text-green-700">Patrocinio en mediación:</strong> Si el requirente es vulnerable o patrocinado por la Defensoría, el empleado lo asiste durante todo el proceso de mediación, incluyendo la redacción del acta de acuerdo o de cierre.</li>
+                        <li><strong class="text-green-700">Homologación de acuerdos:</strong> Si se llega a un acuerdo, el empleado debe solicitar al Juzgado de Familia su homologación (arts. 35 y 36 Ley XII-19) para darle fuerza de cosa juzgada.</li>
+                        <li><strong class="text-green-700">Acta de falta de acuerdo:</strong> Si no hay acuerdo, se labra acta de cierre. Con ese documento, el empleado puede iniciar la demanda judicial correspondiente.</li>
+                        <li><strong class="text-yellow-700">⚠️ IMPEDIMENTO:</strong> La Defensoría Oficial NO interviene como mediadora. Su rol es patrocinar a su representado. No puede oficiar de mediadora ni homologar acuerdos entre partes con patrocinio particular.</li>
+                        <li><strong class="text-green-700">Representación en homologación:</strong> Si el acuerdo fue extrajudicial (sin mediación previa), el empleado debe presentarlo ante el juez para su homologación, verificando que no vulnere derechos de menores o incapaces.</li>
+                        <li><strong class="text-green-700">Control de legalidad:</strong> Siempre debe verificar que los acuerdos no lesionen el orden público, los derechos de niños, niñas y adolescentes, o personas con capacidad restringida.</li>
+                    </ol>
                 </div>
 
-                <div class="green-info text-sm">
-                    <i data-lucide="scale" class="w-4 h-4 inline mr-2"></i> <strong>Beneficio de gratuidad:</strong> Quienes ejercen acciones en representación de un derecho o interés individual gozarán del beneficio de gratuidad en sus presentaciones judiciales (Art. 12 Ley Provincial).
-                </div>
-                
                 <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-                    <h4 class="font-black text-slate-800 flex items-center gap-2 text-lg mb-4"><i data-lucide="list-steps" class="w-5 h-5 text-orange-600"></i> Pasos para el empleado del Defensor Oficial</h4>
-                    <ol class="ordered-step-list text-slate-700 text-sm space-y-4">
-                        <li><strong class="text-orange-800">CRITERIO 0: Evaluar la vulnerabilidad del requirente</strong><br>Antes de cualquier acción, el empleado debe <strong>evaluar si el consumidor se encuentra en situación de manifiesta vulnerabilidad</strong> (hipervulnerable, discapacidad, salud mental, extrema pobreza, etc.).<br>
-                        <span class="text-green-700">✅ Si el consumidor NO está en situación de vulnerabilidad:</span> Derivar a la Dirección de Defensa del Consumidor (DCI) y NO iniciar patrocinio.<br>
-                        <span class="text-red-700">❌ Si el consumidor está en situación de vulnerabilidad:</span> Proceder con el patrocinio letrado como Defensor Oficial.</li>
-                        
-                        <li><strong class="text-orange-800">Recepción y análisis del caso (solo si aplica patrocinio)</strong><br>Verificar que se trate de una relación de consumo (arts. 1 y 2 Ley 24.240), identificando al consumidor vulnerable y al proveedor.</li>
-                        
-                        <li><strong class="text-orange-800">Derivación a la instancia administrativa previa</strong><br>Antes de iniciar acciones judiciales, se debe agotar la instancia de conciliación obligatoria ante la Dirección de Comercio Interior (Art. 8 Ley Provincial). El empleado debe asesorar al consumidor vulnerable sobre este paso y, si corresponde, acompañarlo en la denuncia.</li>
-                        
-                        <li><strong class="text-orange-800">Inicio de la acción judicial</strong><br>Si la conciliación falla o el consumidor opta por la vía judicial, se inicia el proceso sumarísimo (Art. 12 Ley Provincial - Art. 53 Ley 24.240). El empleado debe redactar la demanda citando los derechos vulnerados (arts. 4 a 10 bis Ley 24.240) y destacar la condición de vulnerabilidad del consumidor.</li>
-                        
-                        <li><strong class="text-orange-800">Gratuidad de las presentaciones</strong><br>Invocar el beneficio de gratuidad previsto en el Art. 12 de la Ley Provincial (antes 3811) para eximir al consumidor de todo gasto judicial.</li>
-                        
-                        <li><strong class="text-orange-800">Competencia y medidas cautelares</strong><br>La acción puede interponerse a elección del consumidor ante el juez del lugar del consumo, del contrato, de su domicilio o del demandado (Art. 36 Ley 24.240). El empleado debe elegir la jurisdicción más conveniente y, si el caso lo requiere, solicitar medidas cautelares (Art. 50 Ley 24.240).</li>
-                        
-                        <li><strong class="text-orange-800">Prueba</strong><br>En el proceso sumarísimo, la prueba es restringida. El empleado debe ofrecer la documental (facturas, contratos, publicidades) y, en su caso, la testimonial o pericial de forma clara y concisa, dentro del plazo de 10 días hábiles (Art. 4 inc. f Ley Provincial).</li>
-                        
-                        <li><strong class="text-orange-800">Ejecución de sentencia</strong><br>Una vez firme la resolución, si el proveedor no cumple, el empleado debe solicitar la ejecución forzosa o el cobro de astreintes (multas por incumplimiento) conforme al Art. 51 de la Ley 24.240. La sentencia puede incluir daño directo y daño punitivo (Art. 52 bis). En casos de consumidores hipervulnerables, corresponde un <strong>deber especial de protección</strong> (Art. 8 bis Ley 24.240).</li>
-                        
-                        <li><strong class="text-orange-800">Apelación</strong><br>La resolución puede ser apelada ante la Cámara de Apelaciones en lo Civil y Comercial en el plazo de 10 días (Art. 7 Ley Provincial). El empleado debe evaluar los fundamentos y, si corresponde, interponer el recurso.</li>
-                    </ol>
-                    
-                    <div class="mt-5 bg-orange-50 p-4 rounded-lg border-l-4 border-orange-500 text-xs">
-                        <i data-lucide="file-text" class="w-3 h-3 inline text-orange-700"></i> <strong class="text-orange-800">Normativa de referencia:</strong> Ley Nacional 24.240 (texto actualizado). Ley Provincial III – Nº 2 (antes 3811). Decreto Reglamentario 1798/94. Código Civil y Comercial de la Nación (arts. 1092 a 1122). Resolución 139/20 (consumidores hipervulnerables). Jurisprudencia de la Cámara Nacional de Apelaciones en lo Comercial.
+                    <h4 class="font-black text-slate-800 flex items-center gap-2 text-lg mb-4"><i data-lucide="scale" class="w-5 h-5 text-blue-600"></i> Detalle normativo aplicable</h4>
+                    <ul class="step-list text-sm">
+                        <li><strong>Art. 15:</strong> La mediación es obligatoria antes de iniciar juicio en temas de familia.</li>
+                        <li><strong>Art. 28:</strong> Las partes pueden comparecer con patrocinio letrado. La Defensoría Oficial patrocina a quienes no pueden costear abogado.</li>
+                        <li><strong>Arts. 34-36:</strong> Regulan la homologación judicial de los acuerdos. El juez debe controlar que no afecten derechos de menores o incapaces.</li>
+                        <li><strong>Ley Orgánica IV-N.15 arts. 113,118:</strong> La Defensoría tiene función de patrocinar y representar a las personas vulnerables en todas las instancias, incluida la mediación prejudicial.</li>
+                    </ul>
+                    <div class="mt-3 text-xs text-slate-500">
+                        <i data-lucide="alert-circle" class="w-3 h-3 inline text-yellow-600"></i> <strong>Importante:</strong> Si las partes ya están patrocinadas por otros abogados, la Defensoría no interviene. Solo actúa cuando el requirente es su patrocinado.
                     </div>
-                    <div class="mt-3 text-xs text-slate-500 italic">
-                        📌 <strong>Recordatorio fundamental:</strong> El Defensor Oficial NO es el Defensor del Consumidor. Solo interviene cuando el consumidor se encuentra en una situación de manifiesta vulnerabilidad (discapacidad, salud mental, adulto mayor en riesgo, etc.). En caso contrario, derivar a la Dirección de Comercio Interior.
+                </div>
+            </div>
+        `;
+    }
+
+    // 2. Protección Integral Personas Mayores (Ley XIX-41)
+    function buildProteccionMayoresContent() {
+        return `
+            <div class="space-y-5">
+                <div class="bg-gradient-to-r from-teal-50 to-emerald-50 rounded-xl p-5 border-l-8 border-teal-700 shadow-sm">
+                    <h3 class="text-xl font-black text-teal-800 flex items-center gap-3"><i data-lucide="heart-handshake" class="w-6 h-6"></i> Protección Integral de Personas Mayores</h3>
+                    <p class="text-sm text-slate-600 mt-1">Ley Provincial XIX-41 · Ley Orgánica IV-N.15 arts.113,118</p>
+                    <div class="mt-3 normativa-destacada inline-flex">Derechos de adultos mayores · Prevención de violencia institucional y familiar</div>
+                </div>
+
+                <!-- RESUMEN EJECUTIVO (10 puntos) -->
+                <div class="summary-box">
+                    <h4 class="font-black text-green-800 flex items-center gap-2 mb-3"><i data-lucide="list-checks" class="w-5 h-5"></i> Resumen ejecutivo – Actuación del Defensor Oficial</h4>
+                    <ol class="ordered-step-list text-sm text-slate-700 space-y-2">
+                        <li><strong class="text-green-700">Detectar situación de vulnerabilidad:</strong> El empleado debe identificar si el adulto mayor está en situación de abandono, maltrato físico/psicológico, violencia económica, o institucional.</li>
+                        <li><strong class="text-green-700">Patrocinio en denuncias por maltrato:</strong> Si el adulto mayor decide denunciar, el empleado lo patrocina ante la justicia de violencia familiar o civil, según corresponda.</li>
+                        <li><strong class="text-green-700">Violencia institucional:</strong> Si el maltrato proviene de residencias geriátricas o instituciones de salud, se debe accionar por vías administrativas y judiciales (amparo, medidas autosatisfactivas).</li>
+                        <li><strong class="text-green-700">Capacidad y apoyos:</strong> Si el adulto mayor tiene capacidad restringida, el empleado debe promover sistemas de apoyos (art. 32 CCC) antes que la curatela.</li>
+                        <li><strong class="text-green-700">Acceso a beneficios previsionales y sociales:</strong> Patrocinar al adulto mayor para acceder a pensiones no contributivas, PAMI, subsidios habitacionales, etc., cuando existan trabas injustificadas.</li>
+                        <li><strong class="text-green-700">Medidas cautelares urgentes:</strong> En casos de riesgo inminente (desalojo, corte de servicios esenciales, abandono), solicitar medidas cautelares inmediatas.</li>
+                        <li><strong class="text-green-700">Representación en internaciones no voluntarias:</strong> Si un adulto mayor es internado contra su voluntad en un geriátrico sin consentimiento informado, el empleado debe accionar para su externación.</li>
+                        <li><strong class="text-green-700">Coordinación interdisciplinaria:</strong> Trabajar con equipos interdisciplinarios (asistentes sociales, psicólogos, médicos) para evaluar integralmente la situación del adulto mayor.</li>
+                        <li><strong class="text-green-700">Prevención de abuso económico:</strong> Si se detecta que familiares o cuidadores se apropian indebidamente de los bienes o ingresos del adulto mayor, iniciar acciones civiles o penales.</li>
+                        <li><strong class="text-green-700">Seguimiento y control:</strong> El empleado debe hacer seguimiento periódico de las medidas ordenadas y verificar que se cumplan, especialmente en casos de violencia o abandono.</li>
+                    </ol>
+                </div>
+
+                <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+                    <h4 class="font-black text-slate-800 flex items-center gap-2 text-lg mb-4"><i data-lucide="scale" class="w-5 h-5 text-teal-600"></i> Áreas de intervención prioritaria</h4>
+                    <ul class="step-list text-sm">
+                        <li><strong>Maltrato físico o psicológico:</strong> Intervención inmediata, solicitud de medidas de protección y exclusión del agresor.</li>
+                        <li><strong>Abandono de persona:</strong> Denuncia penal y solicitud de curador provisorio.</li>
+                        <li><strong>Problemas de vivienda:</strong> Desalojos, falta de servicios básicos, hacinamiento.</li>
+                        <li><strong>Acceso a salud y medicamentos:</strong> Amparo de salud cuando se le niegan prestaciones básicas.</li>
+                    </ul>
+                </div>
+            </div>
+        `;
+    }
+
+    // 3. Pensión Graciable a Menores Víctimas (Ley XIX-51)
+    function buildPensionGraciableContent() {
+        return `
+            <div class="space-y-5">
+                <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-5 border-l-8 border-purple-700 shadow-sm">
+                    <h3 class="text-xl font-black text-purple-800 flex items-center gap-3"><i data-lucide="heart" class="w-6 h-6"></i> Pensión Graciable a Menores Víctimas</h3>
+                    <p class="text-sm text-slate-600 mt-1">Ley Provincial XIX-51 · Ley Orgánica IV-N.15 arts.113,118</p>
+                    <div class="mt-3 normativa-destacada inline-flex">Beneficio económico para menores víctimas de delitos graves</div>
+                </div>
+
+                <!-- RESUMEN EJECUTIVO (8 puntos) -->
+                <div class="summary-box">
+                    <h4 class="font-black text-green-800 flex items-center gap-2 mb-3"><i data-lucide="list-checks" class="w-5 h-5"></i> Resumen ejecutivo – Actuación del Defensor Oficial</h4>
+                    <ol class="ordered-step-list text-sm text-slate-700 space-y-2">
+                        <li><strong class="text-green-700">Verificar los supuestos de la ley:</strong> La pensión aplica a menores de 21 años (o sin límite de edad si tienen discapacidad) que hayan sido víctimas de delitos graves contra la integridad sexual, homicidio de sus progenitores, o violencia familiar extrema.</li>
+                        <li><strong class="text-green-700">Asesoramiento inicial:</strong> El empleado debe informar al adulto responsable del menor sobre la existencia de este beneficio y los requisitos (sentencia condenatoria firme o proceso penal acreditado).</li>
+                        <li><strong class="text-green-700">Recolección de documentación:</strong> Gestionar copia de la sentencia penal, partida de nacimiento del menor, acreditación de la relación de parentesco, y constancia de situación de vulnerabilidad.</li>
+                        <li><strong class="text-green-700">Presentación administrativa:</strong> El empleado debe presentar el expediente ante la autoridad de aplicación (Ministerio de Desarrollo Social o Poder Ejecutivo) para que tramite el otorgamiento de la pensión.</li>
+                        <li><strong class="text-green-700">Impugnaciones y recursos:</strong> Si la pensión es denegada, el empleado debe interponer los recursos administrativos y, si corresponde, acciones judiciales (amparo, contencioso administrativo).</li>
+                        <li><strong class="text-green-700">Seguimiento del cobro:</strong> Una vez otorgada, verificar que el pago sea regular y que el menor efectivamente reciba el beneficio. En caso de incumplimiento, reclamar ante el organismo.</li>
+                        <li><strong class="text-green-700">Actualización y revisión:</strong> La pensión puede actualizarse periódicamente. El empleado debe estar atento a su recálculo si cambian las circunstancias del menor.</li>
+                        <li><strong class="text-green-700">Cese del beneficio:</strong> Cuando el menor cumple 21 años (sin discapacidad) o cesa la causa que originó la pensión, el empleado debe informar a la familia sobre la necesidad de gestionar otros beneficios (asignación universal por hijo, etc.).</li>
+                    </ol>
+                </div>
+
+                <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+                    <h4 class="font-black text-slate-800 flex items-center gap-2 text-lg mb-4"><i data-lucide="alert-circle" class="w-5 h-5 text-purple-600"></i> Supuestos típicos de procedencia</h4>
+                    <ul class="step-list text-sm">
+                        <li><strong>Delitos contra la integridad sexual:</strong> Abuso sexual, estupro, corrupción de menores, grooming, etc.</li>
+                        <li><strong>Homicidio de uno o ambos progenitores:</strong> El menor queda en situación de orfandad.</li>
+                        <li><strong>Violencia familiar extrema:</strong> Cuando la violencia impide la convivencia con los progenitores.</li>
+                        <li><strong>Delitos cometidos por un progenitor contra el otro:</strong> Feminicidio, violencia de género con resultado de muerte o lesiones graves.</li>
+                    </ul>
+                    <div class="mt-3 p-3 bg-yellow-50 rounded text-xs">
+                        <i data-lucide="alert-triangle" class="w-3 h-3 inline text-yellow-700"></i> <strong>Observación:</strong> La pensión es graciable (no contributiva) y su otorgamiento es discrecional por parte del Poder Ejecutivo. El empleado debe fundamentar sólidamente la solicitud.
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // 4. Protección Víctimas Integridad Sexual (Ley XVII-37)
+    function buildProteccionIntegridadSexualContent() {
+        return `
+            <div class="space-y-5">
+                <div class="bg-gradient-to-r from-red-50 to-orange-50 rounded-xl p-5 border-l-8 border-red-700 shadow-sm">
+                    <h3 class="text-xl font-black text-red-800 flex items-center gap-3"><i data-lucide="shield" class="w-6 h-6"></i> Protección de Víctimas de Delitos contra la Integridad Sexual</h3>
+                    <p class="text-sm text-slate-600 mt-1">Ley Provincial XVII-37 · Ley Orgánica IV-N.15 arts.113,118</p>
+                    <div class="mt-3 normativa-destacada inline-flex">Atención integral y patrocinio jurídico gratuito</div>
+                </div>
+
+                <!-- RESUMEN EJECUTIVO (10 puntos) -->
+                <div class="summary-box">
+                    <h4 class="font-black text-green-800 flex items-center gap-2 mb-3"><i data-lucide="list-checks" class="w-5 h-5"></i> Resumen ejecutivo – Actuación del Defensor Oficial</h4>
+                    <ol class="ordered-step-list text-sm text-slate-700 space-y-2">
+                        <li><strong class="text-green-700">Contacto inmediato con la víctima:</strong> El empleado debe establecer un vínculo de confianza, respetando el ritmo de la víctima y evitando la revictimización.</li>
+                        <li><strong class="text-green-700">Patrocinio en el proceso penal:</strong> Representar a la víctima como querellante particular o patrocinar su denuncia ante la fiscalía y el juzgado de instrucción.</li>
+                        <li><strong class="text-green-700">Medidas de protección urgentes:</strong> Solicitar al juez medidas como prohibición de acercamiento, exclusión del hogar, tobillera electrónica, etc., para resguardar a la víctima.</li>
+                        <li><strong class="text-green-700">Asistencia psicológica y social:</strong> Coordinar con el equipo interdisciplinario de la Defensoría o derivar a servicios de salud mental y asistencia social.</li>
+                        <li><strong class="text-green-700">Evitar la revictimización:</strong> Solicitar que la víctima declare en Cámara Gesell o mediante videoconferencia, y que no tenga contacto directo con el imputado.</li>
+                        <li><strong class="text-green-700">Acompañamiento durante el proceso:</strong> Informar a la víctima sobre cada etapa del proceso penal, las decisiones judiciales y los plazos.</li>
+                        <li><strong class="text-green-700">Solicitud de reparación económica:</strong> En el proceso penal, pedir que se fije una reparación del daño a favor de la víctima (arts. 65 y 67 del Código Penal).</li>
+                        <li><strong class="text-green-700">Acciones civiles autónomas:</strong> Si la víctima lo desea, iniciar acciones civiles por daños y perjuicios contra el agresor, independientemente del proceso penal.</li>
+                        <li><strong class="text-green-700">Confidencialidad:</strong> Mantener estricta reserva de la identidad de la víctima y de los detalles del caso, conforme a la ley de protección de datos y los protocolos de violencia de género.</li>
+                        <li><strong class="text-green-700">Seguimiento posterior:</strong> Una vez finalizado el proceso, mantener contacto con la víctima para garantizar su contención y derivación a programas de reinserción si es necesario.</li>
+                    </ol>
+                </div>
+
+                <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+                    <h4 class="font-black text-slate-800 flex items-center gap-2 text-lg mb-4"><i data-lucide="clipboard-list" class="w-5 h-5 text-red-600"></i> Delitos comprendidos por la ley</h4>
+                    <ul class="step-list text-sm">
+                        <li><strong>Abuso sexual simple y gravemente ultrajante (art. 119 CP)</strong></li>
+                        <li><strong>Abuso sexual con acceso carnal (violación)</strong></li>
+                        <li><strong>Corrupción de menores (art. 125 CP)</strong></li>
+                        <li><strong>Promoción o facilitación de la prostitución (arts. 126-128 CP)</strong></li>
+                        <li><strong>Pornografía infantil (art. 128 CP)</strong></li>
+                        <li><strong>Grooming (art. 131 CP)</strong></li>
+                    </ul>
+                    <div class="mt-3 p-3 bg-red-50 rounded text-xs">
+                        <i data-lucide="alert-triangle" class="w-3 h-3 inline text-red-700"></i> <strong>Extrema urgencia:</strong> En casos de víctimas menores de edad, la intervención debe ser inmediata, con notificación al Juzgado de Familia y al Consejo de Niñez.
                     </div>
                 </div>
             </div>
@@ -896,7 +1000,7 @@
     `;
 
     // ============================================================
-    // MATERIAS: Se mantiene igual, con el ítem de Consumidor dentro de LEYES PROVINCIALES ESPECIALES
+    // MATERIAS: Actualización de los placeholders por contenido real
     // ============================================================
     const materias = [
         { nombreCategoria: "⚖️ ETAPA PREJUDICIAL", id: "prejudicial", procesos: [ { key: "cejume", title: "(DEUT - CEJUME) - Instancia Prejudicial Obligatoria", subtitle: "Avenimiento Prejudicial Obligatorio (APO) | Leyes XII-19, IV-N.15", contenidoEspecial: true } ] },
@@ -938,10 +1042,10 @@
         ] },
         { nombreCategoria: "⚖️ LEYES PROVINCIALES ESPECIALES", id: "leyes_especiales", procesos: [ 
             { key: 'consumidor', title: 'Ley Nacional de Defensa del Consumidor N° 24.240', subtitle: 'Ley 24.240; Ley Provincial III – Nº 2 (antes 3811); Solo interviene Defensoría si el consumidor es vulnerable' },
-            { key: 'proteccionIntegridadSexual', title: 'Protección Víctimas Integridad Sexual (Ley XVII-37)', subtitle: 'Ley XVII-37; Ley IV-N.15 arts.113,118' }, 
-            { key: 'pensionGraciableMenores', title: 'Pensión Graciable a Menores Víctimas (Ley XIX-51)', subtitle: 'Ley XIX-51; Ley IV-N.15 arts.113,118' }, 
-            { key: 'proteccionPersonasMayores', title: 'Protección Integral Personas Mayores (Ley XIX-41)', subtitle: 'Ley XIX-41; Ley IV-N.15 arts.113,118' }, 
-            { key: 'mediacionHomologacion', title: 'Mediación y Homologación de Acuerdos (Ley XII-19)', subtitle: 'Ley XII-19 arts. 15,28,34,35,36; Ley IV-N.15 arts.113,118' } 
+            { key: 'mediacionHomologacion', title: 'Mediación y Homologación de Acuerdos (Ley XII-19)', subtitle: 'Ley XII-19 arts. 15,28,34,35,36; Ley IV-N.15 arts.113,118' },
+            { key: 'proteccionPersonasMayores', title: 'Protección Integral Personas Mayores (Ley XIX-41)', subtitle: 'Ley XIX-41; Ley IV-N.15 arts.113,118' },
+            { key: 'pensionGraciableMenores', title: 'Pensión Graciable a Menores Víctimas (Ley XIX-51)', subtitle: 'Ley XIX-51; Ley IV-N.15 arts.113,118' },
+            { key: 'proteccionIntegridadSexual', title: 'Protección Víctimas Integridad Sexual (Ley XVII-37)', subtitle: 'Ley XVII-37; Ley IV-N.15 arts.113,118' }
         ] }
     ];
 
@@ -1057,6 +1161,22 @@
             area.innerHTML = buildConsumidorContent();
             if (window.lucide) lucide.createIcons();
         }
+        else if (procesoData.key === 'mediacionHomologacion') {
+            area.innerHTML = buildMediacionHomologacionContent();
+            if (window.lucide) lucide.createIcons();
+        }
+        else if (procesoData.key === 'proteccionPersonasMayores') {
+            area.innerHTML = buildProteccionMayoresContent();
+            if (window.lucide) lucide.createIcons();
+        }
+        else if (procesoData.key === 'pensionGraciableMenores') {
+            area.innerHTML = buildPensionGraciableContent();
+            if (window.lucide) lucide.createIcons();
+        }
+        else if (procesoData.key === 'proteccionIntegridadSexual') {
+            area.innerHTML = buildProteccionIntegridadSexualContent();
+            if (window.lucide) lucide.createIcons();
+        }
         else if (procesoData.title) {
             area.innerHTML = placeholderContent(procesoData.title, procesoData.subtitle);
             if (window.lucide) lucide.createIcons();
@@ -1064,6 +1184,49 @@
             area.innerHTML = emptyStateMessage;
             if (window.lucide) lucide.createIcons();
         }
+    }
+    
+    // Función para construir contenido de Consumidor (ya existente, se mantiene)
+    function buildConsumidorContent() {
+        return `
+            <div class="space-y-5">
+                <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl p-5 border-l-8 border-orange-600 shadow-sm">
+                    <h3 class="text-xl font-black text-orange-800 flex items-center gap-3"><i data-lucide="shopping-bag" class="w-6 h-6"></i> Ley Nacional de Defensa del Consumidor N° 24.240</h3>
+                    <p class="text-sm text-slate-600 mt-1">Normas de Protección y Defensa de los Consumidores · Ley Provincial III – Nº 2 (antes 3811)</p>
+                    <div class="mt-3 normativa-destacada inline-flex">Régimen de Protección Integral · Art. 42 Constitución Nacional</div>
+                </div>
+                
+                <div class="criteria-box">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i data-lucide="alert-circle" class="w-5 h-5 text-amber-700"></i>
+                        <h4 class="font-black text-amber-800">⚠️ Criterio de Intervención de la Defensoría Oficial</h4>
+                    </div>
+                    <p class="text-sm text-amber-800 mb-2"><strong>No debe intervenir en reclamos de consumo comunes.</strong> El consumidor particular debe ser derivado a la Dirección de Defensa del Consumidor de Misiones (DCI).</p>
+                    <p class="text-sm text-slate-700"><strong>La Defensoría Oficial interviene SOLO en casos de manifiesta vulnerabilidad del consumidor, tales como:</strong></p>
+                    <ul class="step-list text-sm mt-2">
+                        <li><strong>Consumidores hipervulnerables:</strong> Personas con discapacidad, adultos mayores, niños, niñas y adolescentes, personas con enfermedad grave o crónica que afecte su autonomía.</li>
+                        <li><strong>Personas con padecimiento mental</strong> que afecte su capacidad de comprender el reclamo.</li>
+                        <li><strong>Personas en situación de extrema vulnerabilidad social o económica</strong> que carezcan de acceso autónomo a la justicia del consumo.</li>
+                    </ul>
+                    <div class="mt-3 p-2 bg-red-100 rounded text-sm">
+                        <i data-lucide="x-circle" class="w-4 h-4 inline text-red-600 mr-1"></i> <strong class="text-red-800">NO intervenir:</strong> Un consumidor adulto, autónomo, sin discapacidad ni vulnerabilidad manifiesta. Derivar a Defensa del Consumidor.
+                    </div>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+                    <h4 class="font-black text-slate-800 flex items-center gap-2 text-lg mb-4"><i data-lucide="list-steps" class="w-5 h-5 text-orange-600"></i> Pasos para el empleado del Defensor Oficial (solo casos de vulnerabilidad)</h4>
+                    <ol class="ordered-step-list text-slate-700 text-sm space-y-4">
+                        <li><strong class="text-orange-800">Evaluar vulnerabilidad del requirente</strong> antes de cualquier acción. Si no es vulnerable, derivar a la Dirección de Comercio Interior.</li>
+                        <li><strong class="text-orange-800">Instancia administrativa previa</strong> de conciliación obligatoria ante la Dirección de Comercio Interior (Art. 8 Ley Provincial).</li>
+                        <li><strong class="text-orange-800">Inicio de acción judicial</strong> por proceso sumarísimo si falla la conciliación (Art. 12 Ley Provincial - Art. 53 Ley 24.240).</li>
+                        <li><strong class="text-orange-800">Invocar gratuidad</strong> (Art. 12 Ley Provincial) para eximir al consumidor de gastos judiciales.</li>
+                        <li><strong class="text-orange-800">Solicitar medidas cautelares</strong> si hay riesgo de daño irreparable (Art. 50 Ley 24.240).</li>
+                        <li><strong class="text-orange-800">Ofrecer prueba</strong> dentro de los 10 días hábiles (Art. 4 inc. f Ley Provincial).</li>
+                        <li><strong class="text-orange-800">Ejecutar sentencia</strong> solicitando astreintes si el proveedor no cumple (Art. 51 Ley 24.240).</li>
+                        <li><strong class="text-orange-800">Apelar</strong> ante Cámara de Apelaciones en 10 días si corresponde (Art. 7 Ley Provincial).</li>
+                    </ol>
+                </div>
+            </div>
+        `;
     }
     
     function resetAndShowDefault() {
