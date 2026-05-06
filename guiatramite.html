@@ -211,6 +211,12 @@
         .red-warning strong {
             color: #d32f2f;
         }
+        .green-info {
+            background: #e8f5e9;
+            border-left: 6px solid #2e7d32;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+        }
     </style>
 </head>
 <body class="bg-slate-100 text-slate-900">
@@ -257,7 +263,7 @@
 
 <script>
     // ============================================================
-    // CONTENIDO ACTUALIZADO: se agregó advertencia roja para fallecimiento en Defensor de Ausentes
+    // CONTENIDO EXISTENTE (DEUT, CEJUME, APO, ETC.)
     // ============================================================
     
     const oficinaDeutContent = `
@@ -385,7 +391,6 @@
         </div>
     `;
 
-    // Contenido detallado para ALIMENTOS (existente)
     function buildAlimentosDetailedContent() {
         return `
             <div class="space-y-5">
@@ -411,7 +416,6 @@
         `;
     }
 
-    // Contenido específico para Violencia Familiar (con paso SIGED)
     function buildViolenciaFamiliarDetailedContent() {
         return `
             <div class="space-y-5">
@@ -445,7 +449,6 @@
         `;
     }
 
-    // NUEVO: Contenido detallado para DEFENSOR DE AUSENTES con advertencia roja sobre fallecimiento
     function buildDefensorAusentesDetailedContent() {
         return `
             <div class="space-y-5">
@@ -454,7 +457,6 @@
                     <p class="text-sm text-slate-600 mt-1">Arts. 344, 521, 560, 805 CPC (Ley XII-27) · Ley Orgánica IV-N.15 arts. 113, 114, 118</p>
                     <div class="mt-3 bg-gray-200/50 p-2 rounded-md text-xs font-mono text-gray-700">Procedimiento especial para representación de personas inciertas o ausentes</div>
                 </div>
-                <!-- ADVERTENCIA ROJA DESTACADA -->
                 <div class="red-warning flex items-start gap-2">
                     <i data-lucide="alert-circle" class="w-5 h-5 flex-shrink-0 mt-0.5"></i>
                     <span><strong class="text-red-800">IMPORTANTE:</strong> No se puede asumir la defensa del ausente si se comprueba fehacientemente el <strong class="text-red-800">fallecimiento del ausente</strong>. En tal caso, debe informarse al Juzgado para que se designe a los herederos o un curador de la herencia yacente.</span>
@@ -491,7 +493,6 @@
                             - El proceso principal finaliza por sentencia firme o archivo.<br>
                             - <strong class="text-red-700">Se acredita fehacientemente el fallecimiento del ausente</strong>, debiendo comunicarse al Juzgado a los fines pertinentes.<br>
                             El empleado debe solicitar al Juzgado que tenga por concluida la intervención de la Defensoría y, en su caso, rendir cuenta de su actuación si correspondiere.
-                        </li>
                     </ol>
                     <div class="mt-5 bg-gray-100 p-4 rounded-lg border-l-4 border-gray-500 text-xs">
                         <i data-lucide="book-open" class="w-3 h-3 inline text-gray-700"></i> <strong class="text-gray-800">Normativa de referencia:</strong> Ley XII-27 (Código Procesal Civil y Comercial de Misiones), arts. 344, 521, 560, 805; Ley Orgánica del Ministerio Público de la Defensa IV-N.15, arts. 113, 114, 118. 
@@ -501,6 +502,142 @@
         `;
     }
 
+    // ============================================================
+    // NUEVO CONTENIDO ENRIQUECIDO CON PROTOCOLOS (PDF)
+    // ============================================================
+    
+    // ARTÍCULO 32 CCC + PROTOCOLO DETERMINACIÓN DE CAPACIDAD
+    function buildArticulo32DetailedContent() {
+        return `
+            <div class="space-y-5">
+                <div class="bg-gradient-to-r from-teal-50 to-cyan-50 rounded-xl p-5 border-l-8 border-teal-700 shadow-sm">
+                    <h3 class="text-xl font-black text-teal-800 flex items-center gap-3"><i data-lucide="brain" class="w-6 h-6"></i> Artículo 32 CCC - Persona con capacidad restringida y con incapacidad</h3>
+                    <p class="text-sm text-slate-600 mt-1">Código Civil y Comercial de la Nación · Ley 26.994</p>
+                    <div class="mt-3 normativa-destacada inline-flex">Principio de autonomía progresiva · Apoyos · Subsidiariedad de la incapacidad</div>
+                </div>
+
+                <!-- texto completo del art. 32 -->
+                <div class="bg-white border border-teal-200 rounded-xl p-4 shadow-sm">
+                    <h4 class="font-black text-teal-800 flex items-center gap-2"><i data-lucide="file-text" class="w-5 h-5"></i> Texto del artículo 32 del Código Civil y Comercial</h4>
+                    <div class="mt-2 p-3 bg-teal-50 rounded-lg font-mono text-sm text-slate-800">
+                        <p><strong>ARTÍCULO 32.</strong> <em>Persona con capacidad restringida y con incapacidad.</em> El juez puede restringir la capacidad para determinados actos de una persona mayor de trece años que padece una adicción o una alteración mental permanente o prolongada, de suficiente gravedad, siempre que estime que del ejercicio de su plena capacidad puede resultar un daño a su persona o a sus bienes.</p>
+                        <p class="mt-2">En relación con dichos actos, el juez debe designar el o los apoyos necesarios que prevé el artículo 43, especificando las funciones con los ajustes razonables en función de las necesidades y circunstancias de la persona. El o los apoyos designados deben promover la autonomía y favorecer las decisiones que respondan a las preferencias de la persona protegida.</p>
+                        <p class="mt-2">Por excepción, cuando la persona se encuentre absolutamente imposibilitada de interaccionar con su entorno y expresar su voluntad por cualquier modo, medio o formato adecuado y el sistema de apoyos resulte ineficaz, el juez puede declarar la incapacidad y designar un curador.</p>
+                    </div>
+                </div>
+
+                <!-- PROTOCOLO DETERMINACIÓN DE CAPACIDAD (PDF) -->
+                <div class="bg-amber-50 border-l-8 border-amber-600 rounded-xl p-5 shadow-sm">
+                    <h4 class="font-black text-amber-800 flex items-center gap-2"><i data-lucide="clipboard-list" class="w-5 h-5"></i> Protocolo para Determinación de Capacidad – Defensoría Oficial N.º 6</h4>
+                    <p class="text-sm mt-1"><strong>Turnos:</strong> Abril – Agosto – Diciembre</p>
+                    <ul class="step-list text-sm mt-3 space-y-2">
+                        <li><strong>Si viene de JUZGADO DE INSTRUCCIÓN (penal):</strong> Actuar como <strong>MPC del incapaz</strong> (art. 103 inc. a CCC). Porque le declaran inimputable. Iniciar la acción como Ministerio Público del Incapaz y solicitar un <strong>Ministerio Público Principal</strong> para el seguimiento.</li>
+                        <li><strong>Si viene de JUZGADO DE FAMILIA:</strong> Actuar como <strong>PMC del incapaz</strong> (Asesor de Incapaces), patrocinio y/o asistencia letrada de la persona a quien se pretende restringir la capacidad.</li>
+                        <li><strong>Derivados por oficio DEUT para inicio de juicio de determinación de capacidad:</strong> Tener en cuenta los sistemas de apoyos. Realizar <strong>dos entrevistas</strong> con el grupo familiar y/o personas referentes afectivos. Considerar apoyos según art. 33 CCC: familiar directo o dentro del 4° grado, o personas con afinidad (propuesto por el defensor). Verificar si tiene otras causas para no actuar en varios caracteres.</li>
+                        <li><strong>Para asumir PATROCINIO o asistencia letrada de la persona a quien se quiere determinar la capacidad:</strong>
+                            <ul class="list-disc pl-6 mt-1 space-y-1">
+                                <li>Estudiar bien cada caso y ver si existen otras causas.</li>
+                                <li>Si las causas son iniciadas por otras defensorías, tratar de trabajar juntos para un mejor acceso a la justicia.</li>
+                                <li>Previo a asumir provisoriamente asistencia letrada (si los tiempos no dan para entrevista), igualmente hacer la visita al domicilio para todos los casos (leves, graves o severos).</li>
+                                <li>Si la persona está internada, visitar el nosocomio.</li>
+                                <li><strong>Si existen otras causas donde hay menores y ya se actúa como MPC, NO se debe asumir en ningún carácter.</strong></li>
+                                <li>Para las causas de determinación de capacidad, se revisan cada <strong>3 años</strong>.</li>
+                                <li>Las causas que se elevan a Cámara son las que restringen totalmente la capacidad y/o cuando se apela algún punto del fallo.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Control de despachos:</strong> Llevar, revisar y/o controlar los despachos de cada causa. No dejar que se duerman.</li>
+                    </ul>
+                    <div class="mt-3 text-xs text-amber-700"><i data-lucide="info" class="w-3 h-3 inline"></i> Basado en protocolo interno Defensoría Nº 6 (entregado por la Procuración General).</div>
+                </div>
+
+                <div class="green-info text-xs">
+                    <i data-lucide="scale" class="w-3 h-3 inline mr-1"></i> <strong>Principio rector:</strong> El ordenamiento jurídico argentino parte de la presunción de capacidad de todas las personas (art. 31 CCC). Las restricciones a la capacidad son excepcionales, temporales y deben ser revisadas periódicamente. El sistema de apoyos es la regla general, la curatela es la excepción.
+                </div>
+
+                <div class="text-xs text-slate-500 border-t pt-3">
+                    <i data-lucide="link" class="w-3 h-3 inline"></i> <strong>Normativa de referencia:</strong> Ley 26.994 (Código Civil y Comercial de la Nación), arts. 31, 32, 36, 43, 103, 139; Convención de Naciones Unidas sobre los Derechos de las Personas con Discapacidad (Ley 26.378).
+                </div>
+            </div>
+        `;
+    }
+
+    // LEY DE SALUD MENTAL + PROTOCOLO EVALUACIÓN E INTERNACIÓN
+    function buildSaludMentalDetailedContent() {
+        return `
+            <div class="space-y-5">
+                <div class="bg-gradient-to-r from-teal-50 to-cyan-50 rounded-xl p-5 border-l-8 border-teal-700 shadow-sm">
+                    <h3 class="text-xl font-black text-teal-800 flex items-center gap-3"><i data-lucide="brain" class="w-6 h-6"></i> Ley Nacional de Salud Mental N° 26.657</h3>
+                    <p class="text-sm text-slate-600 mt-1">Derechos, internaciones, rol de la Defensoría Oficial y Órgano de Revisión</p>
+                    <div class="mt-3 normativa-destacada inline-flex">Ley de orden público - Presunción de capacidad</div>
+                </div>
+
+                <div class="green-info">
+                    <i data-lucide="scale" class="w-4 h-4 inline mr-2"></i> <strong>Principio rector:</strong> “Se debe partir de la presunción de capacidad de todas las personas” (art. 3). El diagnóstico en salud mental no autoriza a presumir riesgo de daño o incapacidad (art. 5).
+                </div>
+
+                <!-- PROTOCOLO DE EVALUACIÓN E INTERNACIÓN -->
+                <div class="bg-amber-50 border-l-8 border-amber-600 rounded-xl p-5 shadow-sm">
+                    <h4 class="font-black text-amber-800 flex items-center gap-2"><i data-lucide="hospital" class="w-5 h-5"></i> Protocolo de Evaluación e Internación – Defensoría Oficial</h4>
+                    <ul class="step-list text-sm mt-2 space-y-2">
+                        <li><strong>Para cualquier punto, se debe:</strong> Estudiar bien cada caso y ver si existen otras causas.</li>
+                        <li><strong>Previo a asumir provisoriamente asistencia letrada:</strong> Una vez que la persona esté evaluada y/o internada, entrevistar.</li>
+                        <li><strong>Para todos los casos (leves, graves o severos):</strong> Entrevistar en el domicilio.</li>
+                        <li><strong>Si la persona está internada:</strong> Visitar al nosocomio denunciado.</li>
+                        <li><strong>Si existen otras causas donde hay menores y ya se actúa como MPC, NO se debe asumir en ningún carácter.</strong></li>
+                        <li><strong>Para cerrar o archivar la causa:</strong> La persona debe demostrar que está realizando el tratamiento correspondiente.</li>
+                    </ul>
+                </div>
+
+                <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+                    <h4 class="font-black text-slate-800 flex items-center gap-2 text-lg mb-4"><i data-lucide="list-checks" class="w-5 h-5 text-teal-600"></i> Rol de la Defensoría Oficial en la Ley de Salud Mental</h4>
+                    <ul class="step-list text-sm space-y-2">
+                        <li><strong>Designación de abogado defensor (art. 22):</strong> Toda persona internada involuntariamente tiene derecho a designar un abogado. Si no lo hace, <strong>el Estado debe proporcionarle uno desde el momento de la internación</strong>. El defensor puede oponerse a la internación y solicitar la externación en cualquier momento, con control irrestricto de las actuaciones.</li>
+                        <li><strong>Órgano de Revisión (arts. 38 a 40):</strong> Creado en el ámbito del <strong>Ministerio Público de la Defensa</strong>. Tiene funciones de supervisión de internaciones, control de derivaciones, y puede apelar decisiones judiciales. La Defensoría Oficial participa en su integración multidisciplinaria.</li>
+                        <li><strong>Representación de personas con padecimiento mental:</strong> La Defensoría debe garantizar el acceso a la justicia, promoviendo medidas menos restrictivas, el consentimiento informado y la desmanicomialización.</li>
+                    </ul>
+                </div>
+
+                <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+                    <h4 class="font-black text-slate-800 flex items-center gap-2 text-lg mb-4"><i data-lucide="hospital" class="w-5 h-5 text-teal-600"></i> Internaciones: voluntarias e involuntarias</h4>
+                    <p class="text-sm font-semibold mt-2">Internación voluntaria (arts. 16 a 18)</p>
+                    <ul class="step-list text-sm pl-4">
+                        <li>Requiere consentimiento informado en estado de lucidez.</li>
+                        <li>Si se prolonga más de 60 días corridos, el equipo de salud debe comunicarlo al Órgano de Revisión y al juez para evaluar si continúa siendo voluntaria.</li>
+                        <li>La persona puede abandonarla en cualquier momento.</li>
+                    </ul>
+                    <p class="text-sm font-semibold mt-3">Internación involuntaria (arts. 20 a 25)</p>
+                    <ul class="step-list text-sm pl-4">
+                        <li><strong>Recurso excepcional:</strong> Solo cuando no sean posibles abordajes ambulatorios y exista riesgo cierto e inminente para sí o terceros.</li>
+                        <li>Debe estar fundada por dictamen de dos profesionales (uno psicólogo o psiquiatra).</li>
+                        <li>Notificación al juez competente y al Órgano de Revisión en <strong>10 horas</strong>. El juez debe resolver en 3 días.</li>
+                        <li>El juez solicita informes cada 30 días. A los 90 días, si continúa la internación, se requiere evaluación por un equipo independiente designado por el Órgano de Revisión.</li>
+                        <li>El alta y externación son facultad del equipo de salud, sin necesidad de autorización judicial (art. 23).</li>
+                    </ul>
+                    <div class="mt-3 bg-red-50 p-3 rounded-lg text-xs">
+                        <i data-lucide="alert-triangle" class="w-3 h-3 inline text-red-600"></i> <strong>Prohibición de manicomios:</strong> No se pueden crear nuevos manicomios o instituciones monovalentes. Los existentes deben adaptarse hasta su sustitución definitiva (art. 27). Las internaciones deben realizarse en hospitales generales (art. 28).
+                    </div>
+                </div>
+
+                <div class="bg-indigo-50 rounded-xl p-4 text-sm">
+                    <i data-lucide="gavel" class="w-4 h-4 inline mr-1 text-indigo-700"></i> <strong>Actuación concreta para el empleado de la Defensoría (integrando protocolo):</strong>
+                    <ol class="ordered-step-list mt-2 text-xs space-y-1">
+                        <li>Al recibir una notificación de internación involuntaria, verificar que se hayan cumplido los plazos de 10 horas (notificación) y 48 horas (documentación completa).</li>
+                        <li>Constituirse como defensor del paciente (art. 22) si no lo ha designado particular. Entrevistar al internado en el nosocomio (protocolo) y evaluar su voluntad.</li>
+                        <li>Si correspondiere, solicitar la externación inmediata al juez, o bien requerir un peritaje independiente al Órgano de Revisión (art. 24).</li>
+                        <li>Supervisar que la internación no se prolongue por causas sociales o de vivienda (art. 15).</li>
+                        <li>En caso de irregularidades (falta de consentimiento, condiciones indignas), efectuar denuncia ante el Órgano de Revisión y el juez, y eventualmente apelar (art. 40 incs. c, f).</li>
+                        <li>Para el cierre o archivo de la causa, exigir que la persona demuestre que está realizando el tratamiento correspondiente.</li>
+                    </ol>
+                </div>
+
+                <div class="text-xs text-slate-500 border-t pt-3">
+                    <i data-lucide="link" class="w-3 h-3 inline"></i> <strong>Normativa:</strong> Ley Nacional N° 26.657 (publicada B.O. 3/12/2010). Reglamentada por Decreto 603/2013. Protocolo interno Defensoría Nº 6.
+                </div>
+            </div>
+        `;
+    }
+
+    // Central CEJUME (sin cambios)
     function buildCentralCejumeWithAccordions() {
         return `
             <div class="inner-accordion-item">
@@ -559,14 +696,16 @@
         </div>
     `;
 
-    // MATERIAS: ya existe ausentes en CASOS ESPECIALES
+    // MATERIAS actualizadas con la nueva categoría CAPACIDAD Y DERECHOS HUMANOS (ya existía)
     const materias = [
         { nombreCategoria: "⚖️ ETAPA PREJUDICIAL", id: "prejudicial", procesos: [ { key: "cejume", title: "(DEUT - CEJUME) - Instancia Prejudicial Obligatoria", subtitle: "Avenimiento Prejudicial Obligatorio (APO) | Leyes XII-19, IV-N.15", contenidoEspecial: true } ] },
         { nombreCategoria: "⚖️ PROCESOS DE FAMILIA", id: "familia", procesos: [ { key: 'alimentos', title: 'Alimentos y Litisexpensas', subtitle: 'Arts. 696-710 CPC; Ley IV-N.15 arts.113,118' }, { key: 'ejecucionAlimentos', title: 'Ejecución de Alimentos', subtitle: 'Arts. 704,707 CPC; Ley IV-N.15 art.118' }, { key: 'incapacidad', title: 'Declaración de Incapacidad', subtitle: 'Arts. 659-673 CPC; Ley IV-N.15 arts.113,118' }, { key: 'inhabilitacion', title: 'Declaración de Inhabilitación', subtitle: 'Arts. 674-678 CPC; Ley IV-N.15 arts.113,118' }, { key: 'restitucionMenores', title: 'Restitución de Menores', subtitle: 'Arts. 679-695 CPC; Ley IV-N.15 art.118' }, { key: 'adopcion', title: 'Adopción', subtitle: 'Ley XII-20 / Art. 654 CPC; Ley IV-N.15 art.118' }, { key: 'cuidadoPersonal', title: 'Cuidado Personal / Régimen', subtitle: 'Arts. 648,715 CPC; Ley IV-N.15 art.118' }, { key: 'divorcio', title: 'Divorcio y Nulidad', subtitle: 'Arts. 641,648,715-716 CPC; Ley IV-N.15 art.118' }, { key: 'tutelaCuratela', title: 'Tutela y Curatela', subtitle: 'Arts. 713-714 CPC; Ley IV-N.15 arts.113,118' }, { key: 'homologacion', title: 'Homologación de Acuerdos', subtitle: 'Arts. 311,648 CPC; Ley IV-N.15 art.118' } ] },
         { nombreCategoria: "⚖️ PROCESOS DE VIOLENCIA FAMILIAR", id: "violencia_familiar", procesos: [ { key: 'proteccionViolencia', title: 'Violencia Familiar (Ley XIV-6)', subtitle: 'Arts. 655-658 CPC; Ley IV-N.15 arts.113,118' } ] },
         { nombreCategoria: "⚖️ PROCESOS CIVILES", id: "civil", procesos: [ { key: 'desalojo', title: 'Desalojo', subtitle: 'Arts. 623-635 CPC; Ley IV-N.15 arts.113,118' }, { key: 'interdictos', title: 'Interdictos Posesorios', subtitle: 'Arts. 576-592 CPC; Ley IV-N.15 art.118' }, { key: 'rendicionCuentas', title: 'Rendición de Cuentas', subtitle: 'Arts. 596-601 CPC; Ley IV-N.15 art.118' }, { key: 'divisionCondominio', title: 'División de Cosas Comunes', subtitle: 'Arts. 620-622 CPC; Ley IV-N.15 art.118' }, { key: 'mensuraDeslinde', title: 'Mensura y Deslinde', subtitle: 'Arts. 602-619 CPC; Ley IV-N.15 art.118' }, { key: 'ejecutivo', title: 'Juicio Ejecutivo', subtitle: 'Arts. 489-528 CPC; Ley IV-N.15 arts.113,118' }, { key: 'ejecucionHipotecaria', title: 'Ejecución Hipotecaria', subtitle: 'Arts. 567-569 CPC; Ley IV-N.15 art.118' }, { key: 'sucesorio', title: 'Proceso Sucesorio', subtitle: 'Arts. 717-763 CPC; Ley IV-N.15 arts.113,118' } ] },
         { nombreCategoria: "⚖️ CASOS ESPECIALES", id: "especial", procesos: [ { key: 'ausentes', title: 'Defensor de Ausentes', subtitle: 'Arts. 344,521,560,805 CPC; Ley IV-N.15 arts.113,114,118' }, { key: 'medidasAutosatisfactivas', title: 'Medidas Autosatisfactivas', subtitle: 'Arts. 636-639 CPC; Ley IV-N.15 art.118' } ] },
-        { nombreCategoria: "⚖️ LEYES PROVINCIALES ESPECIALES", id: "leyes_especiales", procesos: [ { key: 'proteccionIntegridadSexual', title: 'Protección Víctimas Integridad Sexual (Ley XVII-37)', subtitle: 'Ley XVII-37; Ley IV-N.15 arts.113,118' }, { key: 'pensionGraciableMenores', title: 'Pensión Graciable a Menores Víctimas (Ley XIX-51)', subtitle: 'Ley XIX-51; Ley IV-N.15 arts.113,118' }, { key: 'proteccionPersonasMayores', title: 'Protección Integral Personas Mayores (Ley XIX-41)', subtitle: 'Ley XIX-41; Ley IV-N.15 arts.113,118' }, { key: 'mediacionHomologacion', title: 'Mediación y Homologación de Acuerdos (Ley XII-19)', subtitle: 'Ley XII-19 arts. 15,28,34,35,36; Ley IV-N.15 arts.113,118' } ] }
+        { nombreCategoria: "⚖️ LEYES PROVINCIALES ESPECIALES", id: "leyes_especiales", procesos: [ { key: 'proteccionIntegridadSexual', title: 'Protección Víctimas Integridad Sexual (Ley XVII-37)', subtitle: 'Ley XVII-37; Ley IV-N.15 arts.113,118' }, { key: 'pensionGraciableMenores', title: 'Pensión Graciable a Menores Víctimas (Ley XIX-51)', subtitle: 'Ley XIX-51; Ley IV-N.15 arts.113,118' }, { key: 'proteccionPersonasMayores', title: 'Protección Integral Personas Mayores (Ley XIX-41)', subtitle: 'Ley XIX-41; Ley IV-N.15 arts.113,118' }, { key: 'mediacionHomologacion', title: 'Mediación y Homologación de Acuerdos (Ley XII-19)', subtitle: 'Ley XII-19 arts. 15,28,34,35,36; Ley IV-N.15 arts.113,118' } ] },
+        { nombreCategoria: "⚖️ SALUD MENTAL", id: "salud_mental", procesos: [ { key: 'saludMental', title: 'Salud Mental - Internaciones y Derechos (Ley Nacional 26.657)', subtitle: 'Ley 26.657 arts. 1-46; Decreto 603/2013; Rol Defensoría (arts.22,38-40)' } ] },
+        { nombreCategoria: "⚖️ CAPACIDAD Y DERECHOS HUMANOS", id: "capacidad", procesos: [ { key: 'articulo32', title: 'Artículo 32 CCC - Capacidad restringida y apoyos', subtitle: 'Código Civil y Comercial arts. 32, 43, 36; Convención de Naciones Unidas sobre los Derechos de las Personas con Discapacidad' } ] }
     ];
 
     let currentFilter = "";
@@ -655,6 +794,14 @@
         }
         else if (procesoData.key === 'ausentes') {
             area.innerHTML = buildDefensorAusentesDetailedContent();
+            if (window.lucide) lucide.createIcons();
+        }
+        else if (procesoData.key === 'saludMental') {
+            area.innerHTML = buildSaludMentalDetailedContent();
+            if (window.lucide) lucide.createIcons();
+        }
+        else if (procesoData.key === 'articulo32') {
+            area.innerHTML = buildArticulo32DetailedContent();
             if (window.lucide) lucide.createIcons();
         }
         else if (procesoData.title) {
