@@ -221,6 +221,13 @@
             border-radius: 0.75rem;
             font-family: monospace;
         }
+        .criteria-box {
+            background: #fef3c7;
+            border-left: 6px solid #d97706;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            margin-bottom: 1rem;
+        }
     </style>
 </head>
 <body class="bg-slate-100 text-slate-900">
@@ -755,6 +762,80 @@
         `;
     }
 
+    // ============================================================
+    // NUEVO CONTENIDO: LEY DE DEFENSA DEL CONSUMIDOR (VERSIÓN CORREGIDA)
+    // ============================================================
+    function buildConsumidorContent() {
+        return `
+            <div class="space-y-5">
+                <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl p-5 border-l-8 border-orange-600 shadow-sm">
+                    <h3 class="text-xl font-black text-orange-800 flex items-center gap-3"><i data-lucide="shopping-bag" class="w-6 h-6"></i> Ley Nacional de Defensa del Consumidor N° 24.240</h3>
+                    <p class="text-sm text-slate-600 mt-1">Normas de Protección y Defensa de los Consumidores · Ley Provincial III – Nº 2 (antes 3811)</p>
+                    <div class="mt-3 normativa-destacada inline-flex">Régimen de Protección Integral · Art. 42 Constitución Nacional</div>
+                </div>
+                
+                <!-- CRITERIO DE INTERVENCIÓN: PASO 0 (NUEVO) -->
+                <div class="criteria-box">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i data-lucide="alert-circle" class="w-5 h-5 text-amber-700"></i>
+                        <h4 class="font-black text-amber-800">⚠️ Criterio de Intervención de la Defensoría Oficial</h4>
+                    </div>
+                    <p class="text-sm text-amber-800 mb-2"><strong>No debe intervenir en reclamos de consumo comunes.</strong> El consumidor particular debe ser derivado a la Dirección de Defensa del Consumidor de Misiones (DCI).</p>
+                    <p class="text-sm text-slate-700"><strong>La Defensoría Oficial interviene SOLO en casos de manifiesta vulnerabilidad del consumidor, tales como:</strong></p>
+                    <ul class="step-list text-sm mt-2">
+                        <li><strong>Consumidores hipervulnerables:</strong> Personas con discapacidad, adultos mayores, niños, niñas y adolescentes, personas con enfermedad grave o crónica que afecte su autonomía (Resolución 139/20).</li>
+                        <li><strong>Personas con padecimiento mental</strong> que afecte su capacidad de comprender el reclamo o tomar decisiones.</li>
+                        <li><strong>Personas en situación de extrema vulnerabilidad social o económica</strong> que carezcan de cualquier posibilidad de acceso autónomo a la justicia del consumo.</li>
+                        <li><strong>Personas con dificultades de comprensión o comunicación</strong> que requieran asistencia especial para poder ejercer sus derechos.</li>
+                        <li><strong>Casos donde exista un interés colectivo o difuso</strong> que requiera representación jurídica especializada.</li>
+                    </ul>
+                    <div class="mt-3 p-2 bg-red-100 rounded text-sm">
+                        <i data-lucide="x-circle" class="w-4 h-4 inline text-red-600 mr-1"></i> <strong class="text-red-800">NO intervenir:</strong> Un consumidor adulto, autónomo, sin discapacidad ni vulnerabilidad manifiesta. Debe ser derivado a Defensa del Consumidor.
+                    </div>
+                    <div class="mt-2 text-xs text-amber-700">
+                        📞 <strong>Defensa del Consumidor Misiones (DCI):</strong> Teléfono (0376) 4447625 | Línea gratuita: 0800-888-53267 | Correo: sucei_comint@misiones.gov.ar | Web: www.acmci.misiones.gob.ar/contacto
+                    </div>
+                </div>
+
+                <div class="green-info text-sm">
+                    <i data-lucide="scale" class="w-4 h-4 inline mr-2"></i> <strong>Beneficio de gratuidad:</strong> Quienes ejercen acciones en representación de un derecho o interés individual gozarán del beneficio de gratuidad en sus presentaciones judiciales (Art. 12 Ley Provincial).
+                </div>
+                
+                <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+                    <h4 class="font-black text-slate-800 flex items-center gap-2 text-lg mb-4"><i data-lucide="list-steps" class="w-5 h-5 text-orange-600"></i> Pasos para el empleado del Defensor Oficial</h4>
+                    <ol class="ordered-step-list text-slate-700 text-sm space-y-4">
+                        <li><strong class="text-orange-800">CRITERIO 0: Evaluar la vulnerabilidad del requirente</strong><br>Antes de cualquier acción, el empleado debe <strong>evaluar si el consumidor se encuentra en situación de manifiesta vulnerabilidad</strong> (hipervulnerable, discapacidad, salud mental, extrema pobreza, etc.).<br>
+                        <span class="text-green-700">✅ Si el consumidor NO está en situación de vulnerabilidad:</span> Derivar a la Dirección de Defensa del Consumidor (DCI) y NO iniciar patrocinio.<br>
+                        <span class="text-red-700">❌ Si el consumidor está en situación de vulnerabilidad:</span> Proceder con el patrocinio letrado como Defensor Oficial.</li>
+                        
+                        <li><strong class="text-orange-800">Recepción y análisis del caso (solo si aplica patrocinio)</strong><br>Verificar que se trate de una relación de consumo (arts. 1 y 2 Ley 24.240), identificando al consumidor vulnerable y al proveedor.</li>
+                        
+                        <li><strong class="text-orange-800">Derivación a la instancia administrativa previa</strong><br>Antes de iniciar acciones judiciales, se debe agotar la instancia de conciliación obligatoria ante la Dirección de Comercio Interior (Art. 8 Ley Provincial). El empleado debe asesorar al consumidor vulnerable sobre este paso y, si corresponde, acompañarlo en la denuncia.</li>
+                        
+                        <li><strong class="text-orange-800">Inicio de la acción judicial</strong><br>Si la conciliación falla o el consumidor opta por la vía judicial, se inicia el proceso sumarísimo (Art. 12 Ley Provincial - Art. 53 Ley 24.240). El empleado debe redactar la demanda citando los derechos vulnerados (arts. 4 a 10 bis Ley 24.240) y destacar la condición de vulnerabilidad del consumidor.</li>
+                        
+                        <li><strong class="text-orange-800">Gratuidad de las presentaciones</strong><br>Invocar el beneficio de gratuidad previsto en el Art. 12 de la Ley Provincial (antes 3811) para eximir al consumidor de todo gasto judicial.</li>
+                        
+                        <li><strong class="text-orange-800">Competencia y medidas cautelares</strong><br>La acción puede interponerse a elección del consumidor ante el juez del lugar del consumo, del contrato, de su domicilio o del demandado (Art. 36 Ley 24.240). El empleado debe elegir la jurisdicción más conveniente y, si el caso lo requiere, solicitar medidas cautelares (Art. 50 Ley 24.240).</li>
+                        
+                        <li><strong class="text-orange-800">Prueba</strong><br>En el proceso sumarísimo, la prueba es restringida. El empleado debe ofrecer la documental (facturas, contratos, publicidades) y, en su caso, la testimonial o pericial de forma clara y concisa, dentro del plazo de 10 días hábiles (Art. 4 inc. f Ley Provincial).</li>
+                        
+                        <li><strong class="text-orange-800">Ejecución de sentencia</strong><br>Una vez firme la resolución, si el proveedor no cumple, el empleado debe solicitar la ejecución forzosa o el cobro de astreintes (multas por incumplimiento) conforme al Art. 51 de la Ley 24.240. La sentencia puede incluir daño directo y daño punitivo (Art. 52 bis). En casos de consumidores hipervulnerables, corresponde un <strong>deber especial de protección</strong> (Art. 8 bis Ley 24.240).</li>
+                        
+                        <li><strong class="text-orange-800">Apelación</strong><br>La resolución puede ser apelada ante la Cámara de Apelaciones en lo Civil y Comercial en el plazo de 10 días (Art. 7 Ley Provincial). El empleado debe evaluar los fundamentos y, si corresponde, interponer el recurso.</li>
+                    </ol>
+                    
+                    <div class="mt-5 bg-orange-50 p-4 rounded-lg border-l-4 border-orange-500 text-xs">
+                        <i data-lucide="file-text" class="w-3 h-3 inline text-orange-700"></i> <strong class="text-orange-800">Normativa de referencia:</strong> Ley Nacional 24.240 (texto actualizado). Ley Provincial III – Nº 2 (antes 3811). Decreto Reglamentario 1798/94. Código Civil y Comercial de la Nación (arts. 1092 a 1122). Resolución 139/20 (consumidores hipervulnerables). Jurisprudencia de la Cámara Nacional de Apelaciones en lo Comercial.
+                    </div>
+                    <div class="mt-3 text-xs text-slate-500 italic">
+                        📌 <strong>Recordatorio fundamental:</strong> El Defensor Oficial NO es el Defensor del Consumidor. Solo interviene cuando el consumidor se encuentra en una situación de manifiesta vulnerabilidad (discapacidad, salud mental, adulto mayor en riesgo, etc.). En caso contrario, derivar a la Dirección de Comercio Interior.
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
     // Central CEJUME
     function buildCentralCejumeWithAccordions() {
         return `
@@ -815,7 +896,7 @@
     `;
 
     // ============================================================
-    // MATERIAS REORGANIZADAS: NUEVA CATEGORÍA "PROTECCIÓN DE PERSONAS"
+    // MATERIAS: Se mantiene igual, con el ítem de Consumidor dentro de LEYES PROVINCIALES ESPECIALES
     // ============================================================
     const materias = [
         { nombreCategoria: "⚖️ ETAPA PREJUDICIAL", id: "prejudicial", procesos: [ { key: "cejume", title: "(DEUT - CEJUME) - Instancia Prejudicial Obligatoria", subtitle: "Avenimiento Prejudicial Obligatorio (APO) | Leyes XII-19, IV-N.15", contenidoEspecial: true } ] },
@@ -856,6 +937,7 @@
             { key: 'medidasAutosatisfactivas', title: 'Medidas Autosatisfactivas', subtitle: 'Arts. 636-639 CPC; Ley IV-N.15 art.118' } 
         ] },
         { nombreCategoria: "⚖️ LEYES PROVINCIALES ESPECIALES", id: "leyes_especiales", procesos: [ 
+            { key: 'consumidor', title: 'Ley Nacional de Defensa del Consumidor N° 24.240', subtitle: 'Ley 24.240; Ley Provincial III – Nº 2 (antes 3811); Solo interviene Defensoría si el consumidor es vulnerable' },
             { key: 'proteccionIntegridadSexual', title: 'Protección Víctimas Integridad Sexual (Ley XVII-37)', subtitle: 'Ley XVII-37; Ley IV-N.15 arts.113,118' }, 
             { key: 'pensionGraciableMenores', title: 'Pensión Graciable a Menores Víctimas (Ley XIX-51)', subtitle: 'Ley XIX-51; Ley IV-N.15 arts.113,118' }, 
             { key: 'proteccionPersonasMayores', title: 'Protección Integral Personas Mayores (Ley XIX-41)', subtitle: 'Ley XIX-41; Ley IV-N.15 arts.113,118' }, 
@@ -969,6 +1051,10 @@
         }
         else if (procesoData.key === 'proteccionAdultos') {
             area.innerHTML = buildProteccionAdultosContent();
+            if (window.lucide) lucide.createIcons();
+        }
+        else if (procesoData.key === 'consumidor') {
+            area.innerHTML = buildConsumidorContent();
             if (window.lucide) lucide.createIcons();
         }
         else if (procesoData.title) {
