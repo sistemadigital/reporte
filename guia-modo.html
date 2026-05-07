@@ -236,22 +236,32 @@
         .card {
             animation: fadeSlideUp 0.5s ease backwards;
         }
-        .card:first-child { animation-delay: 0.05s; }
-        .card:last-child { animation-delay: 0.15s; }
+        .card:nth-child(1) { animation-delay: 0.05s; }
+        .card:nth-child(2) { animation-delay: 0.10s; }
+        .card:nth-child(3) { animation-delay: 0.15s; }
+        .card:nth-child(4) { animation-delay: 0.20s; }
     </style>
 </head>
 <body>
 
-    <!-- PANTALLA DE INICIO: dos tarjetas centradas, sin iconos ni subtítulos, solo texto en negrita azul -->
+    <!-- PANTALLA DE INICIO: cuatro tarjetas centradas, solo texto en negrita azul -->
     <div class="home-screen" id="homeScreen">
         <div class="container-cards">
-            <!-- Tarjeta 1: solo título -->
+            <!-- Tarjeta 1: Guía de Actuación -->
             <div class="card" data-url="https://sistemadigital.github.io/reporte/guiatramite.html">
                 <h2>1. Guía de Actuación</h2>
             </div>
-            <!-- Tarjeta 2: solo título -->
+            <!-- Tarjeta 2: Modos de Intervenir -->
             <div class="card" data-url="https://sistemadigital.github.io/reporte/modo.html">
                 <h2>2. Modos de Intervenir</h2>
+            </div>
+            <!-- Tarjeta 3: Subrogancias (NUEVA) -->
+            <div class="card" data-url="https://sistemadigital.github.io/reporte/subrogancias.html">
+                <h2>3. Subrogancias</h2>
+            </div>
+            <!-- Tarjeta 4: Regla de Control (NUEVA - URL pendiente) -->
+            <div class="card" data-url="#" data-pending="true">
+                <h2>4. Regla de Control</h2>
             </div>
         </div>
     </div>
@@ -275,22 +285,33 @@
         const closeBtn = document.getElementById('closeFullscreenBtn');
         const viewerContextLabel = document.getElementById('viewerContextLabel');
 
-        // URLs definidas (coinciden con las originales)
+        // URLs definidas (originales + nueva subrogancias)
         const URL_GUIA = 'https://sistemadigital.github.io/reporte/guiatramite.html';
         const URL_MODO = 'https://sistemadigital.github.io/reporte/modo.html';
+        const URL_SUBROG = 'https://sistemadigital.github.io/reporte/subrogancias.html';
+        // Para Regla de Control (pendiente)
+        const URL_REGLA_PENDIENTE = null;  // Todavía no disponible
 
         // Función para abrir pantalla completa con una URL específica
         function openFullscreenContent(url, titleHint = '') {
-            if (!url) return;
+            if (!url || url === '#' || url === 'about:blank') {
+                // Si la URL no es válida o es el placeholder, mostrar mensaje amigable
+                alert('⚠️ Esta sección estará disponible próximamente. URL en desarrollo.');
+                return false;
+            }
             
             // Asignar URL al iframe (recargar contenido)
             dynamicIframe.src = url;
             
-            // Pequeño detalle visual: cambiamos el texto del contexto según la tarjeta
+            // Actualizar etiqueta contextual según el título de la tarjeta
             if (titleHint.includes('Guía') || url.includes('guiatramite')) {
                 viewerContextLabel.textContent = '📄 Guía de Actuación';
             } else if (titleHint.includes('Modos') || url.includes('modo.html')) {
                 viewerContextLabel.textContent = '🔄 Modos de Intervenir';
+            } else if (titleHint.includes('Subrogancias') || url.includes('subrogancias')) {
+                viewerContextLabel.textContent = '📋 Subrogancias';
+            } else if (titleHint.includes('Regla de Control') || titleHint.includes('Regla')) {
+                viewerContextLabel.textContent = '⚙️ Regla de Control (Próximamente)';
             } else {
                 viewerContextLabel.textContent = '📎 Documento oficial';
             }
@@ -303,6 +324,11 @@
             
             // Aseguramos que el scroll del body no interfiera
             document.body.style.overflow = 'hidden';
+            
+            // Agregar estado en historial para permitir cerrar con "atrás"
+            history.pushState({ viewerOpen: true, url: url }, '', window.location.href);
+            
+            return true;
         }
         
         // Función para cerrar el visor y volver a las tarjetas centradas
@@ -326,16 +352,29 @@
             
             // Forzamos que el body no tenga desplazamiento extra
             window.scrollTo(0, 0);
+            
+            // Limpiar historial si corresponde
+            if (history.state && history.state.viewerOpen === true) {
+                history.replaceState({ viewerClosed: true }, '', window.location.href);
+            }
         }
         
         // ---- Asignar eventos a cada tarjeta (usando data-url) ----
         const cards = document.querySelectorAll('.card');
         cards.forEach(card => {
             let targetUrl = card.getAttribute('data-url');
-            const cardText = card.innerText || '';  // "1. Guía de Actuación" o "2. Modos de Intervenir"
+            const cardText = card.innerText || '';  // Ej: "1. Guía de Actuación"
+            const isPending = card.hasAttribute('data-pending'); // Para la tarjeta de Regla de Control
             
             card.addEventListener('click', (e) => {
                 e.stopPropagation();
+                
+                // Manejo especial para tarjeta con URL pendiente o inválida
+                if (isPending || !targetUrl || targetUrl === '#') {
+                    alert('🔜 La sección "Regla de Control" estará disponible próximamente. Se actualizará la URL más adelante.');
+                    return;
+                }
+                
                 if (targetUrl) {
                     openFullscreenContent(targetUrl, cardText);
                 } else {
@@ -344,8 +383,11 @@
                         openFullscreenContent(URL_GUIA, cardText);
                     } else if (cardText.includes('Modos') || cardText.includes('2.')) {
                         openFullscreenContent(URL_MODO, cardText);
+                    } else if (cardText.includes('Subrogancias') || cardText.includes('3.')) {
+                        openFullscreenContent(URL_SUBROG, cardText);
                     } else {
                         console.warn('URL no definida');
+                        alert('No se pudo cargar el contenido. URL no válida.');
                     }
                 }
             });
@@ -369,75 +411,12 @@
         window.addEventListener('popstate', (event) => {
             if (fullscreenViewer.classList.contains('active')) {
                 closeFullscreenAndReturn();
-                // Reemplazamos estado para evitar conflictos
-                history.replaceState({ fromViewer: false }, '', window.location.href);
+                // Evitar estados redundantes
+                if (history.state && history.state.viewerOpen) {
+                    history.replaceState({ fromViewer: false }, '', window.location.href);
+                }
             }
         });
-        
-        // Lógica mejorada para historial al abrir fullscreen
-        const originalOpen = openFullscreenContent;
-        window.openFullscreenContent = function(url, titleHint) {
-            const wasActiveBefore = fullscreenViewer.classList.contains('active');
-            
-            if (wasActiveBefore) {
-                // Si ya está activo, solo cambiamos la URL y el contexto
-                dynamicIframe.src = url;
-                if (titleHint.includes('Guía') || url.includes('guiatramite')) {
-                    viewerContextLabel.textContent = '📄 Guía de Actuación';
-                } else if (titleHint.includes('Modos') || url.includes('modo.html')) {
-                    viewerContextLabel.textContent = '🔄 Modos de Intervenir';
-                } else {
-                    viewerContextLabel.textContent = '📎 Documento oficial';
-                }
-                return;
-            }
-            
-            // No estaba activo: ocultamos home y mostramos visor
-            homeScreen.classList.add('hidden');
-            fullscreenViewer.classList.add('active');
-            dynamicIframe.src = url;
-            document.body.style.overflow = 'hidden';
-            
-            if (titleHint.includes('Guía') || url.includes('guiatramite')) {
-                viewerContextLabel.textContent = '📄 Guía de Actuación';
-            } else if (titleHint.includes('Modos') || url.includes('modo.html')) {
-                viewerContextLabel.textContent = '🔄 Modos de Intervenir';
-            } else {
-                viewerContextLabel.textContent = '📎 Documento oficial';
-            }
-            
-            // Agregar estado en historial para permitir cerrar con "atrás"
-            history.pushState({ viewerOpen: true, url: url }, '', window.location.href);
-        };
-        
-        // Reemplazar la función global para que los eventos de tarjetas usen la versión mejorada
-        window.openFullscreenContent = openFullscreenContent;
-        
-        // Reasignamos closeFullscreenAndReturn para mantener historial limpio
-        const originalClose = closeFullscreenAndReturn;
-        window.closeFullscreenAndReturn = function() {
-            if (!fullscreenViewer.classList.contains('active')) return;
-            fullscreenViewer.classList.remove('active');
-            homeScreen.classList.remove('hidden');
-            setTimeout(() => {
-                if (!fullscreenViewer.classList.contains('active')) {
-                    dynamicIframe.src = 'about:blank';
-                }
-            }, 300);
-            document.body.style.overflow = '';
-            window.scrollTo(0, 0);
-            if (history.state && (history.state.viewerOpen === true)) {
-                history.replaceState({ viewerClosed: true }, '', window.location.href);
-            }
-        };
-        
-        // Actualizar el botón de cierre con la nueva versión
-        closeBtn.onclick = () => {
-            window.closeFullscreenAndReturn();
-        };
-        
-        // Reemplazar la referencia global de openFullscreenContent para que los cards usen la lógica final
-        window.openFullscreenContent = openFullscreenContent;
         
         // Manejo de error en iframe (solo advertencia)
         dynamicIframe.addEventListener('error', () => {
@@ -451,8 +430,7 @@
         document.body.style.overflow = '';
         dynamicIframe.src = 'about:blank';
         
-        // Ajuste adicional de accesibilidad para las tarjetas sin texto extra
-        console.log('✅ Modo actualizado: tarjetas limpias, tamaño 60% pantalla, fullscreen con retorno.');
+        console.log('✅ Cuatro módulos disponibles: Guía de Actuación, Modos de Intervenir, Subrogancias, Regla de Control (pendiente).');
     </script>
 </body>
 </html>
