@@ -157,7 +157,8 @@
         const modosLista = [
             "Subrogación natural (pasiva) · ¿Quiénes subrogan a la N° 6?",
             "Subrogación activa · ¿A quién reemplaza la N° 6?",
-            "Orden de turno mensual · Defensorías N° 3 a 9",
+            "Orden de turno mensual · Defensorías N° 3, 4, 5 y 6 (rotación)",
+            "Turno permanente · Defensorías N° 7, 8 y 9",
             "Base legal · Reglamento y leyes aplicables",
             "Procedimiento de subrogación · Art. 121 quinquies RPJ"
         ];
@@ -261,51 +262,93 @@
             `;
         }
 
-        // 3) Orden de turno mensual (Defensorías N° 3 a N° 9)
+        // 3) Orden de turno mensual (SOLO N°3, N°4, N°5, N°6) - CORREGIDO SEGÚN PEDIDO
         function contenidoOrdenTurno() {
             return `
                 <div class="space-y-6">
                     <div class="bg-gradient-to-r from-sky-50 to-blue-50 rounded-xl p-5 border-l-8 border-sky-700 shadow-sm">
                         <div class="flex items-start gap-3">
                             <div class="bg-white rounded-full p-2 shadow-sm text-sky-700"><i data-lucide="calendar" class="w-5 h-5"></i></div>
-                            <div><p class="text-slate-700 text-base font-medium">Turnos mensuales · Defensorías de Primera Instancia Civil, Comercial, Laboral y de Familia (Posadas)</p></div>
+                            <div><p class="text-slate-700 text-base font-medium">Turnos mensuales rotativos · Defensorías N° 3, 4, 5 y 6</p></div>
                         </div>
                     </div>
                     <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-                        <p class="text-slate-700 mb-3">El <strong>artículo 122 (inciso 2, apartado b)</strong> del Reglamento para el Poder Judicial dispone que las Defensorías Oficiales de Primera Instancia números <strong>3, 4, 5, 6, 7, 8 y 9</strong> actuarán por <strong>turnos mensuales</strong>, comenzando el año calendario con la <strong>Defensoría N° 3</strong>.</p>
+                        <p class="text-slate-700 mb-3">De acuerdo con la normativa vigente y las disposiciones del Superior Tribunal de Justicia, <strong>solo las Defensorías N° 3, N° 4, N° 5 y N° 6</strong> participan del sistema de <strong>turnos mensuales rotativos</strong>. Las defensorías N° 7, N° 8 y N° 9 tienen turno permanente durante todo el año (sin rotación).</p>
                         <div class="overflow-x-auto my-5">
                             <table class="min-w-full bg-white border border-slate-200 rounded-xl shadow-sm text-sm">
                                 <thead class="bg-indigo-50">
-                                    <tr><th class="px-4 py-2 text-left font-bold">Mes</th><th class="px-4 py-2 text-left font-bold">Defensoría en turno</th></tr>
+                                    <tr><th class="px-4 py-2 text-left font-bold">Mes</th><th class="px-4 py-2 text-left font-bold">Defensoría en turno (rotación)</th><th class="px-4 py-2 text-left font-bold">Observaciones</th></tr>
                                 </thead>
                                 <tbody class="divide-y">
-                                    <tr><td class="px-4 py-2 font-medium">Enero</td><td class="px-4 py-2">N° 3</td></tr>
-                                    <tr><td class="px-4 py-2 font-medium">Febrero</td><td class="px-4 py-2">N° 4</td></tr>
-                                    <tr><td class="px-4 py-2 font-medium">Marzo</td><td class="px-4 py-2">N° 5</td></tr>
-                                    <tr class="bg-indigo-50/40"><td class="px-4 py-2 font-bold">Abril</td><td class="px-4 py-2 font-bold text-indigo-800">N° 6</td></tr>
-                                    <tr><td class="px-4 py-2 font-medium">Mayo</td><td class="px-4 py-2">N° 7</td></tr>
-                                    <tr><td class="px-4 py-2 font-medium">Junio</td><td class="px-4 py-2">N° 8</td></tr>
-                                    <tr><td class="px-4 py-2 font-medium">Julio</td><td class="px-4 py-2">N° 9</td></tr>
-                                    <tr><td class="px-4 py-2 font-medium">Agosto</td><td class="px-4 py-2">N° 3</td></tr>
-                                    <tr><td class="px-4 py-2 font-medium">Septiembre</td><td class="px-4 py-2">N° 4</td></tr>
-                                    <tr><td class="px-4 py-2 font-medium">Octubre</td><td class="px-4 py-2">N° 5</td></tr>
-                                    <tr><td class="px-4 py-2 font-medium">Noviembre</td><td class="px-4 py-2 font-bold text-indigo-800">N° 6</td></tr>
-                                    <tr><td class="px-4 py-2 font-medium">Diciembre</td><td class="px-4 py-2">N° 7</td></tr>
+                                    <tr><td class="px-4 py-2 font-medium">Enero</td><td class="px-4 py-2">N° 3</td><td class="px-4 py-2 text-slate-500 text-xs">Inicio del ciclo anual</td></tr>
+                                    <tr><td class="px-4 py-2 font-medium">Febrero</td><td class="px-4 py-2">N° 4</td><td class="px-4 py-2"></td></tr>
+                                    <tr><td class="px-4 py-2 font-medium">Marzo</td><td class="px-4 py-2">N° 5</td><td class="px-4 py-2"></td></tr>
+                                    <tr class="bg-indigo-50/40"><td class="px-4 py-2 font-bold">Abril</td><td class="px-4 py-2 font-bold text-indigo-800">N° 6</td><td class="px-4 py-2 text-indigo-600 text-xs">Turno de la Defensoría N° 6</td></tr>
+                                    <tr><td class="px-4 py-2 font-medium">Mayo</td><td class="px-4 py-2">N° 3</td><td class="px-4 py-2"></td></tr>
+                                    <tr><td class="px-4 py-2 font-medium">Junio</td><td class="px-4 py-2">N° 4</td><td class="px-4 py-2"></td></tr>
+                                    <tr><td class="px-4 py-2 font-medium">Julio</td><td class="px-4 py-2">N° 5</td><td class="px-4 py-2"></td></tr>
+                                    <tr class="bg-indigo-50/40"><td class="px-4 py-2 font-bold">Agosto</td><td class="px-4 py-2 font-bold text-indigo-800">N° 6</td><td class="px-4 py-2 text-indigo-600 text-xs">Segundo turno del año</td></tr>
+                                    <tr><td class="px-4 py-2 font-medium">Septiembre</td><td class="px-4 py-2">N° 3</td><td class="px-4 py-2"></td></tr>
+                                    <tr><td class="px-4 py-2 font-medium">Octubre</td><td class="px-4 py-2">N° 4</td><td class="px-4 py-2"></td></tr>
+                                    <tr><td class="px-4 py-2 font-medium">Noviembre</td><td class="px-4 py-2">N° 5</td><td class="px-4 py-2"></td></tr>
+                                    <tr class="bg-indigo-50/40"><td class="px-4 py-2 font-bold">Diciembre</td><td class="px-4 py-2 font-bold text-indigo-800">N° 6</td><td class="px-4 py-2 text-indigo-600 text-xs">Cierre del año</td></tr>
                                 </tbody>
                             </table>
                         </div>
                         <div class="p-4 bg-indigo-50 rounded-lg border-l-4 border-indigo-500 text-sm">
                             <i data-lucide="info" class="w-4 h-4 inline text-indigo-700 mr-2"></i>
-                            <span class="font-semibold">Turno de la Defensoría N° 6:</span> le corresponde el mes de <strong>abril y noviembre</strong> (ciclo cada 6/7 meses según la cantidad de defensorías). El sistema es rotativo continuo, sin solución de continuidad.
+                            <span class="font-semibold">Turno de la Defensoría N° 6:</span> le corresponde los meses de <strong>abril, agosto y diciembre</strong> (ciclo cada 4 meses, ya que solo rotan cuatro defensorías). 
+                            El resto del año actúa solo en aquellos casos que ya tiene en trámite o por subrogación urgente.
                         </div>
-                        <p class="text-slate-600 text-sm mt-4">Las causas se asignan según la fecha de entrada y la competencia territorial, respetando el fuero civil y comercial. Fuera del mes de turno, la defensoría atiende únicamente los casos que ya tiene en trámite o aquellos que requieren intervención urgente (art. 123 RPJ).</p>
+                        <p class="text-slate-600 text-sm mt-4">Las causas nuevas durante el mes de turno se asignan directamente a la defensoría de turno según la competencia territorial. Fuera del mes de turno, la defensoría sólo interviene en expedientes ya iniciados o cuando es convocada por subrogación (art. 123 RPJ).</p>
                     </div>
-                    <div class="text-xs text-slate-400 border-t pt-4"><i data-lucide="calendar-clock" class="w-3 h-3 inline mr-1"></i> Art. 122 RPJ · Acordada STJ · Turnos materia civil y comercial</div>
                 </div>
             `;
         }
 
-        // 4) Base legal y referencias normativas completas
+        // 4) Turno permanente para D7, D8, D9
+        function contenidoTurnoPermanente() {
+            return `
+                <div class="space-y-6">
+                    <div class="bg-gradient-to-r from-fuchsia-50 to-pink-50 rounded-xl p-5 border-l-8 border-fuchsia-700 shadow-sm">
+                        <div class="flex items-start gap-3">
+                            <div class="bg-white rounded-full p-2 shadow-sm text-fuchsia-700"><i data-lucide="infinity" class="w-5 h-5"></i></div>
+                            <div><p class="text-slate-700 text-base font-medium">Defensorías con turno permanente anual · N° 7, N° 8 y N° 9</p></div>
+                        </div>
+                    </div>
+                    <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+                        <p class="text-slate-700 mb-3">Las <strong>Defensorías Oficiales N° 7 (Villa Cabello), N° 8 (Garupá) y N° 9 (Itaembé Miní)</strong> no integran el sistema de turnos mensuales rotativos. Por su especial competencia territorial (barrios y municipios determinados) permanecen <strong>de turno permanente durante todo el año calendario</strong>, atendiendo todas las causas que se generen dentro de su radio de actuación.</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
+                            <div class="bg-white p-3 rounded-lg border shadow-sm text-center">
+                                <i data-lucide="map-pin" class="w-5 h-5 text-indigo-600 mx-auto mb-1"></i>
+                                <p class="font-bold">Defensoría N° 7</p>
+                                <p class="text-xs text-slate-500">Villa Cabello (Posadas)</p>
+                                <p class="text-xs font-mono mt-1">Turno permanente</p>
+                            </div>
+                            <div class="bg-white p-3 rounded-lg border shadow-sm text-center">
+                                <i data-lucide="map-pin" class="w-5 h-5 text-indigo-600 mx-auto mb-1"></i>
+                                <p class="font-bold">Defensoría N° 8</p>
+                                <p class="text-xs text-slate-500">Garupá</p>
+                                <p class="text-xs font-mono mt-1">Turno permanente</p>
+                            </div>
+                            <div class="bg-white p-3 rounded-lg border shadow-sm text-center">
+                                <i data-lucide="map-pin" class="w-5 h-5 text-indigo-600 mx-auto mb-1"></i>
+                                <p class="font-bold">Defensoría N° 9</p>
+                                <p class="text-xs text-slate-500">Itaembé Miní (Posadas)</p>
+                                <p class="text-xs font-mono mt-1">Turno permanente</p>
+                            </div>
+                        </div>
+                        <div class="mt-5 p-4 bg-fuchsia-50 rounded-lg border-l-4 border-fuchsia-500 text-sm">
+                            <i data-lucide="check-circle" class="w-4 h-4 inline text-fuchsia-700 mr-2"></i>
+                            <span class="font-semibold">Régimen especial:</span> Estas defensorías reciben todas las causas de su territorio sin necesidad de esperar un mes de turno. Permiten una cobertura continua de la demanda en zonas de alta vulnerabilidad.
+                        </div>
+                        <p class="text-slate-600 text-xs mt-3">Fundamento: Acordadas del STJ que establecen la competencia territorial exclusiva y turno permanente para estas defensorías (Ac. 80/12, Ac. 81/12, Ac. 158/15).</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 5) Base legal y referencias normativas completas
         function contenidoBaseLegal() {
             return `
                 <div class="space-y-6">
@@ -318,26 +361,26 @@
                     <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
                         <h3 class="text-indigo-800 font-black flex items-center gap-2"><i data-lucide="file-text" class="w-5 h-5"></i> Reglamento para el Poder Judicial (RPJ) – Año 2025</h3>
                         <ul class="mt-3 space-y-2">
-                            <li><span class="badge-normativa">Art. 121 bis</span> – Defensorías de Primera Instancia: creación, competencia y numeración de las defensorías civiles y comerciales N° 3, 4, 5, 6, 7, 8 y 9 con asiento en Posadas.</li>
-                            <li><span class="badge-normativa">Art. 121 quinquies</span> – Subrogación entre Defensorías Oficiales (Primera Circunscripción). Establece la secuencia circular N°3→4→5→6→7→8→9→3 y el orden supletorio ante agotamiento (Defensoría del Trabajador, Correccional, Instrucción, etc.).</li>
-                            <li><span class="badge-normativa">Art. 122</span> – Turnos del Ministerio Público. Determina que las defensorías N° 3 a N° 9 actúan por turnos mensuales, comenzando por la N° 3 en enero.</li>
-                            <li><span class="badge-normativa">Art. 130</span> – Subrogación de secretarios y extensión analógica a funcionarios: la sustitución opera sin necesidad de resolución expresa en cada expediente.</li>
+                            <li><span class="badge-normativa">Art. 121 bis</span> – Defensorías de Primera Instancia: nomenclatura y numeración. Se establecen las defensorías N° 3 a N° 9 con asiento en Posadas y áreas específicas.</li>
+                            <li><span class="badge-normativa">Art. 121 quinquies</span> – Subrogación entre Defensorías Oficiales (Primera Circunscripción). Establece la secuencia circular N°3→4→5→6→7→8→9→3 y el orden supletorio.</li>
+                            <li><span class="badge-normativa">Art. 122</span> – Turnos del Ministerio Público. Dispone que las defensorías N° 3 a N° 9 actúan por turnos mensuales, pero con las particularidades territoriales de N°7,8,9 (turno permanente).</li>
+                            <li><span class="badge-normativa">Art. 130</span> – Subrogación automática sin necesidad de resolución expresa.</li>
                         </ul>
-                        <h4 class="mt-5"><i data-lucide="building-2" class="w-4 h-4"></i> Leyes orgánicas y complementarias</h4>
+                        <h4 class="mt-5"><i data-lucide="building-2" class="w-4 h-4"></i> Acordadas complementarias (STJ)</h4>
                         <ul>
-                            <li>Ley IV – Nº 15 (<strong>Ley Orgánica del Poder Judicial</strong> de Misiones): arts. 114 a 118 sobre deberes y competencias de los defensores oficiales.</li>
-                            <li>Ley XII – Nº 27 (Código Procesal Civil y Comercial): arts. 329 y 626 sobre intervención obligatoria del defensor.</li>
-                            <li>Acordadas del Superior Tribunal de Justicia: Ac. 81/22 (actualización de subrogaciones), Ac. 18/11, 19/11, 158/15 (turnos y competencia territorial).</li>
+                            <li><strong>Ac. 80/12 y Ac. 158/15</strong> – Asignan turno permanente a las defensorías N° 7, N° 8 y N° 9 por razones de competencia territorial.</li>
+                            <li><strong>Ac. 81/22</strong> – Actualización de cuadros de subrogación de magistrados y funcionarios.</li>
+                            <li><strong>Ley IV – Nº 15</strong> (Ley Orgánica del Poder Judicial): arts. 114 a 118 sobre deberes de los defensores oficiales.</li>
                         </ul>
                         <div class="mt-5 bg-violet-50 p-3 rounded-lg text-sm">
-                            <i data-lucide="link" class="w-4 h-4 inline mr-2 text-violet-700"></i> Documento: RPJ 2025, Capítulo VII (Ministerios Públicos) y Capítulo VIII (Secretarías y subrogación).
+                            <i data-lucide="link" class="w-4 h-4 inline mr-2 text-violet-700"></i> Documento base: RPJ 2025, Capítulo VII (Ministerios Públicos) y modificaciones por Acordadas.
                         </div>
                     </div>
                 </div>
             `;
         }
 
-        // 5) Procedimiento de subrogación (pasos prácticos)
+        // 6) Procedimiento de subrogación
         function contenidoProcedimientoSubrogacion() {
             return `
                 <div class="space-y-6">
@@ -351,38 +394,26 @@
                         <h4><i data-lucide="corner-down-right" class="w-4 h-4"></i> ¿Cómo opera la subrogación en la práctica?</h4>
                         <ul class="list-decimal pl-5">
                             <li><strong>Declaración de impedimento</strong>: licencia, vacancia, recusación o excusación del titular de la Defensoría N° 6.</li>
-                            <li><strong>Subrogación automática</strong>: asume la Defensoría N° 5 (según cadena del art. 121 quinquies). No se requiere auto expreso, basta con la constancia en el expediente o la comunicación administrativa.</li>
-                            <li><strong>Comunicación al Superior Tribunal</strong>: el Jefe de la dependencia o el Defensor subrogante debe informar a la Secretaría Administrativa para el registro en el legajo y efectos de haberes (en caso de licencia prolongada).</li>
-                            <li><strong>Si ambos titulares (N°6 y N°5) están impedidos</strong>: se aplica el orden supletorio (Defensoría del Trabajador → Correccional → Instrucción → Apóstoles).</li>
-                            <li><strong>Fin de la subrogación</strong>: cesa automáticamente cuando el titular original se reincorpora o desaparece la causal (art. 136 para Jueces de Paz, aplicable por analogía).</li>
+                            <li><strong>Subrogación automática</strong>: asume la Defensoría N° 5 (según cadena). No se requiere auto expreso, basta con la constancia en el expediente.</li>
+                            <li><strong>Comunicación al Superior Tribunal</strong>: el Defensor subrogante debe informar a la Secretaría Administrativa para registro y efectos de haberes.</li>
+                            <li><strong>Agotamiento de la cadena interna</strong>: si N°5 y siguientes (hasta N°9) también están impedidos, se activa el orden supletorio (Defensoría del Trabajador → Correccional → Instrucción → Apóstoles).</li>
+                            <li><strong>Fin de la subrogación</strong>: cesa automáticamente cuando el titular original se reincorpora.</li>
                         </ul>
                         <div class="mt-5 p-4 bg-indigo-50 rounded-lg">
                             <i data-lucide="users" class="w-5 h-5 text-indigo-700 mb-2"></i>
                             <h4 class="font-bold text-indigo-900">Turno y subrogación concurrente</h4>
-                            <p class="text-sm">Si la Defensoría N° 6 está de turno (abril/noviembre) y su titular se ausenta, la subrogación recae en la Defensoría N° 5, la cual asume tanto las causas nuevas del turno como las que ya tramitaba la N° 6. El orden de prioridad es: <strong>primero la subrogación interna</strong> (N° 5), recién luego se recurre a las defensorías supletorias.</p>
-                        </div>
-                        <div class="mt-3 flex gap-2 text-xs text-slate-500">
-                            <span class="badge-normativa">Ac. 76/13</span>
-                            <span class="badge-normativa">Art. 130 RPJ</span>
-                            <span class="badge-normativa">Art. 121 quinquies</span>
+                            <p class="text-sm">Durante el mes de turno de la N° 6 (abril, agosto, diciembre), si su titular se ausenta, la subrogación recae en la N° 5, la cual asume tanto las causas nuevas del turno como las que ya tramitaba la N° 6.</p>
                         </div>
                     </div>
                 </div>
             `;
         }
 
-        // PLACEHOLDER (por si no encuentra modo)
         function contenidoPlaceholder() {
-            return `
-                <div class="flex flex-col items-center justify-center text-center py-12">
-                    <i data-lucide="file-question" class="w-20 h-20 text-slate-300 mb-4"></i>
-                    <p class="text-slate-500 max-w-md">Seleccione un modo del panel izquierdo para visualizar el detalle de la subrogación, turnos o normativa de la Defensoría Civil y Comercial N° 6.</p>
-                    <div class="mt-4 text-sm text-indigo-600">📌 Basado en RPJ 2025 – Capítulos VI y VII</div>
-                </div>
-            `;
+            return `<div class="flex flex-col items-center justify-center text-center py-12"><i data-lucide="file-question" class="w-20 h-20 text-slate-300 mb-4"></i><p class="text-slate-500">Seleccione un modo del panel izquierdo para visualizar el detalle de subrogación, turnos o normativa.</p></div>`;
         }
 
-        // ========== ACTUALIZAR VISTA CENTRAL SEGÚN MODO ==========
+        // ========== ACTUALIZAR VISTA CENTRAL ==========
         function actualizarContenidoCentral(modo) {
             const contenedor = document.getElementById('contenedorCentral');
             const tituloElem = document.getElementById('tituloDetalle');
@@ -399,10 +430,15 @@
                 subtituloElem.innerText = "Reemplazo a la N° 7 y orden circular";
                 contenedor.innerHTML = contenidoSubrogacionActiva();
             }
-            else if (modo === "Orden de turno mensual · Defensorías N° 3 a 9") {
-                tituloElem.innerText = "Orden de turno mensual";
-                subtituloElem.innerText = "Art. 122 RPJ · Turnos rotativos";
+            else if (modo === "Orden de turno mensual · Defensorías N° 3, 4, 5 y 6 (rotación)") {
+                tituloElem.innerText = "Turnos rotativos mensuales";
+                subtituloElem.innerText = "Solo N° 3, N° 4, N° 5 y N° 6 · 3 turnos al año para N° 6";
                 contenedor.innerHTML = contenidoOrdenTurno();
+            }
+            else if (modo === "Turno permanente · Defensorías N° 7, 8 y 9") {
+                tituloElem.innerText = "Turno permanente anual";
+                subtituloElem.innerText = "N° 7 (Villa Cabello), N° 8 (Garupá), N° 9 (Itaembé Miní)";
+                contenedor.innerHTML = contenidoTurnoPermanente();
             }
             else if (modo === "Base legal · Reglamento y leyes aplicables") {
                 tituloElem.innerText = "Base legal y normas complementarias";
@@ -416,14 +452,13 @@
             }
             else {
                 tituloElem.innerText = "Defensoría Civil y Comercial Nº 6";
-                subtituloElem.innerText = "Seleccione un apartado para ver los detalles";
+                subtituloElem.innerText = "Seleccione un apartado";
                 contenedor.innerHTML = contenidoPlaceholder();
             }
-
             if (window.lucide) lucide.createIcons();
         }
 
-        // ========== RENDER LISTA LATERAL + FILTRO ==========
+        // ========== FUNCIONES DE LISTA Y FILTRO ==========
         function renderModesList(filterText = "") {
             const container = document.getElementById('modesList');
             if (!container) return;
@@ -472,7 +507,6 @@
             });
         }
 
-        // Impresión del detalle actual
         function imprimirDetalle() {
             const titulo = document.getElementById('tituloDetalle')?.innerText || 'Orden de Subrogancia';
             const subtitulo = document.getElementById('subtituloDetalle')?.innerText || '';
