@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Orden de Subrogancia | Defensoría Civil y Comercial Nº 6</title>
+    <title>Subrogancias Defensoria Nº 6</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -31,61 +31,18 @@
             scrollbar-width: thin;
             scrollbar-color: #cbd5e1 #f1f5f9;
         }
-        .scroll-panel::-webkit-scrollbar {
-            width: 5px;
-        }
-        .scroll-panel::-webkit-scrollbar-track {
-            background: #f1f5f9;
-            border-radius: 10px;
-        }
-        .scroll-panel::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 10px;
-        }
-        .detail-content p, .detail-content li {
-            font-size: 0.95rem;
-            line-height: 1.55;
-        }
-        .detail-content ul {
-            margin: 0.75rem 0;
-            padding-left: 1.5rem;
-            list-style-type: disc;
-        }
-        .detail-content li {
-            margin-bottom: 0.5rem;
-        }
-        .detail-content h4 {
-            font-weight: 700;
-            margin-top: 1.25rem;
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-        .badge-normativa {
-            display: inline-block;
-            background: #eef2ff;
-            color: #1e3a8a;
-            font-size: 0.7rem;
-            font-weight: 700;
-            padding: 0.25rem 0.75rem;
-            border-radius: 1.5rem;
-            border-left: 3px solid #f59e0b;
-        }
+        .scroll-panel::-webkit-scrollbar { width: 5px; }
+        .scroll-panel::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 10px; }
+        .scroll-panel::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        
+        .detail-content p, .detail-content li { font-size: 0.95rem; line-height: 1.55; }
+        .detail-content h4 { font-weight: 700; margin-top: 1.25rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem; }
+        
+        canvas { display: block; margin: 0 auto; background: transparent; }
+        
         @media print {
-            body {
-                background: white;
-                padding: 0;
-                margin: 0;
-            }
-            .no-print {
-                display: none !important;
-            }
-            .print-content {
-                display: block;
-                margin: 0 auto;
-                padding: 1.5rem;
-            }
+            .no-print { display: none !important; }
+            body { background: white; }
         }
     </style>
 </head>
@@ -94,16 +51,16 @@
     <header class="bg-indigo-950 text-white border-b-4 border-amber-500 shadow-md sticky top-0 z-10">
         <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 py-5 flex flex-col sm:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-3">
-                <i data-lucide="scale" class="w-7 h-7 text-amber-400"></i>
+                <i data-lucide="info" class="w-7 h-7 text-amber-400"></i>
                 <div>
-                    <h1 class="text-xl sm:text-2xl font-bold tracking-tight">Orden de Subrogancia</h1>
-                    <p class="text-xs text-indigo-200 mt-0.5">Defensoría Oficial Civil y Comercial Nº 6 · Primera Circunscripción Judicial</p>
+                    <h1 class="text-xl sm:text-2xl font-bold tracking-tight">Orden de Subrogación</h1>
+                    <p class="text-xs text-indigo-200 mt-0.5">Defensoría Civil y Comercial Nº 6 · Guía para el personal</p>
                 </div>
             </div>
-            <div class="relative w-full sm:w-72">
+            <div class="relative w-full sm:w-72 no-print">
                 <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
-                <input type="text" id="filtroBusqueda" placeholder="Buscar por modo (subrogación, turno...)" 
-                       class="w-full pl-9 pr-3 py-2 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white text-slate-800 shadow-sm">
+                <input type="text" id="filtroBusqueda" placeholder="Buscar tema..." 
+                       class="w-full pl-9 pr-3 py-2 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white text-slate-800">
             </div>
         </div>
     </header>
@@ -111,435 +68,334 @@
     <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 py-6">
         <div class="grid grid-cols-1 lg:grid-cols-[340px_1fr] gap-6">
             
-            <!-- PANEL LATERAL: MODOS DE CONSULTA -->
-            <aside class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border border-slate-200 overflow-hidden">
-                <div class="bg-gradient-to-r from-indigo-50 to-slate-50 px-5 py-4 border-b border-indigo-100">
+            <aside class="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden no-print">
+                <div class="bg-slate-50 px-5 py-4 border-b border-slate-100">
                     <h2 class="text-indigo-800 font-black text-lg flex items-center gap-2">
-                        <i data-lucide="git-branch" class="w-5 h-5"></i> Subrogación y turnos
+                        <i data-lucide="map" class="w-5 h-5"></i> Temas de Ayuda
                     </h2>
-                    <p class="text-xs text-slate-500 mt-1">Defensoría Civil y Comercial Nº 6 (Posadas)</p>
                 </div>
                 <div class="h-[calc(100vh-13rem)] overflow-y-auto scroll-panel p-2">
                     <div id="modesList" class="space-y-1.5"></div>
                 </div>
-                <div class="bg-indigo-50/30 px-4 py-2 text-[11px] text-slate-400 border-t border-indigo-100 flex justify-between">
-                    <span><i data-lucide="file-text" class="w-3 h-3 inline mr-1"></i> Ley IV-N°15 · Ac. STJ</span>
-                    <span><i data-lucide="clock" class="w-3 h-3 inline mr-1"></i> Actualizado 2025</span>
-                </div>
             </aside>
             
-            <!-- PANEL CENTRAL: DETALLE NORMATIVO Y EXPLICACIÓN -->
-            <div class="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden">
+            <div class="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden flex flex-col">
                 <div class="bg-gradient-to-r from-slate-50 to-indigo-50/30 px-6 py-5 border-b border-slate-200">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-3">
                             <div class="p-2 bg-indigo-100 rounded-xl text-indigo-700">
-                                <i data-lucide="gavel" class="w-6 h-6"></i>
+                                <i data-lucide="book-open" class="w-6 h-6"></i>
                             </div>
                             <div>
-                                <h2 id="tituloDetalle" class="text-2xl font-black text-slate-800 tracking-tight">Defensoría N° 6</h2>
-                                <p id="subtituloDetalle" class="text-sm text-indigo-600 font-mono">RPJ · Arts. 121 bis, 121 quinquies y 122</p>
+                                <h2 id="tituloDetalle" class="text-2xl font-black text-slate-800">Cargando...</h2>
+                                <p id="subtituloDetalle" class="text-sm text-indigo-600">Guía explicativa</p>
                             </div>
                         </div>
-                        <button id="btnImprimir" class="flex items-center gap-2 bg-white hover:bg-indigo-50 text-slate-700 font-medium py-2 px-4 rounded-xl border border-slate-200 shadow-sm transition-all duration-200">
+                        <button id="btnImprimir" class="no-print flex items-center gap-2 bg-white hover:bg-slate-50 text-slate-700 py-2 px-4 rounded-xl border border-slate-200 shadow-sm transition-all">
                             <i data-lucide="printer" class="w-4 h-4"></i>
                             <span class="text-sm">Imprimir</span>
                         </button>
                     </div>
                 </div>
+
+                <div class="px-6 pt-4 no-print">
+                    <div class="bg-red-50 border-l-4 border-red-600 p-4 rounded-xl flex items-center gap-3">
+                        <i data-lucide="alert-triangle" class="w-6 h-6 text-red-600 flex-shrink-0"></i>
+                        <div>
+                            <p class="font-black text-red-700">Diferencia Clave</p>
+                            <p class="text-xs text-red-600">La <b>Subrogancia</b> es por ausencia o licencia (es automática). La <b>Inhibición</b> es cuando el Defensor decide no intervenir por un motivo legal (lleva otro trámite).</p>
+                        </div>
+                    </div>
+                </div>
+
                 <div id="contenedorCentral" class="p-6 md:p-8 detail-content"></div>
             </div>
         </div>
     </div>
 
     <script>
-        // ==================== DEFINICIÓN DE MODOS (CENTRADOS EN DEFENSORÍA Nº 6) ====================
         const modosLista = [
-            "Subrogación natural (pasiva) · ¿Quiénes subrogan a la N° 6?",
-            "Subrogación activa · ¿A quién reemplaza la N° 6?",
-            "Orden de turno mensual · Defensorías N° 3, 4, 5 y 6 (rotación)",
-            "Turno permanente · Defensorías N° 7, 8 y 9",
-            "Base legal · Reglamento y leyes aplicables",
-            "Procedimiento de subrogación · Art. 121 quinquies RPJ"
+            "1. ¿Quién nos cubre si no estamos? (Pasiva)",
+            "2. ¿A quién debemos cubrir nosotros? (Activa)",
+            "3. Calendario de Turnos: Meses de la N° 6",
+            "4. Defensorías con Turno Permanente",
+            "5. Reglas y Leyes (Base Legal)",
+            "6. Cómo se hace el trámite (Paso a paso)",
+            "7. Ejemplos prácticos para el día a día",
+            "8. Mapa Visual de las Flechas"
         ];
 
         let currentMode = null;
         let currentFilter = "";
 
-        // ==================== CONTENIDO DETALLADO ====================
+        // --- CONTENIDOS ADAPTADOS ---
 
-        // 1) Subrogación pasiva: quienes subrogan a la Defensoría N° 6
-        function contenidoSubrogacionPasiva() {
+        function contenidoPasiva() {
             return `
                 <div class="space-y-6">
-                    <div class="bg-gradient-to-r from-amber-50 to-rose-50 rounded-xl p-5 border-l-8 border-indigo-700 shadow-sm">
-                        <div class="flex items-start gap-3">
-                            <div class="bg-white rounded-full p-2 shadow-sm text-indigo-700"><i data-lucide="arrow-left" class="w-5 h-5"></i></div>
-                            <div><p class="text-slate-700 text-base font-medium">Subrogación pasiva: órden de prelación para reemplazar a la Defensoría Oficial Civil y Comercial N° 6</p></div>
-                        </div>
+                    <div class="bg-indigo-50 p-5 rounded-xl border-l-8 border-indigo-700">
+                        <p class="text-indigo-900 font-bold">Si el Defensor N° 6 sale de licencia o no está, ¿quién firma?</p>
                     </div>
-                    <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-                        <p class="text-slate-700 mb-3">Según el <strong>Art. 121 quinquies del Reglamento para el Poder Judicial (RPJ)</strong>, dentro de la Primera Circunscripción Judicial (Posadas), las Defensorías en lo Civil y Comercial, Laboral y de Familia se subrogan entre sí en el siguiente orden <strong>cerrado y sucesivo</strong>:</p>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
-                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                                <i data-lucide="list-ordered" class="w-5 h-5 text-indigo-600 mb-2"></i>
-                                <h4 class="font-black text-slate-800">Secuencia general</h4>
-                                <ul class="text-sm mt-2 space-y-1 list-none pl-0">
-                                    <li><span class="font-mono font-bold">N° 3</span> → N° 4</li>
-                                    <li><span class="font-mono font-bold">N° 4</span> → N° 5</li>
-                                    <li><span class="font-mono font-bold">N° 5</span> → <span class="bg-indigo-100 px-1 rounded">N° 6</span></li>
-                                    <li><span class="font-mono font-bold">N° 6</span> → N° 7</li>
-                                    <li><span class="font-mono font-bold">N° 7</span> → N° 8</li>
-                                    <li><span class="font-mono font-bold">N° 8</span> → N° 9</li>
-                                    <li><span class="font-mono font-bold">N° 9</span> → N° 3</li>
-                                </ul>
+                    <div class="bg-white border rounded-xl p-5 shadow-sm">
+                        <p class="mb-4 text-slate-700">La ley dice que las Defensorías se ayudan entre sí siguiendo un círculo. Para la N° 6, el respaldo principal es la número anterior:</p>
+                        <div class="flex items-center justify-center gap-6 py-6 bg-slate-50 rounded-xl border border-dashed border-slate-300">
+                            <div class="text-center">
+                                <div class="bg-white p-4 rounded-full border-2 border-indigo-600 font-bold w-20 h-20 flex items-center justify-center shadow-sm text-xl">N° 5</div>
+                                <p class="text-[10px] mt-2 uppercase font-bold text-slate-500">Nos cubre</p>
                             </div>
-                            <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-200">
-                                <i data-lucide="users" class="w-5 h-5 text-indigo-700 mb-2"></i>
-                                <h4 class="font-black text-slate-800">¿Quién subroga a la Defensoría N° 6?</h4>
-                                <p class="text-slate-800 text-base font-semibold mt-2">La Defensoría <span class="bg-white px-2 py-0.5 rounded shadow-sm text-indigo-800">N° 5</span></p>
-                                <p class="text-slate-600 text-sm mt-2">En caso de licencia, vacancia, recusación o impedimento, asume automáticamente la <strong>Defensoría N° 5</strong>. Si ésta también estuviera impedida, el orden continúa con el siguiente eslabón de la cadena circular.</p>
-                                <div class="mt-3 p-2 bg-white rounded text-xs text-slate-500">
-                                    <i data-lucide="info" class="w-3 h-3 inline mr-1"></i> La subrogación es recíproca y se aplica tanto para suplencias transitorias como definitivas.
-                                </div>
+                            <i data-lucide="arrow-right" class="text-indigo-400 w-8 h-8"></i>
+                            <div class="text-center">
+                                <div class="bg-indigo-600 p-4 rounded-full text-white font-bold w-20 h-20 flex items-center justify-center shadow-lg text-xl ring-4 ring-indigo-100">N° 6</div>
+                                <p class="text-[10px] mt-2 uppercase font-bold text-indigo-600">Nosotros</p>
                             </div>
                         </div>
-                        <h4><i data-lucide="chevrons-right" class="w-4 h-4"></i> Subrogación secundaria (si falla la cadena interna)</h4>
-                        <p class="text-slate-700">Agotada la lista de defensorías civiles y comerciales (N°3 a N°9), el Art. 121 quinquies establece el siguiente orden supletorio:</p>
-                        <ol class="list-decimal pl-5 mt-2 space-y-1">
-                            <li><strong>Defensoría del Trabajador</strong> de Posadas.</li>
-                            <li><strong>Defensoría en lo Correccional y de Menores</strong> de Posadas que no se halle en turno.</li>
-                            <li><strong>Defensoría de Instrucción</strong> de Posadas (comenzando por la de más baja numeración que no esté en turno).</li>
-                            <li><strong>Defensoría Civil, Comercial, Laboral, de Familia y Violencia Familiar de Apóstoles</strong>.</li>
-                            <li><strong>Defensoría de Instrucción de Apóstoles</strong>.</li>
-                        </ol>
-                        <div class="mt-4 p-3 bg-amber-50 rounded-lg text-sm border-l-3 border-amber-400">
-                            <i data-lucide="alert-circle" class="w-4 h-4 text-amber-600 inline mr-2"></i>
-                            <span class="font-semibold">Importante:</span> La subrogación opera de pleno derecho, sin necesidad de resolución expresa en cada expediente (art. 130 RPJ).
-                        </div>
+                        <h4 class="mt-8"><i data-lucide="list" class="w-4 h-4"></i> ¿Y si la N° 5 tampoco está?</h4>
+                        <p class="text-sm text-slate-600">Se sigue retrocediendo en la lista: N° 4, luego N° 3, y así sucesivamente. Nunca se queda sin alguien que cubra la firma.</p>
                     </div>
-                    <div class="text-xs text-slate-400 border-t pt-4"><i data-lucide="scale" class="w-3 h-3 inline mr-1"></i> Art. 121 quinquies RPJ · Ley IV-N°15 · Acordadas complementarias</div>
-                </div>
-            `;
+                </div>`;
         }
 
-        // 2) Subrogación activa: a quién reemplaza la Defensoría N° 6
-        function contenidoSubrogacionActiva() {
+        function contenidoActiva() {
             return `
                 <div class="space-y-6">
-                    <div class="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-xl p-5 border-l-8 border-emerald-700 shadow-sm">
-                        <div class="flex items-start gap-3">
-                            <div class="bg-white rounded-full p-2 shadow-sm text-emerald-700"><i data-lucide="arrow-right" class="w-5 h-5"></i></div>
-                            <div><p class="text-slate-700 text-base font-medium">Subrogación activa: Defensoría N° 6 como subrogante</p></div>
-                        </div>
+                    <div class="bg-emerald-50 p-5 rounded-xl border-l-8 border-emerald-700">
+                        <p class="text-emerald-900 font-bold">¿A quién nos toca reemplazar a nosotros?</p>
                     </div>
-                    <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-                        <p class="text-slate-700 mb-4">Cuando la <strong>Defensoría Oficial Civil y Comercial N° 7</strong> (o las siguientes) se encontrare con impedimento, la Defensoría N° 6 debe asumir su reemplazo según el orden rotativo establecido.</p>
-                        <div class="relative pl-6 border-l-4 border-indigo-300 my-5">
-                            <h4 class="text-indigo-800 font-black text-md flex items-center gap-2"><i data-lucide="target" class="w-4 h-4"></i> Destino principal de la subrogación</h4>
-                            <p class="text-slate-800 text-lg font-bold mt-1">Defensoría N° 7 → en caso de ausencia, licencia o vacancia, la N° 6 la subroga.</p>
-                            <p class="text-slate-600 text-sm mt-1">(Según la secuencia: N° 6 → N° 7)</p>
-                        </div>
-                        <p class="text-slate-700">Si la Defensoría N° 7 no pudiera actuar, la N° 6 también podrá ser llamada a subrogar a la N° 8 cuando el orden escalonado lo requiera (por ejemplo, si la N° 7 está subrogando a otra y no puede atender su propia suplencia).</p>
-                        <div class="mt-5 bg-slate-50 p-4 rounded-xl">
-                            <i data-lucide="git-graph" class="w-5 h-5 text-indigo-600 mb-2"></i>
-                            <h4 class="font-semibold">Cadena completa (circular)</h4>
-                            <div class="flex flex-wrap gap-2 mt-2 text-sm font-mono">
-                                <span class="bg-white px-3 py-1 rounded-full shadow-sm">N° 3</span> → 
-                                <span class="bg-white px-3 py-1 rounded-full shadow-sm">N° 4</span> → 
-                                <span class="bg-white px-3 py-1 rounded-full shadow-sm">N° 5</span> → 
-                                <span class="bg-indigo-200 font-bold px-3 py-1 rounded-full shadow-sm">N° 6</span> → 
-                                <span class="bg-white px-3 py-1 rounded-full shadow-sm">N° 7</span> → 
-                                <span class="bg-white px-3 py-1 rounded-full shadow-sm">N° 8</span> → 
-                                <span class="bg-white px-3 py-1 rounded-full shadow-sm">N° 9</span> → 
-                                <span class="bg-white px-3 py-1 rounded-full shadow-sm">N° 3</span>
+                    <div class="bg-white border rounded-xl p-5 shadow-sm">
+                        <p class="mb-4 text-slate-700">Así como la 5 nos ayuda a nosotros, la Defensoría N° 6 es el respaldo natural de la siguiente:</p>
+                        <div class="flex items-center justify-center gap-6 py-6 bg-slate-50 rounded-xl border border-dashed border-slate-300">
+                            <div class="text-center">
+                                <div class="bg-indigo-600 p-4 rounded-full text-white font-bold w-20 h-20 flex items-center justify-center shadow-lg text-xl">N° 6</div>
+                                <p class="text-[10px] mt-2 uppercase font-bold text-indigo-600">Nosotros</p>
                             </div>
-                            <p class="text-xs text-slate-500 mt-3">La subrogación activa debe respetar este orden, salvo que las necesidades del servicio determinen una sustitución directa por la Defensoría del Trabajador (art. 121 quinquies, punto 2).</p>
+                            <i data-lucide="arrow-right" class="text-emerald-400 w-8 h-8"></i>
+                            <div class="text-center">
+                                <div class="bg-white p-4 rounded-full border-2 border-emerald-600 font-bold w-20 h-20 flex items-center justify-center shadow-sm text-xl">N° 7</div>
+                                <p class="text-[10px] mt-2 uppercase font-bold text-slate-500">Cubrimos a</p>
+                            </div>
                         </div>
+                        <p class="text-sm text-slate-600 mt-6 italic">Si la N° 7 no está por cualquier motivo legal o licencia, los expedientes pasan a nuestro Defensor para su firma.</p>
                     </div>
-                    <div class="text-xs text-slate-400 border-t pt-4"><i data-lucide="repeat" class="w-3 h-3 inline mr-1"></i> Subrogación recíproca · Capítulo VIII RPJ</div>
-                </div>
-            `;
+                </div>`;
         }
 
-        // 3) Orden de turno mensual (SOLO N°3, N°4, N°5, N°6) - CORREGIDO SEGÚN PEDIDO
-        function contenidoOrdenTurno() {
+        function contenidoTurnos() {
             return `
                 <div class="space-y-6">
-                    <div class="bg-gradient-to-r from-sky-50 to-blue-50 rounded-xl p-5 border-l-8 border-sky-700 shadow-sm">
-                        <div class="flex items-start gap-3">
-                            <div class="bg-white rounded-full p-2 shadow-sm text-sky-700"><i data-lucide="calendar" class="w-5 h-5"></i></div>
-                            <div><p class="text-slate-700 text-base font-medium">Turnos mensuales rotativos · Defensorías N° 3, 4, 5 y 6</p></div>
+                    <div class="bg-blue-50 p-5 rounded-xl border-l-8 border-blue-700">
+                        <h3 class="font-bold">Calendario de Turnos de la N° 6</h3>
+                        <p class="text-sm">En estos meses recibimos todas las causas nuevas.</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="p-6 bg-white border-2 border-indigo-100 rounded-2xl text-center shadow-sm">
+                            <p class="text-indigo-600 font-black text-2xl">ABRIL</p>
+                        </div>
+                        <div class="p-6 bg-white border-2 border-indigo-100 rounded-2xl text-center shadow-sm">
+                            <p class="text-indigo-600 font-black text-2xl">AGOSTO</p>
+                        </div>
+                        <div class="p-6 bg-white border-2 border-indigo-100 rounded-2xl text-center shadow-sm">
+                            <p class="text-indigo-600 font-black text-2xl">DICIEMBRE</p>
                         </div>
                     </div>
-                    <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-                        <p class="text-slate-700 mb-3">De acuerdo con la normativa vigente y las disposiciones del Superior Tribunal de Justicia, <strong>solo las Defensorías N° 3, N° 4, N° 5 y N° 6</strong> participan del sistema de <strong>turnos mensuales rotativos</strong>. Las defensorías N° 7, N° 8 y N° 9 tienen turno permanente durante todo el año (sin rotación).</p>
-                        <div class="overflow-x-auto my-5">
-                            <table class="min-w-full bg-white border border-slate-200 rounded-xl shadow-sm text-sm">
-                                <thead class="bg-indigo-50">
-                                    <tr><th class="px-4 py-2 text-left font-bold">Mes</th><th class="px-4 py-2 text-left font-bold">Defensoría en turno (rotación)</th><th class="px-4 py-2 text-left font-bold">Observaciones</th></tr>
-                                </thead>
-                                <tbody class="divide-y">
-                                    <tr><td class="px-4 py-2 font-medium">Enero</td><td class="px-4 py-2">N° 3</td><td class="px-4 py-2 text-slate-500 text-xs">Inicio del ciclo anual</td></tr>
-                                    <tr><td class="px-4 py-2 font-medium">Febrero</td><td class="px-4 py-2">N° 4</td><td class="px-4 py-2"></td></tr>
-                                    <tr><td class="px-4 py-2 font-medium">Marzo</td><td class="px-4 py-2">N° 5</td><td class="px-4 py-2"></td></tr>
-                                    <tr class="bg-indigo-50/40"><td class="px-4 py-2 font-bold">Abril</td><td class="px-4 py-2 font-bold text-indigo-800">N° 6</td><td class="px-4 py-2 text-indigo-600 text-xs">Turno de la Defensoría N° 6</td></tr>
-                                    <tr><td class="px-4 py-2 font-medium">Mayo</td><td class="px-4 py-2">N° 3</td><td class="px-4 py-2"></td></tr>
-                                    <tr><td class="px-4 py-2 font-medium">Junio</td><td class="px-4 py-2">N° 4</td><td class="px-4 py-2"></td></tr>
-                                    <tr><td class="px-4 py-2 font-medium">Julio</td><td class="px-4 py-2">N° 5</td><td class="px-4 py-2"></td></tr>
-                                    <tr class="bg-indigo-50/40"><td class="px-4 py-2 font-bold">Agosto</td><td class="px-4 py-2 font-bold text-indigo-800">N° 6</td><td class="px-4 py-2 text-indigo-600 text-xs">Segundo turno del año</td></tr>
-                                    <tr><td class="px-4 py-2 font-medium">Septiembre</td><td class="px-4 py-2">N° 3</td><td class="px-4 py-2"></td></tr>
-                                    <tr><td class="px-4 py-2 font-medium">Octubre</td><td class="px-4 py-2">N° 4</td><td class="px-4 py-2"></td></tr>
-                                    <tr><td class="px-4 py-2 font-medium">Noviembre</td><td class="px-4 py-2">N° 5</td><td class="px-4 py-2"></td></tr>
-                                    <tr class="bg-indigo-50/40"><td class="px-4 py-2 font-bold">Diciembre</td><td class="px-4 py-2 font-bold text-indigo-800">N° 6</td><td class="px-4 py-2 text-indigo-600 text-xs">Cierre del año</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="p-4 bg-indigo-50 rounded-lg border-l-4 border-indigo-500 text-sm">
-                            <i data-lucide="info" class="w-4 h-4 inline text-indigo-700 mr-2"></i>
-                            <span class="font-semibold">Turno de la Defensoría N° 6:</span> le corresponde los meses de <strong>abril, agosto y diciembre</strong> (ciclo cada 4 meses, ya que solo rotan cuatro defensorías). 
-                            El resto del año actúa solo en aquellos casos que ya tiene en trámite o por subrogación urgente.
-                        </div>
-                        <p class="text-slate-600 text-sm mt-4">Las causas nuevas durante el mes de turno se asignan directamente a la defensoría de turno según la competencia territorial. Fuera del mes de turno, la defensoría sólo interviene en expedientes ya iniciados o cuando es convocada por subrogación (art. 123 RPJ).</p>
+                    <div class="bg-slate-50 p-4 rounded-lg text-xs text-slate-500">
+                        * Rotamos el turno mensual únicamente con las Defensorías 3, 4 y 5.
                     </div>
-                </div>
-            `;
+                </div>`;
         }
 
-        // 4) Turno permanente para D7, D8, D9
-        function contenidoTurnoPermanente() {
+        function contenidoPermanente() {
             return `
-                <div class="space-y-6">
-                    <div class="bg-gradient-to-r from-fuchsia-50 to-pink-50 rounded-xl p-5 border-l-8 border-fuchsia-700 shadow-sm">
-                        <div class="flex items-start gap-3">
-                            <div class="bg-white rounded-full p-2 shadow-sm text-fuchsia-700"><i data-lucide="infinity" class="w-5 h-5"></i></div>
-                            <div><p class="text-slate-700 text-base font-medium">Defensorías con turno permanente anual · N° 7, N° 8 y N° 9</p></div>
-                        </div>
-                    </div>
-                    <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-                        <p class="text-slate-700 mb-3">Las <strong>Defensorías Oficiales N° 7 (Villa Cabello), N° 8 (Garupá) y N° 9 (Itaembé Miní)</strong> no integran el sistema de turnos mensuales rotativos. Por su especial competencia territorial (barrios y municipios determinados) permanecen <strong>de turno permanente durante todo el año calendario</strong>, atendiendo todas las causas que se generen dentro de su radio de actuación.</p>
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
-                            <div class="bg-white p-3 rounded-lg border shadow-sm text-center">
-                                <i data-lucide="map-pin" class="w-5 h-5 text-indigo-600 mx-auto mb-1"></i>
-                                <p class="font-bold">Defensoría N° 7</p>
-                                <p class="text-xs text-slate-500">Villa Cabello (Posadas)</p>
-                                <p class="text-xs font-mono mt-1">Turno permanente</p>
-                            </div>
-                            <div class="bg-white p-3 rounded-lg border shadow-sm text-center">
-                                <i data-lucide="map-pin" class="w-5 h-5 text-indigo-600 mx-auto mb-1"></i>
-                                <p class="font-bold">Defensoría N° 8</p>
-                                <p class="text-xs text-slate-500">Garupá</p>
-                                <p class="text-xs font-mono mt-1">Turno permanente</p>
-                            </div>
-                            <div class="bg-white p-3 rounded-lg border shadow-sm text-center">
-                                <i data-lucide="map-pin" class="w-5 h-5 text-indigo-600 mx-auto mb-1"></i>
-                                <p class="font-bold">Defensoría N° 9</p>
-                                <p class="text-xs text-slate-500">Itaembé Miní (Posadas)</p>
-                                <p class="text-xs font-mono mt-1">Turno permanente</p>
-                            </div>
-                        </div>
-                        <div class="mt-5 p-4 bg-fuchsia-50 rounded-lg border-l-4 border-fuchsia-500 text-sm">
-                            <i data-lucide="check-circle" class="w-4 h-4 inline text-fuchsia-700 mr-2"></i>
-                            <span class="font-semibold">Régimen especial:</span> Estas defensorías reciben todas las causas de su territorio sin necesidad de esperar un mes de turno. Permiten una cobertura continua de la demanda en zonas de alta vulnerabilidad.
-                        </div>
-                        <p class="text-slate-600 text-xs mt-3">Fundamento: Acordadas del STJ que establecen la competencia territorial exclusiva y turno permanente para estas defensorías (Ac. 80/12, Ac. 81/12, Ac. 158/15).</p>
-                    </div>
-                </div>
-            `;
+                <div class="space-y-4">
+                    <h3 class="font-bold">Zonas con Turno Todo el Año</h3>
+                    <p class="text-sm text-slate-600">Estas defensorías no rotan, están siempre de turno para sus zonas específicas:</p>
+                    <ul class="space-y-2">
+                        <li class="bg-white p-3 border rounded-lg"><b>N° 7:</b> Villa Cabello</li>
+                        <li class="bg-white p-3 border rounded-lg"><b>N° 8:</b> Garupá</li>
+                        <li class="bg-white p-3 border rounded-lg"><b>N° 9:</b> Itaembé Miní</li>
+                    </ul>
+                </div>`;
         }
 
-        // 5) Base legal y referencias normativas completas
-        function contenidoBaseLegal() {
+        function contenidoLegal() {
             return `
-                <div class="space-y-6">
-                    <div class="bg-gradient-to-r from-purple-50 to-violet-50 rounded-xl p-5 border-l-8 border-violet-700 shadow-sm">
-                        <div class="flex items-start gap-3">
-                            <div class="bg-white rounded-full p-2 shadow-sm text-violet-700"><i data-lucide="book-open" class="w-5 h-5"></i></div>
-                            <div><p class="text-slate-700 text-base font-medium">Fundamento normativo · Subrogación y turnos de las defensorías oficiales</p></div>
-                        </div>
-                    </div>
-                    <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-                        <h3 class="text-indigo-800 font-black flex items-center gap-2"><i data-lucide="file-text" class="w-5 h-5"></i> Reglamento para el Poder Judicial (RPJ) – Año 2025</h3>
-                        <ul class="mt-3 space-y-2">
-                            <li><span class="badge-normativa">Art. 121 bis</span> – Defensorías de Primera Instancia: nomenclatura y numeración. Se establecen las defensorías N° 3 a N° 9 con asiento en Posadas y áreas específicas.</li>
-                            <li><span class="badge-normativa">Art. 121 quinquies</span> – Subrogación entre Defensorías Oficiales (Primera Circunscripción). Establece la secuencia circular N°3→4→5→6→7→8→9→3 y el orden supletorio.</li>
-                            <li><span class="badge-normativa">Art. 122</span> – Turnos del Ministerio Público. Dispone que las defensorías N° 3 a N° 9 actúan por turnos mensuales, pero con las particularidades territoriales de N°7,8,9 (turno permanente).</li>
-                            <li><span class="badge-normativa">Art. 130</span> – Subrogación automática sin necesidad de resolución expresa.</li>
+                <div class="space-y-4">
+                    <h3 class="font-bold">¿En qué leyes se basa esto?</h3>
+                    <div class="bg-white p-4 border rounded-xl">
+                        <p class="text-sm"><b>Reglamento Poder Judicial (RPJ):</b></p>
+                        <ul class="text-xs list-disc pl-5 mt-2 space-y-2">
+                            <li><b>Art. 121 quinquies:</b> Explica el orden del círculo (3->4->5->6...).</li>
+                            <li><b>Art. 130:</b> Dice que la subrogancia es "automática", no hace falta permiso del Juez.</li>
                         </ul>
-                        <h4 class="mt-5"><i data-lucide="building-2" class="w-4 h-4"></i> Acordadas complementarias (STJ)</h4>
-                        <ul>
-                            <li><strong>Ac. 80/12 y Ac. 158/15</strong> – Asignan turno permanente a las defensorías N° 7, N° 8 y N° 9 por razones de competencia territorial.</li>
-                            <li><strong>Ac. 81/22</strong> – Actualización de cuadros de subrogación de magistrados y funcionarios.</li>
-                            <li><strong>Ley IV – Nº 15</strong> (Ley Orgánica del Poder Judicial): arts. 114 a 118 sobre deberes de los defensores oficiales.</li>
-                        </ul>
-                        <div class="mt-5 bg-violet-50 p-3 rounded-lg text-sm">
-                            <i data-lucide="link" class="w-4 h-4 inline mr-2 text-violet-700"></i> Documento base: RPJ 2025, Capítulo VII (Ministerios Públicos) y modificaciones por Acordadas.
-                        </div>
                     </div>
-                </div>
-            `;
+                    <div class="bg-white p-4 border rounded-xl">
+                        <p class="text-sm"><b>Acordadas STJ:</b> Son las que definen los meses de turno (80/12, 158/15, 81/22).</p>
+                    </div>
+                </div>`;
         }
 
-        // 6) Procedimiento de subrogación
-        function contenidoProcedimientoSubrogacion() {
+        function contenidoPasos() {
             return `
-                <div class="space-y-6">
-                    <div class="bg-gradient-to-r from-indigo-50 to-blue-50 rounded-xl p-5 border-l-8 border-indigo-800 shadow-sm">
-                        <div class="flex items-start gap-3">
-                            <div class="bg-white rounded-full p-2 shadow-sm"><i data-lucide="clipboard-list" class="w-5 h-5 text-indigo-700"></i></div>
-                            <div><p class="text-slate-700 text-base font-medium">Procedimiento administrativo y judicial para la subrogación</p></div>
-                        </div>
-                    </div>
-                    <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-                        <h4><i data-lucide="corner-down-right" class="w-4 h-4"></i> ¿Cómo opera la subrogación en la práctica?</h4>
-                        <ul class="list-decimal pl-5">
-                            <li><strong>Declaración de impedimento</strong>: licencia, vacancia, recusación o excusación del titular de la Defensoría N° 6.</li>
-                            <li><strong>Subrogación automática</strong>: asume la Defensoría N° 5 (según cadena). No se requiere auto expreso, basta con la constancia en el expediente.</li>
-                            <li><strong>Comunicación al Superior Tribunal</strong>: el Defensor subrogante debe informar a la Secretaría Administrativa para registro y efectos de haberes.</li>
-                            <li><strong>Agotamiento de la cadena interna</strong>: si N°5 y siguientes (hasta N°9) también están impedidos, se activa el orden supletorio (Defensoría del Trabajador → Correccional → Instrucción → Apóstoles).</li>
-                            <li><strong>Fin de la subrogación</strong>: cesa automáticamente cuando el titular original se reincorpora.</li>
-                        </ul>
-                        <div class="mt-5 p-4 bg-indigo-50 rounded-lg">
-                            <i data-lucide="users" class="w-5 h-5 text-indigo-700 mb-2"></i>
-                            <h4 class="font-bold text-indigo-900">Turno y subrogación concurrente</h4>
-                            <p class="text-sm">Durante el mes de turno de la N° 6 (abril, agosto, diciembre), si su titular se ausenta, la subrogación recae en la N° 5, la cual asume tanto las causas nuevas del turno como las que ya tramitaba la N° 6.</p>
-                        </div>
-                    </div>
-                </div>
-            `;
+                <div class="space-y-4">
+                    <h3 class="font-bold">¿Cómo actuar en la oficina?</h3>
+                    <ol class="list-decimal pl-5 space-y-3 text-sm">
+                        <li><b>Aviso:</b> El Defensor comunica su licencia.</li>
+                        <li><b>Asunción:</b> Automáticamente, el subrogante (la N° 5 en nuestro caso) queda a cargo.</li>
+                        <li><b>Firma:</b> Los escritos se llevan a la oficina del subrogante.</li>
+                        <li><b>Fin:</b> Cuando el titular vuelve, se termina el reemplazo sin más trámite.</li>
+                    </ol>
+                </div>`;
         }
 
-        function contenidoPlaceholder() {
-            return `<div class="flex flex-col items-center justify-center text-center py-12"><i data-lucide="file-question" class="w-20 h-20 text-slate-300 mb-4"></i><p class="text-slate-500">Seleccione un modo del panel izquierdo para visualizar el detalle de subrogación, turnos o normativa.</p></div>`;
+        function contenidoEjemplos() {
+            return `
+                <div class="space-y-4">
+                    <div class="p-4 bg-white border rounded-xl shadow-sm">
+                        <p class="text-sm font-bold">Caso 1: Vacaciones</p>
+                        <p class="text-xs text-slate-600 mt-1">El Defensor N° 6 sale de vacaciones. ¿Quién firma los urgentes? La Defensoría N° 5.</p>
+                    </div>
+                    <div class="p-4 bg-white border rounded-xl shadow-sm">
+                        <p class="text-sm font-bold">Caso 2: El turno de abril</p>
+                        <p class="text-xs text-slate-600 mt-1">Estamos en abril y el Defensor se enferma. El turno no se detiene; la N° 5 debe atender las causas nuevas que entren.</p>
+                    </div>
+                    <div class="p-4 bg-red-50 border border-red-100 rounded-xl">
+                        <p class="text-sm font-bold text-red-800">Caso 3: No confundir</p>
+                        <p class="text-xs text-red-700 mt-1">Si un abogado pide que el Defensor no intervenga en un caso por ser pariente (Inhibición), se busca al reemplazo por la misma lista, pero el trámite es distinto a una simple licencia.</p>
+                    </div>
+                </div>`;
         }
 
-        // ========== ACTUALIZAR VISTA CENTRAL ==========
-        function actualizarContenidoCentral(modo) {
+        // --- GRÁFICOS CON FLECHAS ---
+
+        function dibujarGrafico(canvasId, isReverse) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            const ctx = canvas.getContext("2d");
+            const size = 350; canvas.width = size; canvas.height = size;
+            const center = size / 2; const radius = 120;
+            const nodes = ["3", "4", "5", "6", "7", "8", "9"];
+            const n = nodes.length;
+            const angles = nodes.map((_, i) => i * (Math.PI * 2 / n) - Math.PI / 2);
+            const points = angles.map(a => ({ x: center + radius * Math.cos(a), y: center + radius * Math.sin(a) }));
+
+            ctx.clearRect(0, 0, size, size);
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = isReverse ? "#ef4444" : "#4f46e5";
+            ctx.fillStyle = isReverse ? "#ef4444" : "#4f46e5";
+
+            for (let i = 0; i < n; i++) {
+                const from = points[i];
+                const toIdx = isReverse ? (i - 1 + n) % n : (i + 1) % n;
+                const to = points[toIdx];
+
+                const midAngle = (angles[i] + angles[toIdx]) / 2 + (Math.abs(angles[i]-angles[toIdx]) > Math.PI ? Math.PI : 0);
+                const cpX = center + (radius + 25) * Math.cos(midAngle);
+                const cpY = center + (radius + 25) * Math.sin(midAngle);
+
+                const angleToTarget = Math.atan2(to.y - cpY, to.x - cpX);
+                const edgeX = to.x - 30 * Math.cos(angleToTarget);
+                const edgeY = to.y - 30 * Math.sin(angleToTarget);
+
+                ctx.beginPath();
+                ctx.moveTo(from.x, from.y);
+                ctx.quadraticCurveTo(cpX, cpY, edgeX, edgeY);
+                ctx.stroke();
+
+                // Flecha
+                const arrowSize = 12;
+                ctx.beginPath();
+                ctx.moveTo(edgeX, edgeY);
+                ctx.lineTo(edgeX - arrowSize * Math.cos(angleToTarget - 0.45), edgeY - arrowSize * Math.sin(angleToTarget - 0.45));
+                ctx.lineTo(edgeX - arrowSize * Math.cos(angleToTarget + 0.45), edgeY - arrowSize * Math.sin(angleToTarget + 0.45));
+                ctx.fill();
+            }
+
+            nodes.forEach((label, i) => {
+                ctx.beginPath();
+                ctx.arc(points[i].x, points[i].y, 25, 0, Math.PI * 2);
+                ctx.fillStyle = label === "6" ? "#fbbf24" : "white";
+                ctx.fill();
+                ctx.strokeStyle = "#1e3a8a";
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                ctx.fillStyle = "#1e3a8a";
+                ctx.font = "bold 16px Inter";
+                ctx.textAlign = "center"; ctx.textBaseline = "middle";
+                ctx.fillText(label, points[i].x, points[i].y);
+            });
+        }
+
+        function contenidoGraficos() {
+            return `
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-white p-4 border rounded-2xl text-center">
+                        <p class="text-xs font-bold text-red-600 mb-4">¿QUIÉN REEMPLAZA A QUIÉN? (Sentido Inverso)</p>
+                        <canvas id="canvasInverso"></canvas>
+                        <p class="text-[10px] text-slate-400 mt-2 italic">Ejemplo: La 5 reemplaza a la 6</p>
+                    </div>
+                    <div class="bg-white p-4 border rounded-2xl text-center">
+                        <p class="text-xs font-bold text-indigo-600 mb-4">ORDEN DE LAS DEFENSORÍAS (Progresivo)</p>
+                        <canvas id="canvasProgresivo"></canvas>
+                        <p class="text-[10px] text-slate-400 mt-2 italic">Ejemplo: Después de la 6 viene la 7</p>
+                    </div>
+                </div>`;
+        }
+
+        // --- LÓGICA DE LA INTERFAZ ---
+
+        function actualizarVista(modo) {
             const contenedor = document.getElementById('contenedorCentral');
-            const tituloElem = document.getElementById('tituloDetalle');
-            const subtituloElem = document.getElementById('subtituloDetalle');
-            if (!contenedor) return;
-
-            if (modo === "Subrogación natural (pasiva) · ¿Quiénes subrogan a la N° 6?") {
-                tituloElem.innerText = "Subrogación pasiva · Quién reemplaza a la Defensoría N° 6";
-                subtituloElem.innerText = "Art. 121 quinquies RPJ · Cadena de prelación";
-                contenedor.innerHTML = contenidoSubrogacionPasiva();
-            } 
-            else if (modo === "Subrogación activa · ¿A quién reemplaza la N° 6?") {
-                tituloElem.innerText = "Subrogación activa · Defensoría N° 6 como subrogante";
-                subtituloElem.innerText = "Reemplazo a la N° 7 y orden circular";
-                contenedor.innerHTML = contenidoSubrogacionActiva();
-            }
-            else if (modo === "Orden de turno mensual · Defensorías N° 3, 4, 5 y 6 (rotación)") {
-                tituloElem.innerText = "Turnos rotativos mensuales";
-                subtituloElem.innerText = "Solo N° 3, N° 4, N° 5 y N° 6 · 3 turnos al año para N° 6";
-                contenedor.innerHTML = contenidoOrdenTurno();
-            }
-            else if (modo === "Turno permanente · Defensorías N° 7, 8 y 9") {
-                tituloElem.innerText = "Turno permanente anual";
-                subtituloElem.innerText = "N° 7 (Villa Cabello), N° 8 (Garupá), N° 9 (Itaembé Miní)";
-                contenedor.innerHTML = contenidoTurnoPermanente();
-            }
-            else if (modo === "Base legal · Reglamento y leyes aplicables") {
-                tituloElem.innerText = "Base legal y normas complementarias";
-                subtituloElem.innerText = "Ley IV-N°15 · Acordadas STJ · RPJ";
-                contenedor.innerHTML = contenidoBaseLegal();
-            }
-            else if (modo === "Procedimiento de subrogación · Art. 121 quinquies RPJ") {
-                tituloElem.innerText = "Procedimiento de subrogación";
-                subtituloElem.innerText = "Pasos administrativos y judiciales";
-                contenedor.innerHTML = contenidoProcedimientoSubrogacion();
-            }
-            else {
-                tituloElem.innerText = "Defensoría Civil y Comercial Nº 6";
-                subtituloElem.innerText = "Seleccione un apartado";
-                contenedor.innerHTML = contenidoPlaceholder();
+            const titulo = document.getElementById('tituloDetalle');
+            const subtitulo = document.getElementById('subtituloDetalle');
+            
+            titulo.innerText = modo;
+            
+            switch(modo) {
+                case modosLista[0]: contenedor.innerHTML = contenidoPasiva(); subtitulo.innerText = "Reemplazo de la N° 6"; break;
+                case modosLista[1]: contenedor.innerHTML = contenidoActiva(); subtitulo.innerText = "La N° 6 como reemplazante"; break;
+                case modosLista[2]: contenedor.innerHTML = contenidoTurnos(); subtitulo.innerText = "Meses de guardia"; break;
+                case modosLista[3]: contenedor.innerHTML = contenidoPermanente(); subtitulo.innerText = "Zonas especiales"; break;
+                case modosLista[4]: contenedor.innerHTML = contenidoLegal(); subtitulo.innerText = "Fundamentos jurídicos"; break;
+                case modosLista[5]: contenedor.innerHTML = contenidoPasos(); subtitulo.innerText = "Procedimiento administrativo"; break;
+                case modosLista[6]: contenedor.innerHTML = contenidoEjemplos(); subtitulo.innerText = "Casos de ejemplo"; break;
+                case modosLista[7]: 
+                    contenedor.innerHTML = contenidoGraficos(); 
+                    subtitulo.innerText = "Esquema visual";
+                    setTimeout(() => { dibujarGrafico("canvasInverso", true); dibujarGrafico("canvasProgresivo", false); }, 50);
+                    break;
+                default: contenedor.innerHTML = "Selecciona un tema."; break;
             }
             if (window.lucide) lucide.createIcons();
         }
 
-        // ========== FUNCIONES DE LISTA Y FILTRO ==========
-        function renderModesList(filterText = "") {
-            const container = document.getElementById('modesList');
-            if (!container) return;
-            const lowerFilter = filterText.toLowerCase();
-            const filteredModes = modosLista.filter(m => m.toLowerCase().includes(lowerFilter));
-            if (filteredModes.length === 0) {
-                container.innerHTML = `<div class="p-4 text-center text-slate-400 text-sm">🔍 Ningún concepto coincide con "${filterText}"</div>`;
-                return;
-            }
-            let html = '';
-            filteredModes.forEach(mode => {
-                const isActive = (mode === currentMode);
-                const activeClass = isActive ? 'active' : '';
-                html += `<div class="mode-item ${activeClass} p-3 rounded-xl cursor-pointer transition-all flex items-center gap-2" data-modo="${mode.replace(/"/g, '&quot;')}">
-                            <div class="w-7 h-7 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 text-xs font-black">${isActive ? '✓' : '•'}</div>
-                            <span class="text-sm font-medium text-slate-700">${mode}</span>
-                         </div>`;
-            });
-            container.innerHTML = html;
-            document.querySelectorAll('.mode-item').forEach(el => {
-                el.addEventListener('click', () => {
-                    const modo = el.getAttribute('data-modo');
-                    if (modo) setCurrentMode(modo);
-                });
-            });
-            if (window.lucide) lucide.createIcons();
+        function renderList(filter = "") {
+            const list = document.getElementById('modesList');
+            const filtered = modosLista.filter(m => m.toLowerCase().includes(filter.toLowerCase()));
+            list.innerHTML = filtered.map(m => `
+                <div class="mode-item p-3 rounded-xl cursor-pointer flex items-center gap-2 ${m === currentMode ? 'active' : ''}" onclick="selectMode('${m}')">
+                    <div class="w-2 h-2 rounded-full bg-slate-300"></div>
+                    <span class="text-sm font-medium">${m}</span>
+                </div>
+            `).join('');
         }
 
-        function setCurrentMode(modo) {
+        function selectMode(modo) {
             currentMode = modo;
-            renderModesList(currentFilter);
-            actualizarContenidoCentral(modo);
+            renderList(currentFilter);
+            actualizarVista(modo);
         }
 
-        function setupFilter() {
-            const filterInput = document.getElementById('filtroBusqueda');
-            if (!filterInput) return;
-            filterInput.addEventListener('input', (e) => {
-                currentFilter = e.target.value;
-                renderModesList(currentFilter);
-                if (currentMode && !currentMode.toLowerCase().includes(currentFilter.toLowerCase())) {
-                    currentMode = null;
-                    renderModesList(currentFilter);
-                    actualizarContenidoCentral(null);
-                }
-            });
-        }
+        document.getElementById('filtroBusqueda').addEventListener('input', (e) => {
+            currentFilter = e.target.value;
+            renderList(currentFilter);
+        });
 
-        function imprimirDetalle() {
-            const titulo = document.getElementById('tituloDetalle')?.innerText || 'Orden de Subrogancia';
-            const subtitulo = document.getElementById('subtituloDetalle')?.innerText || '';
-            const contenido = document.getElementById('contenedorCentral')?.cloneNode(true);
-            if (!contenido) return;
-            const printWindow = window.open('', '_blank');
-            if (!printWindow) { alert('Permita ventanas emergentes para imprimir.'); return; }
-            printWindow.document.write(`
-                <!DOCTYPE html>
-                <html>
-                <head><meta charset="UTF-8"><title>${titulo} - Defensoría N°6</title>
-                <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;500;600;700&display=swap" rel="stylesheet">
-                <style>body{font-family:'Inter',sans-serif;margin:2rem;background:white;color:#0f172a;}
-                .print-container{max-width:900px;margin:0 auto;}
-                h2{color:#1e293b;border-left:5px solid #4f46e5;padding-left:1rem;}
-                .detail-content-print p,.detail-content-print li{font-size:0.9rem;line-height:1.5;}
-                ul,ol{padding-left:1.5rem;}.badge-normativa{background:#eef2ff;padding:0.2rem 0.7rem;border-radius:1rem;font-size:0.7rem;}
-                </style></head>
-                <body><div class="print-container"><h2>${titulo}</h2><p style="color:#4f46e5">${subtitulo}</p><div class="detail-content-print">${contenido.innerHTML}</div><hr><p style="font-size:0.7rem;text-align:center;">Documento generado desde el sistema de Subrogación · Defensoría Oficial</p></div>
-                <script>window.onload=()=>{window.print();window.onafterprint=()=>window.close();};<\/script>
-                </body></html>
-            `);
-            printWindow.document.close();
-        }
+        document.getElementById('btnImprimir').addEventListener('click', () => window.print());
 
-        function init() {
-            renderModesList("");
-            setupFilter();
-            actualizarContenidoCentral(null);
-            if (window.lucide) lucide.createIcons();
-            document.getElementById('btnImprimir')?.addEventListener('click', imprimirDetalle);
-        }
-        document.addEventListener('DOMContentLoaded', init);
+        window.onload = () => {
+            renderList();
+            selectMode(modosLista[0]);
+            lucide.createIcons();
+        };
     </script>
 </body>
 </html>
