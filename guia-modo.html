@@ -255,12 +255,12 @@
             <div class="card" data-url="https://sistemadigital.github.io/reporte/modo.html">
                 <h2>2. Modos de Intervenir</h2>
             </div>
-            <!-- Tarjeta 3: Subrogancias (NUEVA) -->
+            <!-- Tarjeta 3: Subrogancias -->
             <div class="card" data-url="https://sistemadigital.github.io/reporte/subrogancias.html">
                 <h2>3. Subrogancias</h2>
             </div>
-            <!-- Tarjeta 4: Regla de Control (NUEVA - URL pendiente) -->
-            <div class="card" data-url="#" data-pending="true">
+            <!-- Tarjeta 4: Regla de Control (AHORA CON URL ACTIVA) -->
+            <div class="card" data-url="https://sistemadigital.github.io/reporte/regla-control.html">
                 <h2>4. Regla de Control</h2>
             </div>
         </div>
@@ -285,12 +285,11 @@
         const closeBtn = document.getElementById('closeFullscreenBtn');
         const viewerContextLabel = document.getElementById('viewerContextLabel');
 
-        // URLs definidas (originales + nueva subrogancias)
+        // URLs definidas (originales + nueva subrogancias + regla-control)
         const URL_GUIA = 'https://sistemadigital.github.io/reporte/guiatramite.html';
         const URL_MODO = 'https://sistemadigital.github.io/reporte/modo.html';
         const URL_SUBROG = 'https://sistemadigital.github.io/reporte/subrogancias.html';
-        // Para Regla de Control (pendiente)
-        const URL_REGLA_PENDIENTE = null;  // Todavía no disponible
+        const URL_REGLA = 'https://sistemadigital.github.io/reporte/regla-control.html';  // URL activa
 
         // Función para abrir pantalla completa con una URL específica
         function openFullscreenContent(url, titleHint = '') {
@@ -310,8 +309,8 @@
                 viewerContextLabel.textContent = '🔄 Modos de Intervenir';
             } else if (titleHint.includes('Subrogancias') || url.includes('subrogancias')) {
                 viewerContextLabel.textContent = '📋 Subrogancias';
-            } else if (titleHint.includes('Regla de Control') || titleHint.includes('Regla')) {
-                viewerContextLabel.textContent = '⚙️ Regla de Control (Próximamente)';
+            } else if (titleHint.includes('Regla de Control') || titleHint.includes('Regla') || url.includes('regla-control')) {
+                viewerContextLabel.textContent = '⚙️ Regla de Control';
             } else {
                 viewerContextLabel.textContent = '📎 Documento oficial';
             }
@@ -364,32 +363,20 @@
         cards.forEach(card => {
             let targetUrl = card.getAttribute('data-url');
             const cardText = card.innerText || '';  // Ej: "1. Guía de Actuación"
-            const isPending = card.hasAttribute('data-pending'); // Para la tarjeta de Regla de Control
+            // Nota: Se eliminó el atributo 'data-pending' de la cuarta tarjeta.
+            // Ahora todas tienen una URL válida (incluyendo la de Regla de Control).
             
             card.addEventListener('click', (e) => {
                 e.stopPropagation();
                 
-                // Manejo especial para tarjeta con URL pendiente o inválida
-                if (isPending || !targetUrl || targetUrl === '#') {
-                    alert('🔜 La sección "Regla de Control" estará disponible próximamente. Se actualizará la URL más adelante.');
+                // Validación de URL: si es nula, vacía o '#', mostrar advertencia.
+                if (!targetUrl || targetUrl === '#') {
+                    alert('🔜 Esta sección estará disponible próximamente. Se actualizará la URL más adelante.');
                     return;
                 }
                 
-                if (targetUrl) {
-                    openFullscreenContent(targetUrl, cardText);
-                } else {
-                    // Fallback de seguridad: detectar basado en el texto
-                    if (cardText.includes('Guía') || cardText.includes('1.')) {
-                        openFullscreenContent(URL_GUIA, cardText);
-                    } else if (cardText.includes('Modos') || cardText.includes('2.')) {
-                        openFullscreenContent(URL_MODO, cardText);
-                    } else if (cardText.includes('Subrogancias') || cardText.includes('3.')) {
-                        openFullscreenContent(URL_SUBROG, cardText);
-                    } else {
-                        console.warn('URL no definida');
-                        alert('No se pudo cargar el contenido. URL no válida.');
-                    }
-                }
+                // Abrir el contenido en el visor fullscreen
+                openFullscreenContent(targetUrl, cardText);
             });
             
             // Accesibilidad
@@ -430,7 +417,7 @@
         document.body.style.overflow = '';
         dynamicIframe.src = 'about:blank';
         
-        console.log('✅ Cuatro módulos disponibles: Guía de Actuación, Modos de Intervenir, Subrogancias, Regla de Control (pendiente).');
+        console.log('✅ Cuatro módulos disponibles: Guía de Actuación, Modos de Intervenir, Subrogancias y Regla de Control (con URL activa).');
     </script>
 </body>
 </html>
