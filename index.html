@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reporte Estadístico del Sistema Digital</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase y Chart.js solo para el módulo Causas -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         :root {
             --primary-color: #0066cc;
@@ -40,7 +44,6 @@
             min-height: 100vh;
         }
 
-        /* Header Styles */
         header {
             background-color: var(--light-color);
             box-shadow: var(--shadow);
@@ -107,13 +110,11 @@
             align-items: center;
         }
 
-        /* Main Content Styles */
         main {
             flex: 1;
             padding: 2rem;
         }
 
-        /* Content Panel */
         .content-panel {
             background-color: var(--light-color);
             border-radius: 10px;
@@ -165,30 +166,95 @@
             border: none;
         }
 
+        /* Estilos para el dashboard de Causas (Firebase) */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: var(--light-gray);
+            border-radius: 1rem;
+            padding: 1.2rem;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary-color);
+        }
+        .chart-container {
+            max-width: 500px;
+            margin: 1.5rem auto;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+        }
+        .data-table th, .data-table td {
+            border: 1px solid var(--border-color);
+            padding: 0.75rem;
+            text-align: left;
+            font-size: 0.85rem;
+        }
+        .data-table th {
+            background: var(--light-gray);
+            font-weight: 600;
+        }
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 999px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .badge-alta { background: #fee2e2; color: #b91c1c; }
+        .badge-media { background: #fff3e3; color: #b45309; }
+        .badge-baja { background: #e0f2e9; color: #15803d; }
+        .badge-ninguna { background: #e2e8f0; color: #475569; }
+        .loader {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-light);
+        }
+        .filter-bar {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+            align-items: flex-end;
+        }
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+        .filter-group label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-light);
+        }
+        select, input {
+            padding: 0.4rem 0.8rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.6rem;
+            background: white;
+        }
         .placeholder-content {
             text-align: center;
             padding: 3rem 2rem;
             color: var(--text-light);
         }
-
         .placeholder-icon {
             font-size: 4rem;
             color: var(--primary-color);
             margin-bottom: 1.5rem;
             opacity: 0.7;
         }
-
-        .placeholder-text h3 {
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-        }
-
-        .placeholder-text p {
-            max-width: 600px;
-            margin: 0 auto 1.5rem;
-        }
-
-        /* Footer */
         footer {
             background-color: var(--light-color);
             border-top: 1px solid var(--border-color);
@@ -197,7 +263,6 @@
             color: var(--text-light);
             font-size: 0.9rem;
         }
-
         .footer-info {
             display: flex;
             justify-content: space-between;
@@ -205,262 +270,314 @@
             max-width: 1200px;
             margin: 0 auto;
         }
-
-        /* Animations */
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
-
-        /* Responsive Design */
         @media (max-width: 992px) {
-            .module-buttons {
-                gap: 0.4rem;
-            }
-            
-            .module-btn {
-                padding: 0.7rem 1rem;
-                font-size: 0.85rem;
-            }
+            .module-buttons { gap: 0.4rem; }
+            .module-btn { padding: 0.7rem 1rem; font-size: 0.85rem; }
         }
-
         @media (max-width: 768px) {
-            header {
-                flex-direction: column;
-                padding: 0.5rem 1rem;
-                gap: 0.5rem;
-            }
-            
-            .module-buttons {
-                justify-content: flex-start;
-                overflow-x: auto;
-                padding-bottom: 0.5rem;
-                width: 100%;
-            }
-            
-            .module-btn {
-                flex-shrink: 0;
-            }
-            
-            .header-right {
-                width: 100%;
-                justify-content: center;
-            }
-            
-            .footer-info {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            
-            .content-area {
-                padding: 1.5rem;
-            }
+            header { flex-direction: column; padding: 0.5rem 1rem; gap: 0.5rem; }
+            .module-buttons { justify-content: flex-start; overflow-x: auto; padding-bottom: 0.5rem; width: 100%; }
+            .module-btn { flex-shrink: 0; }
+            .header-right { width: 100%; justify-content: center; }
+            .footer-info { flex-direction: column; gap: 1rem; }
+            .content-area { padding: 1.5rem; }
         }
     </style>
 </head>
 <body>
-    <div class="app-container">
-        <header>
-            <div class="module-buttons">
-                <!-- Botón 1: Causas -->
-                <button class="module-btn active" data-module="causas">
-                    Causas
-                </button>
-                
-                <!-- Botón 2: Pases Diarios -->
-                <button class="module-btn" data-module="pases">
-                    Pases Diarios
-                </button>
-                
-                <!-- Botón 3: Atención al Público -->
-                <button class="module-btn" data-module="atencion">
-                    Atención al Público
-                </button>
-                
-                <!-- Botón 4: Dictamenes -->
-                <button class="module-btn" data-module="dictamenes">
-                    Dictámenes
-                </button>
-                
-                <!-- Botón 5: Oficios -->
-                <button class="module-btn" data-module="oficios">
-                    Oficios
-                </button>
-                
-                <!-- Botón 6: Partes -->
-                <button class="module-btn" data-module="partes">
-                    Partes
-                </button>
-                
-                <!-- Botón 7: Calendario -->
-                <button class="module-btn" data-module="calendario">
-                    Calendario
-                </button>
-                
-                <!-- Botón 8: Prioridad-Intervención -->
-                <button class="module-btn" data-module="prioridad">
-                    Prioridad-Intervención
-                </button>
-            </div>
-            
-            <div class="header-right">
-                <!-- Botón Informe Trimestral Oficial -->
-                <button class="module-btn informe-trimestral" data-module="informe">
-                    Informe Trimestral Oficial
-                </button>
-            </div>
-        </header>
-        
-        <main>
-            <div class="content-panel">
-                <div class="content-header">
-                    <h2 class="content-title" id="module-title">Causas</h2>
-                </div>
-                
-                <div class="content-area">
-                    <!-- Placeholder content (initial) -->
-                    <div id="initial-content" class="placeholder-content">
-                        <div class="placeholder-icon">
-                            <i class="fas fa-chart-bar"></i>
-                        </div>
-                        <div class="placeholder-text">
-                            <h3>Reporte Estadístico del Sistema Digital</h3>
-                            <p>Seleccione uno de los módulos del panel superior para visualizar los reportes estadísticos correspondientes. Cada módulo mostrará información específica del sistema de gestión de la Defensoría Civil y Comercial 6.</p>
-                            <p>Esta aplicación permite acceder a los datos de forma integrada y en tiempo real.</p>
-                        </div>
-                    </div>
-                    
-                    <!-- Module content will be loaded here -->
-                    <div id="module-content-container">
-                        <!-- Content for each module will be inserted here by JavaScript -->
-                    </div>
-                </div>
-            </div>
-        </main>
-        
-        <footer>
-            <div class="footer-info">
-                <div>
-                    <p><strong>Defensoría Civil y Comercial 6</strong> - Ministerio Público Misiones</p>
-                </div>
-                <div>
-                    <p>Sistema de Reportes Estadísticos | Versión 2.1</p>
-                </div>
-                <div>
-                    <p><i class="far fa-calendar-alt"></i> <span id="current-date"></span></p>
-                </div>
-            </div>
-        </footer>
-    </div>
+<div class="app-container">
+    <header>
+        <div class="module-buttons">
+            <button class="module-btn active" data-module="causas">Causas</button>
+            <button class="module-btn" data-module="pases">Pases Diarios</button>
+            <button class="module-btn" data-module="atencion">Atención al Público</button>
+            <button class="module-btn" data-module="dictamenes">Dictámenes</button>
+            <button class="module-btn" data-module="oficios">Oficios</button>
+            <button class="module-btn" data-module="partes">Partes</button>
+            <button class="module-btn" data-module="calendario">Eventos</button>   <!-- texto cambiado -->
+            <button class="module-btn" data-module="prioridad">Prioridad-Intervención</button>
+        </div>
+        <div class="header-right">
+            <button class="module-btn informe-trimestral" data-module="informe">Informe Trimestral Oficial</button>
+        </div>
+    </header>
 
-    <script>
-        // Set current date in footer
-        const currentDateElement = document.getElementById('current-date');
-        const today = new Date();
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        currentDateElement.textContent = today.toLocaleDateString('es-ES', options);
-        
-        // Define URLs for each module
-        const moduleUrls = {
-            atencion: "https://sistema-secretarios.github.io/cantidad-empleados/atencionE",
-            calendario: "https://sistema-secretarios.github.io/cantidad-empleados/calendarioE",
-            causas: "https://sistema-secretarios.github.io/cantidad-empleados/causaE",
-            dictamenes: "https://sistema-secretarios.github.io/cantidad-empleados/dictamenE",
-            oficios: "https://sistema-secretarios.github.io/cantidad-empleados/oficiosE",
-            partes: "https://sistema-secretarios.github.io/cantidad-empleados/partesE",
-            pases: "https://sistema-secretarios.github.io/cantidad-empleados/paseE",
-            prioridad: "https://sistema-secretarios.github.io/cantidad-empleados/prioridad-interE",
-            informe: "https://sistema-secretarios.github.io/estadistica/"
-        };
-        
-        // Module data for display
-        const moduleData = {
-            causas: {
-                title: "Causas",
-                url: moduleUrls.causas
-            },
-            pases: {
-                title: "Pases Diarios",
-                url: moduleUrls.pases
-            },
-            atencion: {
-                title: "Atención al Público",
-                url: moduleUrls.atencion
-            },
-            dictamenes: {
-                title: "Dictámenes",
-                url: moduleUrls.dictamenes
-            },
-            oficios: {
-                title: "Oficios",
-                url: moduleUrls.oficios
-            },
-            partes: {
-                title: "Partes",
-                url: moduleUrls.partes
-            },
-            calendario: {
-                title: "Calendario",
-                url: moduleUrls.calendario
-            },
-            prioridad: {
-                title: "Prioridad-Intervención",
-                url: moduleUrls.prioridad
-            },
-            informe: {
-                title: "Informe Trimestral Oficial",
-                url: moduleUrls.informe
-            }
-        };
-        
-        // Get DOM elements
-        const moduleBtns = document.querySelectorAll('.module-btn');
-        const moduleTitle = document.getElementById('module-title');
-        const initialContent = document.getElementById('initial-content');
-        const moduleContentContainer = document.getElementById('module-content-container');
-        
-        // Function to load module content
-        function loadModule(moduleId) {
-            // Update active button
-            moduleBtns.forEach(btn => {
-                if (btn.dataset.module === moduleId) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                }
-            });
-            
-            // Update title
-            moduleTitle.textContent = moduleData[moduleId].title;
-            
-            // Hide initial content and show module content
-            initialContent.style.display = 'none';
-            moduleContentContainer.innerHTML = '';
-            
-            // Create module content - ONLY IFRAME
-            const moduleContent = document.createElement('div');
-            moduleContent.className = 'module-content active';
-            
-            // Create iframe container with URL
-            moduleContent.innerHTML = `
-                <div class="iframe-container">
-                    <iframe src="${moduleData[moduleId].url}" title="${moduleData[moduleId].title}" id="module-iframe"></iframe>
+    <main>
+        <div class="content-panel">
+            <div class="content-header">
+                <h2 class="content-title" id="module-title">Causas</h2>
+            </div>
+            <div class="content-area">
+                <div id="initial-content" class="placeholder-content">
+                    <div class="placeholder-icon"><i class="fas fa-chart-bar"></i></div>
+                    <div class="placeholder-text">
+                        <h3>Reporte Estadístico del Sistema Digital</h3>
+                        <p>Seleccione uno de los módulos del panel superior para visualizar los reportes estadísticos correspondientes.</p>
+                        <p>El módulo <strong>Causas</strong> ahora muestra datos en tiempo real desde ambas bases (histórica + nueva).</p>
+                    </div>
                 </div>
-            `;
-            
-            moduleContentContainer.appendChild(moduleContent);
+                <div id="module-content-container"></div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-info">
+            <div><strong>Defensoría Civil y Comercial 6</strong> - Ministerio Público Misiones</div>
+            <div>Sistema de Reportes Estadísticos | Versión 3.0</div>
+            <div><i class="far fa-calendar-alt"></i> <span id="current-date"></span></div>
+        </div>
+    </footer>
+</div>
+
+<script>
+    // ======================= CONFIGURACIÓN FIREBASE (HISTÓRICA + NUEVA) =======================
+    const firebaseConfigHistorica = {
+        apiKey: "AIzaSyBt6X0u0BpiNPcV2SNPrN-spCmjl2AhZaA",
+        authDomain: "causas-defensoria.firebaseapp.com",
+        projectId: "causas-defensoria",
+        storageBucket: "causas-defensoria.appspot.com",
+        messagingSenderId: "186064671470",
+        appId: "1:186064671470:web:b58bae5eadbe6e469f19ff"
+    };
+    const firebaseConfigNueva = {
+        apiKey: "AIzaSyBevCwkh4iOWVqhp3gG2ae1eCUMkFpnr6I",
+        authDomain: "causas-2defensoria.firebaseapp.com",
+        projectId: "causas-2defensoria",
+        storageBucket: "causas-2defensoria.firebasestorage.app",
+        messagingSenderId: "663905632804",
+        appId: "1:663905632804:web:4f686a88004dc642ad0eb1"
+    };
+
+    let dbNueva, dbHistorica;
+    try {
+        let appNueva = firebase.initializeApp(firebaseConfigNueva, "nueva");
+        let appHistorica = firebase.initializeApp(firebaseConfigHistorica, "historica");
+        dbNueva = appNueva.firestore();
+        dbHistorica = appHistorica.firestore();
+        console.log("Firebase inicializado: ambas bases disponibles");
+    } catch (e) {
+        console.error("Error init Firebase", e);
+    }
+
+    // Helper: obtener todas las causas de ambas bases
+    async function obtenerTodasLasCausas() {
+        let causas = [];
+        try {
+            if (dbNueva) {
+                const snapNueva = await dbNueva.collection("causas").get();
+                causas.push(...snapNueva.docs.map(d => ({ id: d.id, ...d.data(), origen: 'nueva' })));
+            }
+            if (dbHistorica) {
+                const snapHistorica = await dbHistorica.collection("causas").get();
+                causas.push(...snapHistorica.docs.map(d => ({ id: d.id, ...d.data(), origen: 'historica' })));
+            }
+        } catch (err) {
+            console.warn("Error al obtener causas:", err);
         }
+        return causas;
+    }
+
+    // Función para renderizar el dashboard de Causas (estadísticas + tablas)
+    async function renderCausasEstadisticas(periodo = "todos") {
+        const container = document.getElementById("module-content-container");
+        const initialDiv = document.getElementById("initial-content");
+        if (initialDiv) initialDiv.style.display = "none";
+        container.innerHTML = `<div class="loader"><i class="fas fa-spinner fa-pulse"></i> Cargando expedientes desde ambas bases (histórica + nueva)...</div>`;
+
+        let todas = await obtenerTodasLasCausas();
         
-        // Add click event listeners to buttons
-        moduleBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const moduleId = btn.dataset.module;
-                loadModule(moduleId);
+        // Filtro por período (fechaRegistro)
+        let fechaLimite = null;
+        if (periodo !== "todos") {
+            const dias = parseInt(periodo, 10);
+            if (!isNaN(dias)) {
+                fechaLimite = new Date();
+                fechaLimite.setDate(fechaLimite.getDate() - dias);
+            }
+        }
+        if (fechaLimite) {
+            todas = todas.filter(c => {
+                if (!c.fechaRegistro) return false;
+                let fechaDoc = c.fechaRegistro?.toDate ? c.fechaRegistro.toDate() : new Date(c.fechaRegistro);
+                return fechaDoc >= fechaLimite;
             });
-        });
+        }
+
+        const total = todas.length;
+        const porEstado = {};
+        const porPrioridad = { Alta: 0, Media: 0, Baja: 0, Ninguna: 0 };
+        const porIntervencion = {};
         
-        // Load the first module by default (Causas)
-        loadModule('causas');
-    </script>
+        todas.forEach(c => {
+            const est = c.estado || "Sin estado";
+            porEstado[est] = (porEstado[est] || 0) + 1;
+            const prior = c.prioridad || "Ninguna";
+            if (porPrioridad[prior] !== undefined) porPrioridad[prior]++;
+            const inter = c.intervencion || "No especificada";
+            porIntervencion[inter] = (porIntervencion[inter] || 0) + 1;
+        });
+
+        // Últimas 8 causas
+        const ultimas = [...todas].sort((a, b) => {
+            let fa = a.fechaRegistro?.toDate ? a.fechaRegistro.toDate() : new Date(a.fechaRegistro);
+            let fb = b.fechaRegistro?.toDate ? b.fechaRegistro.toDate() : new Date(b.fechaRegistro);
+            return fb - fa;
+        }).slice(0, 8);
+
+        const html = `
+            <div class="filter-bar">
+                <div class="filter-group">
+                    <label>Período</label>
+                    <select id="periodoCausas">
+                        <option value="todos" ${periodo === 'todos' ? 'selected' : ''}>Todo el histórico</option>
+                        <option value="90" ${periodo === '90' ? 'selected' : ''}>Últimos 3 meses</option>
+                        <option value="180" ${periodo === '180' ? 'selected' : ''}>Últimos 6 meses</option>
+                        <option value="365" ${periodo === '365' ? 'selected' : ''}>Último año</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>&nbsp;</label>
+                    <button id="aplicarFiltroCausas" class="module-btn" style="background:var(--primary-color);color:white">Filtrar</button>
+                </div>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card"><div class="stat-number">${total}</div><div>Total Expedientes</div><small>(Nueva + Histórica)</small></div>
+                <div class="stat-card"><div class="stat-number">${Object.keys(porEstado).length}</div><div>Estados distintos</div></div>
+                <div class="stat-card"><div class="stat-number">${porPrioridad.Alta || 0}</div><div>Alta prioridad</div></div>
+            </div>
+            <div style="display:flex; flex-wrap:wrap; gap:2rem; justify-content:space-between;">
+                <div style="flex:1; min-width:250px"><canvas id="chartEstado" width="400" height="250"></canvas><p class="stat-card" style="margin-top:0.5rem">Distribución por Estado</p></div>
+                <div style="flex:1; min-width:250px"><canvas id="chartPrioridad" width="400" height="250"></canvas><p class="stat-card">Prioridad</p></div>
+            </div>
+            <h3 style="margin-top: 2rem;">📋 Últimos expedientes agregados</h3>
+            <table class="data-table">
+                <thead><tr><th>N° Expediente</th><th>Carátula</th><th>Estado</th><th>Prioridad</th><th>Fecha Registro</th><th>Origen</th></tr></thead>
+                <tbody>
+                    ${ultimas.map(c => `
+                        <tr>
+                            <td>${c.numCausa || '—'}</td>
+                            <td>${(c.caratula || '').substring(0, 60)}</td>
+                            <td>${c.estado || '—'}</td>
+                            <td><span class="badge badge-${(c.prioridad || 'ninguna').toLowerCase()}">${c.prioridad || 'Ninguna'}</span></td>
+                            <td>${c.fechaRegistro ? (c.fechaRegistro.toDate ? c.fechaRegistro.toDate().toLocaleDateString() : new Date(c.fechaRegistro).toLocaleDateString()) : '—'}</td>
+                            <td>${c.origen === 'nueva' ? 'Nueva Base' : 'Histórica'}</td>
+                        </tr>
+                    `).join('')}
+                    ${ultimas.length === 0 ? '<tr><td colspan="6">No hay registros con los filtros seleccionados</td></tr>' : ''}
+                </tbody>
+            </table>
+            <div style="margin-top:1rem"><strong>Intervenciones más frecuentes:</strong> ${Object.entries(porIntervencion).sort((a,b)=>b[1]-a[1]).slice(0,4).map(([k,v])=>`${k} (${v})`).join(', ')}</div>
+        `;
+        container.innerHTML = html;
+
+        // Inicializar gráficos
+        const ctxEstado = document.getElementById("chartEstado")?.getContext("2d");
+        const ctxPrioridad = document.getElementById("chartPrioridad")?.getContext("2d");
+        if (ctxEstado) {
+            new Chart(ctxEstado, {
+                type: 'bar',
+                data: { labels: Object.keys(porEstado), datasets: [{ label: 'Cantidad', data: Object.values(porEstado), backgroundColor: '#0066cc' }] }
+            });
+        }
+        if (ctxPrioridad) {
+            new Chart(ctxPrioridad, {
+                type: 'doughnut',
+                data: { labels: Object.keys(porPrioridad), datasets: [{ data: Object.values(porPrioridad), backgroundColor: ['#ef4444', '#f97316', '#10b981', '#6b7280'] }] }
+            });
+        }
+
+        // Evento filtro
+        document.getElementById("aplicarFiltroCausas")?.addEventListener("click", () => {
+            const nuevoPeriodo = document.getElementById("periodoCausas").value;
+            renderCausasEstadisticas(nuevoPeriodo);
+        });
+    }
+
+    // ======================= MÓDULOS CON IFRAMES (ORIGINAL) =======================
+    const moduleUrls = {
+        atencion: "https://sistema-secretarios.github.io/cantidad-empleados/atencionE",
+        calendario: "https://sistema-secretarios.github.io/cantidad-empleados/calendarioE",
+        causas: "",  // ya no se usa iframe
+        dictamenes: "https://sistema-secretarios.github.io/cantidad-empleados/dictamenE",
+        oficios: "https://sistema-secretarios.github.io/cantidad-empleados/oficiosE",
+        partes: "https://sistema-secretarios.github.io/cantidad-empleados/partesE",
+        pases: "https://sistema-secretarios.github.io/cantidad-empleados/paseE",
+        prioridad: "https://sistema-secretarios.github.io/cantidad-empleados/prioridad-interE",
+        informe: "https://sistema-secretarios.github.io/estadistica/"
+    };
+
+    const moduleData = {
+        causas: { title: "Causas" },
+        pases: { title: "Pases Diarios", url: moduleUrls.pases },
+        atencion: { title: "Atención al Público", url: moduleUrls.atencion },
+        dictamenes: { title: "Dictámenes", url: moduleUrls.dictamenes },
+        oficios: { title: "Oficios", url: moduleUrls.oficios },
+        partes: { title: "Partes", url: moduleUrls.partes },
+        calendario: { title: "Eventos", url: moduleUrls.calendario },
+        prioridad: { title: "Prioridad-Intervención", url: moduleUrls.prioridad },
+        informe: { title: "Informe Trimestral Oficial", url: moduleUrls.informe }
+    };
+
+    const moduleBtns = document.querySelectorAll('.module-btn');
+    const moduleTitle = document.getElementById('module-title');
+    const initialContent = document.getElementById('initial-content');
+    const moduleContentContainer = document.getElementById('module-content-container');
+
+    function loadModule(moduleId) {
+        // Actualizar botón activo
+        moduleBtns.forEach(btn => {
+            if (btn.dataset.module === moduleId) btn.classList.add('active');
+            else btn.classList.remove('active');
+        });
+
+        // Ocultar placeholder inicial
+        if (initialContent) initialContent.style.display = 'none';
+        moduleContentContainer.innerHTML = '';
+
+        if (moduleId === 'causas') {
+            // MÓDULO CAUSAS: usar Firebase
+            moduleTitle.textContent = "Causas - Estadísticas integradas (ambas bases)";
+            renderCausasEstadisticas("todos");
+        } else {
+            // RESTO DE MÓDULOS: iframe original
+            const data = moduleData[moduleId];
+            if (data && data.url) {
+                moduleTitle.textContent = data.title;
+                const moduleContent = document.createElement('div');
+                moduleContent.className = 'module-content active';
+                moduleContent.innerHTML = `
+                    <div class="iframe-container">
+                        <iframe src="${data.url}" title="${data.title}" id="module-iframe"></iframe>
+                    </div>
+                `;
+                moduleContentContainer.appendChild(moduleContent);
+            } else {
+                moduleContentContainer.innerHTML = `<div class="placeholder-content"><i class="fas fa-exclamation-triangle"></i><p>Módulo no disponible temporalmente.</p></div>`;
+            }
+        }
+    }
+
+    // Asignar eventos a los botones
+    moduleBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const moduleId = btn.dataset.module;
+            loadModule(moduleId);
+        });
+    });
+
+    // Fecha actual en footer
+    const currentDateElement = document.getElementById('current-date');
+    const today = new Date();
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    currentDateElement.textContent = today.toLocaleDateString('es-ES', options);
+
+    // Cargar Causas por defecto
+    loadModule('causas');
+</script>
 </body>
 </html>
