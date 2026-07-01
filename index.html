@@ -286,6 +286,246 @@
             .footer-info { flex-direction: column; gap: 1rem; }
             .content-area { padding: 1.5rem; }
         }
+
+        /* ===== ESTILOS PARA EL MÓDULO PASES (igual que pase-informe) ===== */
+        .pases-card {
+            background-color: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+        }
+        .pases-header {
+            background-color: #fafcff;
+            border-bottom: 2px solid #1e4663;
+            padding: 1.5rem 2rem;
+        }
+        .pases-header h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #1e3a5f;
+            margin: 0;
+        }
+        .pases-header p {
+            color: #4a627a;
+            margin-top: 0.4rem;
+            font-size: 0.9rem;
+        }
+        .pases-filtros {
+            background-color: #f9fbfd;
+            padding: 1.2rem 2rem;
+            border-bottom: 1px solid #e9edf2;
+        }
+        .pases-filtro-label {
+            font-weight: 600;
+            color: #1e4663;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            margin-bottom: 0.3rem;
+        }
+        .pases-form-select {
+            border-radius: 10px;
+            border: 1px solid #cbd5e1;
+            padding: 0.5rem 0.8rem;
+            background-color: white;
+            width: 100%;
+        }
+        .pases-kpi {
+            background-color: #eef2fa;
+            border-radius: 20px;
+            padding: 0.6rem 1.2rem;
+            text-align: center;
+            border: 1px solid #dce5ec;
+            display: inline-block;
+        }
+        .pases-kpi-numero {
+            font-size: 2.3rem;
+            font-weight: 700;
+            color: #1e4663;
+            line-height: 1;
+        }
+        .pases-kpi-texto {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: #4a627a;
+            font-weight: 500;
+        }
+        .pases-tabla {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 14px;
+            overflow: hidden;
+        }
+        .pases-tabla thead th {
+            background-color: #f1f5f9;
+            color: #1e3a5f;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            padding: 1rem;
+            border-bottom: 2px solid #cbd5e1;
+        }
+        .pases-tabla tbody td {
+            padding: 1rem;
+            border-bottom: 1px solid #eef2f6;
+            vertical-align: middle;
+        }
+        .pases-usuario-nombre {
+            font-weight: 600;
+            color: #1f3b4c;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: underline;
+            text-decoration-thickness: 1px;
+            text-underline-offset: 3px;
+            transition: color 0.2s;
+        }
+        .pases-usuario-nombre:hover {
+            color: #0d6efd;
+        }
+        .pases-cantidad-destacada {
+            font-size: 1.9rem;
+            font-weight: 800;
+            display: inline-block;
+            min-width: 70px;
+            text-align: center;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+        }
+        .pases-cantidad-verde {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        .pases-cantidad-azul {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+        .pases-cantidad-rojo {
+            background-color: #ffe4e2;
+            color: #b91c1c;
+        }
+        .pases-text-center {
+            text-align: center;
+            vertical-align: middle;
+        }
+        .pases-empty {
+            text-align: center;
+            padding: 2.5rem;
+            color: #6c86a3;
+            font-style: italic;
+        }
+        .pases-footer-note {
+            font-size: 0.75rem;
+            border-top: 1px solid #e2e8f0;
+            padding: 1rem 2rem;
+            background-color: #fefefe;
+            color: #4b6b8f;
+        }
+        .pases-btn-judicial {
+            background-color: #1e4663;
+            border: none;
+            color: white;
+            font-weight: 500;
+            padding: 0.45rem 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .pases-btn-outline {
+            background: transparent;
+            border: 1px solid #1e4663;
+            color: #1e4663;
+            border-radius: 8px;
+            padding: 0.45rem 1.2rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .pases-btn-outline:hover {
+            background-color: #eef3fc;
+        }
+        .pases-modal-detalle table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+        }
+        .pases-modal-detalle th {
+            background-color: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            padding: 8px;
+            font-weight: 600;
+        }
+        .pases-modal-detalle td {
+            border: 1px solid #dee2e6;
+            padding: 6px 8px;
+        }
+        .pases-badge-cantidad {
+            font-weight: 700;
+            background-color: #eef2fa;
+            padding: 2px 10px;
+            border-radius: 20px;
+        }
+
+        /* Modal genérico */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-dialog {
+            margin: 2rem auto;
+            max-width: 800px;
+        }
+        .modal-content {
+            background-color: #fff;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .modal-header {
+            background-color: #f8fafc;
+            border-bottom: 2px solid #1e4663;
+            padding: 1rem 1.5rem;
+            border-radius: 16px 16px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-header h5 {
+            margin: 0;
+            color: #1e3a5f;
+        }
+        .modal-body {
+            padding: 1.5rem;
+        }
+        .modal-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+        }
+        .btn-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #1e4663;
+        }
+        .btn-secondary {
+            background: #e2e8f0;
+            border: none;
+            padding: 0.4rem 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
     </style>
 </head>
 <body>
@@ -298,7 +538,7 @@
             <button class="module-btn" data-module="dictamenes">Dictámenes</button>
             <button class="module-btn" data-module="oficios">Oficios</button>
             <button class="module-btn" data-module="partes">Partes</button>
-            <button class="module-btn" data-module="calendario">Eventos</button>   <!-- texto cambiado -->
+            <button class="module-btn" data-module="calendario">Eventos</button>
             <button class="module-btn" data-module="prioridad">Prioridad-Intervención</button>
         </div>
         <div class="header-right">
@@ -332,6 +572,25 @@
             <div><i class="far fa-calendar-alt"></i> <span id="current-date"></span></div>
         </div>
     </footer>
+</div>
+
+<!-- Modal para detalle de usuario (Pases) -->
+<div class="modal" id="detalleUsuarioModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalUsuarioTitulo">Detalle de expedientes</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="cerrarModalDetalle()">&times;</button>
+            </div>
+            <div class="modal-body pases-modal-detalle" id="modalDetalleBody">
+                Cargando...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" onclick="cerrarModalDetalle()">Cerrar</button>
+                <button type="button" id="btnImprimirDetalle" class="pases-btn-outline">Imprimir detalle</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -382,7 +641,7 @@
         return causas;
     }
 
-    // Función para renderizar el dashboard de Causas (estadísticas + tablas)
+    // ======================= MÓDULO CAUSAS (existente) =======================
     async function renderCausasEstadisticas(periodo = "todos") {
         const container = document.getElementById("module-content-container");
         const initialDiv = document.getElementById("initial-content");
@@ -391,7 +650,6 @@
 
         let todas = await obtenerTodasLasCausas();
         
-        // Filtro por período (fechaRegistro)
         let fechaLimite = null;
         if (periodo !== "todos") {
             const dias = parseInt(periodo, 10);
@@ -422,7 +680,6 @@
             porIntervencion[inter] = (porIntervencion[inter] || 0) + 1;
         });
 
-        // Últimas 8 causas
         const ultimas = [...todas].sort((a, b) => {
             let fa = a.fechaRegistro?.toDate ? a.fechaRegistro.toDate() : new Date(a.fechaRegistro);
             let fb = b.fechaRegistro?.toDate ? b.fechaRegistro.toDate() : new Date(b.fechaRegistro);
@@ -475,7 +732,6 @@
         `;
         container.innerHTML = html;
 
-        // Inicializar gráficos
         const ctxEstado = document.getElementById("chartEstado")?.getContext("2d");
         const ctxPrioridad = document.getElementById("chartPrioridad")?.getContext("2d");
         if (ctxEstado) {
@@ -491,11 +747,399 @@
             });
         }
 
-        // Evento filtro
         document.getElementById("aplicarFiltroCausas")?.addEventListener("click", () => {
             const nuevoPeriodo = document.getElementById("periodoCausas").value;
             renderCausasEstadisticas(nuevoPeriodo);
         });
+    }
+
+    // ======================= MÓDULO PRIORIDAD-INTERVENCIÓN =======================
+    async function renderPrioridadIntervencion() {
+        const container = document.getElementById("module-content-container");
+        const initialDiv = document.getElementById("initial-content");
+        if (initialDiv) initialDiv.style.display = "none";
+        container.innerHTML = `<div class="loader"><i class="fas fa-spinner fa-pulse"></i> Cargando datos de prioridad e intervención...</div>`;
+
+        let todas = await obtenerTodasLasCausas();
+        const total = todas.length;
+        const porPrioridad = { Alta: 0, Media: 0, Baja: 0, Ninguna: 0 };
+        const porIntervencion = {};
+
+        todas.forEach(c => {
+            const prior = c.prioridad || "Ninguna";
+            if (porPrioridad[prior] !== undefined) porPrioridad[prior]++;
+            const inter = c.intervencion || "No especificada";
+            porIntervencion[inter] = (porIntervencion[inter] || 0) + 1;
+        });
+
+        const intervencionesOrdenadas = Object.entries(porIntervencion).sort((a,b) => b[1] - a[1]);
+
+        const html = `
+            <div class="stats-grid">
+                <div class="stat-card"><div class="stat-number">${total}</div><div>Total Expedientes</div></div>
+                <div class="stat-card"><div class="stat-number">${Object.keys(porPrioridad).length}</div><div>Niveles de Prioridad</div></div>
+                <div class="stat-card"><div class="stat-number">${intervencionesOrdenadas.length}</div><div>Tipos de Intervención</div></div>
+            </div>
+            <div style="display:flex; flex-wrap:wrap; gap:2rem; justify-content:space-between;">
+                <div style="flex:1; min-width:250px"><canvas id="chartPrioridadPI" width="400" height="250"></canvas><p class="stat-card">Prioridad</p></div>
+                <div style="flex:1; min-width:250px"><canvas id="chartIntervencionPI" width="400" height="250"></canvas><p class="stat-card">Intervención (top 10)</p></div>
+            </div>
+            <h3 style="margin-top: 2rem;">📋 Detalle de Intervenciones</h3>
+            <table class="data-table">
+                <thead><tr><th>Intervención</th><th>Cantidad</th></tr></thead>
+                <tbody>
+                    ${intervencionesOrdenadas.map(([k,v]) => `<tr><td>${k}</td><td>${v}</td></tr>`).join('')}
+                    ${intervencionesOrdenadas.length === 0 ? '<tr><td colspan="2">No hay datos</td></tr>' : ''}
+                </tbody>
+            </table>
+        `;
+        container.innerHTML = html;
+
+        const ctxPrioridad = document.getElementById("chartPrioridadPI")?.getContext("2d");
+        const ctxIntervencion = document.getElementById("chartIntervencionPI")?.getContext("2d");
+        if (ctxPrioridad) {
+            new Chart(ctxPrioridad, {
+                type: 'doughnut',
+                data: { labels: Object.keys(porPrioridad), datasets: [{ data: Object.values(porPrioridad), backgroundColor: ['#ef4444', '#f97316', '#10b981', '#6b7280'] }] }
+            });
+        }
+        if (ctxIntervencion) {
+            const topInter = intervencionesOrdenadas.slice(0, 10);
+            new Chart(ctxIntervencion, {
+                type: 'bar',
+                data: { labels: topInter.map(i => i[0]), datasets: [{ label: 'Cantidad', data: topInter.map(i => i[1]), backgroundColor: '#0066cc' }] }
+            });
+        }
+    }
+
+    // ======================= MÓDULO PASES DIARIOS (copia exacta de pase-informe) =======================
+    // Variables globales para pases
+    let pasesUsuariosMap = new Map();
+    let pasesUsuariosOrdenados = [];
+    let pasesFiltros = { mes: 'todos', anio: 'todos', proceso: 'todos' };
+    let pasesTotalDocumentos = 0;
+    const nombresMeses = {
+        1: 'Enero', 2: 'Febrero', 3: 'Marzo', 4: 'Abril', 5: 'Mayo', 6: 'Junio',
+        7: 'Julio', 8: 'Agosto', 9: 'Septiembre', 10: 'Octubre', 11: 'Noviembre', 12: 'Diciembre'
+    };
+    let currentDetalleUsuario = null;
+    let currentDetalleData = null;
+
+    // Función robusta para extraer año y mes
+    function extraerAnioMes(fecha) {
+        if (!fecha) return null;
+        let dateObj;
+        if (fecha.toDate) {
+            dateObj = fecha.toDate();
+        } else if (fecha instanceof Date) {
+            dateObj = fecha;
+        } else if (typeof fecha === 'string') {
+            dateObj = new Date(fecha);
+        } else {
+            return null;
+        }
+        if (isNaN(dateObj.getTime())) return null;
+        return { anio: dateObj.getFullYear(), mes: dateObj.getMonth() + 1 };
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    // Cargar datos y renderizar todo
+    async function cargarPases() {
+        const tbody = document.getElementById('pasesCuerpoTabla');
+        if (tbody) tbody.innerHTML = `<tr><td colspan="2" class="pases-empty"><i class="fas fa-spinner fa-pulse"></i> Cargando expedientes...</td></tr>`;
+        
+        try {
+            let todas = await obtenerTodasLasCausas();
+            pasesTotalDocumentos = todas.length;
+
+            const tempMap = new Map();
+            const aniosSet = new Set();
+            const mesesSet = new Set();
+            const procesosSet = new Set();
+
+            for (const exp of todas) {
+                const usuario = exp.usuarioAsignado ? exp.usuarioAsignado.trim() : 'Sin asignar';
+                const proceso = exp.tipoProceso ? exp.tipoProceso.trim() : 'No especificado';
+                procesosSet.add(proceso);
+                const fechaInfo = extraerAnioMes(exp.fechaRegistro);
+                let anio = null, mes = null;
+                if (fechaInfo) {
+                    anio = fechaInfo.anio;
+                    mes = fechaInfo.mes;
+                    aniosSet.add(anio);
+                    mesesSet.add(mes);
+                }
+                if (!tempMap.has(usuario)) tempMap.set(usuario, []);
+                tempMap.get(usuario).push({
+                    anio, mes, proceso,
+                    tieneFecha: fechaInfo !== null
+                });
+            }
+            pasesUsuariosMap = tempMap;
+            pasesUsuariosOrdenados = Array.from(tempMap.keys()).sort((a,b) => a.localeCompare(b));
+
+            // Llenar selects
+            const filtroAnio = document.getElementById('pasesFiltroAnio');
+            const filtroMes = document.getElementById('pasesFiltroMes');
+            const filtroProceso = document.getElementById('pasesFiltroProceso');
+            if (filtroAnio) {
+                filtroAnio.innerHTML = '<option value="todos">Todos los años</option>';
+                Array.from(aniosSet).sort((a,b)=>b-a).forEach(a => {
+                    filtroAnio.innerHTML += `<option value="${a}">${a}</option>`;
+                });
+                filtroAnio.value = 'todos';
+            }
+            if (filtroMes) {
+                filtroMes.innerHTML = '<option value="todos">Todos los meses</option>';
+                Array.from(mesesSet).sort((a,b)=>a-b).forEach(m => {
+                    filtroMes.innerHTML += `<option value="${m}">${nombresMeses[m] || m}</option>`;
+                });
+                filtroMes.value = 'todos';
+            }
+            if (filtroProceso) {
+                filtroProceso.innerHTML = '<option value="todos">Todos los procesos</option>';
+                Array.from(procesosSet).sort().forEach(p => {
+                    filtroProceso.innerHTML += `<option value="${escapeHtml(p)}">${escapeHtml(p)}</option>`;
+                });
+                filtroProceso.value = 'todos';
+            }
+
+            // Actualizar KPI
+            const kpiElement = document.getElementById('pasesTotalRegistros');
+            if (kpiElement) kpiElement.innerText = pasesTotalDocumentos;
+
+            // Aplicar filtros y renderizar tabla
+            aplicarFiltrosPases();
+        } catch (error) {
+            console.error(error);
+            if (tbody) tbody.innerHTML = `<tr><td colspan="2" class="pases-empty">Error al cargar datos: ${error.message}</td></tr>`;
+        }
+    }
+
+    function contarExpedientesUsuarioPases(usuario, filtros) {
+        const items = pasesUsuariosMap.get(usuario) || [];
+        let count = 0;
+        for (const item of items) {
+            let cumpleFecha = true;
+            if (filtros.anio !== 'todos' || filtros.mes !== 'todos') {
+                if (item.anio === null || item.mes === null) cumpleFecha = false;
+                else {
+                    if (filtros.anio !== 'todos' && item.anio !== parseInt(filtros.anio,10)) cumpleFecha = false;
+                    if (filtros.mes !== 'todos' && item.mes !== parseInt(filtros.mes,10)) cumpleFecha = false;
+                }
+            }
+            const cumpleProceso = (filtros.proceso === 'todos' || item.proceso === filtros.proceso);
+            if (cumpleFecha && cumpleProceso) count++;
+        }
+        return count;
+    }
+
+    function obtenerRankingPases() {
+        const filtros = {
+            anio: document.getElementById('pasesFiltroAnio').value,
+            mes: document.getElementById('pasesFiltroMes').value,
+            proceso: document.getElementById('pasesFiltroProceso').value
+        };
+        pasesFiltros = filtros;
+        const ranking = [];
+        for (const usuario of pasesUsuariosOrdenados) {
+            const cantidad = contarExpedientesUsuarioPases(usuario, filtros);
+            if (cantidad > 0) ranking.push({ usuario, cantidad });
+        }
+        ranking.sort((a,b) => b.cantidad - a.cantidad);
+        return ranking;
+    }
+
+    function obtenerColorPases(cantidad, maxCantidad) {
+        if (cantidad === maxCantidad) return 'verde';
+        if (maxCantidad - cantidad <= 3) return 'azul';
+        return 'rojo';
+    }
+
+    function renderizarTablaPases() {
+        const ranking = obtenerRankingPases();
+        const tbody = document.getElementById('pasesCuerpoTabla');
+        if (!tbody) return;
+        if (ranking.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="2" class="pases-empty">No hay expedientes con los filtros seleccionados.</td></tr>`;
+            document.getElementById('pasesFooterInfo').innerHTML = `Filtros aplicados: sin resultados. Total en sistema: ${pasesTotalDocumentos}`;
+            return;
+        }
+        const maxCantidad = ranking[0].cantidad;
+        let html = '';
+        for (const item of ranking) {
+            const colorClase = obtenerColorPases(item.cantidad, maxCantidad);
+            let claseCantidad = '';
+            if (colorClase === 'verde') claseCantidad = 'pases-cantidad-verde';
+            else if (colorClase === 'azul') claseCantidad = 'pases-cantidad-azul';
+            else claseCantidad = 'pases-cantidad-rojo';
+            html += `
+                <tr>
+                    <td class="pases-usuario-nombre" data-usuario="${escapeHtml(item.usuario)}">${escapeHtml(item.usuario)}</td>
+                    <td class="pases-text-center"><span class="pases-cantidad-destacada ${claseCantidad}">${item.cantidad}</span></td>
+                </tr>
+            `;
+        }
+        tbody.innerHTML = html;
+        document.querySelectorAll('#pasesCuerpoTabla .pases-usuario-nombre').forEach(el => {
+            el.addEventListener('click', (e) => {
+                const usuario = el.getAttribute('data-usuario');
+                mostrarDetallePases(usuario);
+            });
+        });
+        const totalMostrado = ranking.reduce((acc, r) => acc + r.cantidad, 0);
+        const filtros = pasesFiltros;
+        const footerInfo = document.getElementById('pasesFooterInfo');
+        footerInfo.innerHTML = `Filtros: Mes ${filtros.mes !== 'todos' ? nombresMeses[parseInt(filtros.mes)] : 'todos'} | Año ${filtros.anio !== 'todos' ? filtros.anio : 'todos'} | Proceso ${filtros.proceso !== 'todos' ? filtros.proceso : 'todos'} | Expedientes en vista: ${totalMostrado} | Total sistema: ${pasesTotalDocumentos}`;
+    }
+
+    function aplicarFiltrosPases() {
+        renderizarTablaPases();
+    }
+
+    function mostrarDetallePases(usuario) {
+        const filtros = pasesFiltros;
+        const items = pasesUsuariosMap.get(usuario) || [];
+        const itemsFiltrados = items.filter(item => {
+            let cumpleFecha = true;
+            if (filtros.anio !== 'todos' || filtros.mes !== 'todos') {
+                if (item.anio === null || item.mes === null) cumpleFecha = false;
+                else {
+                    if (filtros.anio !== 'todos' && item.anio !== parseInt(filtros.anio,10)) cumpleFecha = false;
+                    if (filtros.mes !== 'todos' && item.mes !== parseInt(filtros.mes,10)) cumpleFecha = false;
+                }
+            }
+            const cumpleProceso = (filtros.proceso === 'todos' || item.proceso === filtros.proceso);
+            return cumpleFecha && cumpleProceso;
+        });
+
+        const porAnio = new Map();
+        const porMes = new Map();
+        const porProceso = new Map();
+        for (const it of itemsFiltrados) {
+            if (it.anio) porAnio.set(it.anio, (porAnio.get(it.anio) || 0) + 1);
+            if (it.mes) {
+                const nomMes = nombresMeses[it.mes] || `Mes ${it.mes}`;
+                porMes.set(nomMes, (porMes.get(nomMes) || 0) + 1);
+            }
+            porProceso.set(it.proceso, (porProceso.get(it.proceso) || 0) + 1);
+        }
+
+        let html = `<h6>Usuario: <strong>${escapeHtml(usuario)}</strong></h6><hr>`;
+        html += `<h6>📅 Cantidad por año</h6><table><thead><tr><th>Año</th><th>Expedientes</th></tr></thead><tbody>`;
+        if (porAnio.size === 0) html += `<tr><td colspan="2">Sin datos de año</td></tr>`;
+        else {
+            const aniosSorted = Array.from(porAnio.keys()).sort((a,b)=>b-a);
+            for (const anio of aniosSorted) {
+                html += `<tr><td>${anio}</td><td><span class="pases-badge-cantidad">${porAnio.get(anio)}</span></td></tr>`;
+            }
+        }
+        html += `</tbody></table>`;
+
+        html += `<h6>📆 Cantidad por mes</h6><table><thead><tr><th>Mes</th><th>Expedientes</th></tr></thead><tbody>`;
+        if (porMes.size === 0) html += `<tr><td colspan="2">Sin datos de mes</td></tr>`;
+        else {
+            const mesesOrden = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+            const mesKeys = Array.from(porMes.keys()).sort((a,b) => mesesOrden.indexOf(a) - mesesOrden.indexOf(b));
+            for (const mes of mesKeys) {
+                html += `<tr><td>${mes}</td><td><span class="pases-badge-cantidad">${porMes.get(mes)}</span></td></tr>`;
+            }
+        }
+        html += `</tbody></table>`;
+
+        html += `<h6>⚖️ Cantidad por proceso</h6><table><thead><tr><th>Proceso</th><th>Expedientes</th></tr></thead><tbody>`;
+        if (porProceso.size === 0) html += `<tr><td colspan="2">Sin datos de proceso</td></tr>`;
+        else {
+            const procesosSorted = Array.from(porProceso.keys()).sort();
+            for (const proc of procesosSorted) {
+                html += `<tr><td>${escapeHtml(proc)}</td><td><span class="pases-badge-cantidad">${porProceso.get(proc)}</span></td></tr>`;
+            }
+        }
+        html += `</tbody></table>`;
+        html += `<div class="mt-2 text-muted small">* Datos basados en los filtros actuales de la tabla principal.</div>`;
+
+        document.getElementById('modalDetalleBody').innerHTML = html;
+        document.getElementById('modalUsuarioTitulo').innerText = `Detalle: ${usuario}`;
+        currentDetalleUsuario = usuario;
+        currentDetalleData = { porAnio, porMes, porProceso, usuario, filtrosActuales: {...filtros} };
+        document.getElementById('detalleUsuarioModal').style.display = 'block';
+    }
+
+    function cerrarModalDetalle() {
+        document.getElementById('detalleUsuarioModal').style.display = 'none';
+    }
+
+    function imprimirDetallePases() {
+        if (!currentDetalleUsuario) return;
+        const contenido = document.getElementById('modalDetalleBody').cloneNode(true);
+        const titulo = `Detalle de expedientes - ${currentDetalleUsuario}`;
+        const htmlPrint = `
+        <!DOCTYPE html>
+        <html>
+        <head><meta charset="UTF-8"><title>${titulo}</title>
+        <style>
+            body { font-family: 'Segoe UI', Georgia; margin: 1.5cm; }
+            h2 { color: #1e3a5f; border-bottom: 2px solid #1e4663; }
+            table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
+            th, td { border: 1px solid #aaa; padding: 8px; text-align: left; }
+            th { background: #f0f4f9; }
+            .pases-badge-cantidad { font-weight: bold; }
+        </style>
+        </head>
+        <body>
+            <h2>${titulo}</h2>
+            <p>Filtros aplicados: Mes ${currentDetalleData.filtrosActuales.mes !== 'todos' ? nombresMeses[parseInt(currentDetalleData.filtrosActuales.mes)] : 'todos'} | Año ${currentDetalleData.filtrosActuales.anio !== 'todos' ? currentDetalleData.filtrosActuales.anio : 'todos'} | Proceso ${currentDetalleData.filtrosActuales.proceso !== 'todos' ? currentDetalleData.filtrosActuales.proceso : 'todos'}</p>
+            ${contenido.innerHTML}
+            <div style="margin-top: 30px; font-size: 0.7rem;">Fecha emisión: ${new Date().toLocaleString()}</div>
+        </body>
+        </html>
+        `;
+        const ventana = window.open('', '_blank');
+        ventana.document.write(htmlPrint);
+        ventana.document.close();
+        ventana.focus();
+        ventana.print();
+        ventana.close();
+    }
+
+    function imprimirTablaPases() {
+        const tabla = document.getElementById('pasesTablaReporte').cloneNode(true);
+        const filtros = pasesFiltros;
+        const filtrosTexto = `Filtros: Mes ${filtros.mes !== 'todos' ? nombresMeses[parseInt(filtros.mes)] : 'todos'} | Año ${filtros.anio !== 'todos' ? filtros.anio : 'todos'} | Proceso ${filtros.proceso !== 'todos' ? filtros.proceso : 'todos'}`;
+        const htmlPrint = `
+        <!DOCTYPE html>
+        <html>
+        <head><meta charset="UTF-8"><title>Informe de Pase de Expedientes</title>
+        <style>
+            body { font-family: 'Segoe UI', Georgia; margin: 1.5cm; }
+            h2 { color: #1e3a5f; }
+            table { width: 100%; border-collapse: collapse; }
+            th, td { border: 1px solid #aaa; padding: 8px; }
+            th { background: #f0f4f9; }
+            .pases-cantidad-destacada { font-size: 1.4rem; font-weight: bold; padding: 0 8px; border-radius: 20px; }
+        </style>
+        </head>
+        <body>
+            <h2>Pase de expedientes por usuario</h2>
+            <p>${filtrosTexto}</p>
+            ${tabla.outerHTML}
+            <p>Total expedientes en sistema: ${pasesTotalDocumentos}</p>
+        </body>
+        </html>
+        `;
+        const win = window.open('', '_blank');
+        win.document.write(htmlPrint);
+        win.document.close();
+        win.print();
     }
 
     // ======================= MÓDULOS CON IFRAMES (ORIGINAL) =======================
@@ -506,20 +1150,20 @@
         dictamenes: "https://sistema-secretarios.github.io/cantidad-empleados/dictamenE",
         oficios: "https://sistema-secretarios.github.io/cantidad-empleados/oficiosE",
         partes: "https://sistema-secretarios.github.io/cantidad-empleados/partesE",
-        pases: "https://sistema-secretarios.github.io/cantidad-empleados/paseE",
-        prioridad: "https://sistema-secretarios.github.io/cantidad-empleados/prioridad-interE",
+        pases: "",   // ya no se usa iframe
+        prioridad: "", // ya no se usa iframe
         informe: "https://sistema-secretarios.github.io/estadistica/"
     };
 
     const moduleData = {
         causas: { title: "Causas" },
-        pases: { title: "Pases Diarios", url: moduleUrls.pases },
+        pases: { title: "Pases Diarios" },
         atencion: { title: "Atención al Público", url: moduleUrls.atencion },
         dictamenes: { title: "Dictámenes", url: moduleUrls.dictamenes },
         oficios: { title: "Oficios", url: moduleUrls.oficios },
         partes: { title: "Partes", url: moduleUrls.partes },
         calendario: { title: "Eventos", url: moduleUrls.calendario },
-        prioridad: { title: "Prioridad-Intervención", url: moduleUrls.prioridad },
+        prioridad: { title: "Prioridad-Intervención" },
         informe: { title: "Informe Trimestral Oficial", url: moduleUrls.informe }
     };
 
@@ -535,14 +1179,90 @@
             else btn.classList.remove('active');
         });
 
-        // Ocultar placeholder inicial
         if (initialContent) initialContent.style.display = 'none';
         moduleContentContainer.innerHTML = '';
 
         if (moduleId === 'causas') {
-            // MÓDULO CAUSAS: usar Firebase
             moduleTitle.textContent = "Causas - Estadísticas integradas (ambas bases)";
             renderCausasEstadisticas("todos");
+        } else if (moduleId === 'prioridad') {
+            moduleTitle.textContent = "Prioridad e Intervención - Estadísticas";
+            renderPrioridadIntervencion();
+        } else if (moduleId === 'pases') {
+            moduleTitle.textContent = "Pases Diarios - Informe por Usuario";
+            // Estructura HTML idéntica a pase-informe
+            const pasesHTML = `
+                <div class="pases-card">
+                    <div class="pases-header">
+                        <h1>Informe de Pase de Expedientes por Usuario</h1>
+                        <p>Tabla ordenada por cantidad (descendente). Colores: máximo (verde), diferencia ≤3 (azul), resto (rojo). Click en usuario para ver desglose.</p>
+                    </div>
+                    <div class="pases-filtros">
+                        <div style="display:flex; flex-wrap:wrap; gap:1.5rem; align-items:flex-end;">
+                            <div style="flex:1; min-width:150px;">
+                                <div class="pases-filtro-label">Mes</div>
+                                <select id="pasesFiltroMes" class="pases-form-select">
+                                    <option value="todos">Todos los meses</option>
+                                </select>
+                            </div>
+                            <div style="flex:1; min-width:150px;">
+                                <div class="pases-filtro-label">Año</div>
+                                <select id="pasesFiltroAnio" class="pases-form-select">
+                                    <option value="todos">Todos los años</option>
+                                </select>
+                            </div>
+                            <div style="flex:1; min-width:150px;">
+                                <div class="pases-filtro-label">Proceso</div>
+                                <select id="pasesFiltroProceso" class="pases-form-select">
+                                    <option value="todos">Todos los procesos</option>
+                                </select>
+                            </div>
+                            <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+                                <button id="pasesBtnActualizar" class="pases-btn-judicial">Refrescar datos</button>
+                                <button id="pasesBtnImprimir" class="pases-btn-outline">Imprimir tabla</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="padding: 1rem 2rem 0 2rem; display:flex; justify-content:flex-end;">
+                        <div class="pases-kpi">
+                            <div class="pases-kpi-texto">Total expedientes en sistema</div>
+                            <div class="pases-kpi-numero" id="pasesTotalRegistros">—</div>
+                        </div>
+                    </div>
+                    <div style="padding: 1rem 2rem 2rem 2rem;">
+                        <div class="table-responsive">
+                            <table class="pases-tabla" id="pasesTablaReporte">
+                                <thead>
+                                    <tr>
+                                        <th>Usuario asignado</th>
+                                        <th style="text-align:center;">Cantidad de expedientes</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="pasesCuerpoTabla">
+                                    <tr><td colspan="2" class="pases-empty">Cargando información...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="pases-footer-note" id="pasesFooterInfo">
+                            Los filtros aplican sobre fecha de pase (mes/año) y tipo de proceso. Orden descendente por cantidad.
+                        </div>
+                    </div>
+                </div>
+            `;
+            moduleContentContainer.innerHTML = pasesHTML;
+            // Cargar datos después de que el DOM esté listo
+            setTimeout(() => cargarPases(), 50);
+            // Eventos
+            document.getElementById('pasesBtnActualizar')?.addEventListener('click', cargarPases);
+            document.getElementById('pasesBtnImprimir')?.addEventListener('click', imprimirTablaPases);
+            document.getElementById('pasesFiltroMes')?.addEventListener('change', aplicarFiltrosPases);
+            document.getElementById('pasesFiltroAnio')?.addEventListener('change', aplicarFiltrosPases);
+            document.getElementById('pasesFiltroProceso')?.addEventListener('change', aplicarFiltrosPases);
+            document.getElementById('btnImprimirDetalle')?.addEventListener('click', imprimirDetallePases);
+            // Cerrar modal al hacer clic fuera
+            document.getElementById('detalleUsuarioModal')?.addEventListener('click', function(e) {
+                if (e.target === this) cerrarModalDetalle();
+            });
         } else {
             // RESTO DE MÓDULOS: iframe original
             const data = moduleData[moduleId];
@@ -578,6 +1298,11 @@
 
     // Cargar Causas por defecto
     loadModule('causas');
+
+    // Cerrar modal con tecla ESC
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') cerrarModalDetalle();
+    });
 </script>
 </body>
 </html>
