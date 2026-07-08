@@ -382,6 +382,10 @@
       .card-title {
         border-bottom: 2px solid #ccc !important;
       }
+      /* Ocultar paginación en impresión */
+      .pagination-controls {
+        display: none !important;
+      }
     }
 
     .print-only {
@@ -390,6 +394,68 @@
 
     #printTimestamp {
       display: none;
+    }
+
+    /* ----- Estilos para paginación ----- */
+    .pagination-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin: 16px 0 20px 0;
+      font-size: 14px;
+    }
+
+    .pagination-controls .page-info {
+      font-weight: 600;
+      color: var(--primary);
+      background: white;
+      padding: 4px 14px;
+      border-radius: 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+      white-space: nowrap;
+    }
+
+    .pagination-controls button {
+      background: white;
+      border: 1px solid var(--border-color);
+      padding: 6px 18px;
+      border-radius: 30px;
+      font-weight: 600;
+      color: var(--primary);
+      cursor: pointer;
+      transition: background 0.15s, box-shadow 0.15s;
+      font-size: 13px;
+      min-width: 80px;
+    }
+
+    .pagination-controls button:hover:not(:disabled) {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+      box-shadow: 0 2px 8px rgba(52,152,219,0.3);
+    }
+
+    .pagination-controls button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    @media (max-width: 480px) {
+      .pagination-controls {
+        gap: 8px;
+      }
+      .pagination-controls button {
+        min-width: 60px;
+        padding: 6px 12px;
+        font-size: 12px;
+      }
+      .pagination-controls .page-info {
+        font-size: 13px;
+        padding: 4px 10px;
+      }
     }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -549,6 +615,13 @@
         </div>
       </div>
 
+      <!-- CONTROLES DE PAGINACIÓN (arriba de la tabla) -->
+      <div class="pagination-controls no-print" id="paginationControls">
+        <button id="prevPageBtn" class="btn-secondary" disabled>◀ Anterior</button>
+        <span class="page-info" id="pageInfo">Página 1 de 1</span>
+        <button id="nextPageBtn" class="btn-secondary" disabled>Siguiente ▶</button>
+      </div>
+
       <div class="table-container" id="tablaImprimible">
         <table>
           <thead>
@@ -590,6 +663,10 @@
     let records = JSON.parse(localStorage.getItem("feria_records")) || [];
     let chartInstance = null;
 
+    // ----- VARIABLES DE PAGINACIÓN -----
+    let currentPage = 1;
+    const pageSize = 10;
+
     // Elementos del DOM
     const form = document.getElementById("feriaForm");
     const recordIdInput = document.getElementById("recordId");
@@ -608,6 +685,11 @@
     const tableBody = document.getElementById("recordsTableBody");
     const tableSearch = document.getElementById("tableSearch");
     const submitBtn = document.getElementById("submitBtn");
+
+    // Controles de paginación
+    const prevPageBtn = document.getElementById("prevPageBtn");
+    const nextPageBtn = document.getElementById("nextPageBtn");
+    const pageInfo = document.getElementById("pageInfo");
 
     // ----- GENERACIÓN DE OPCIONES DEL SELECT PERÍODO (hasta 2040) -----
     function populatePeriodOptions() {
@@ -714,6 +796,21 @@
       }
       await cargarDesdeFirestore();
       setupDateListeners();
+
+      // Eventos de paginación
+      prevPageBtn.addEventListener("click", () => {
+        if (currentPage > 1) {
+          currentPage--;
+          renderAll();
+        }
+      });
+      nextPageBtn.addEventListener("click", () => {
+        const totalPages = getTotalPages(getFilteredData());
+        if (currentPage < totalPages) {
+          currentPage++;
+          renderAll();
+        }
+      });
     });
 
     // Manejo automatizado de fechas
@@ -818,6 +915,10 @@
       } else {
         records.push(recordData);
         showToast("Personal registrado con éxito.");
+        // Al agregar nuevo, ir a la última página
+        const filtered = getFilteredData();
+        const totalPages = Math.ceil(filtered.length / pageSize);
+        currentPage = totalPages || 1;
       }
 
       await guardarEnFirestore(recordData);
@@ -858,6 +959,14 @@
         localStorage.setItem("feria_records", JSON.stringify(records));
         await eliminarEnFirestore(id);
         showToast("Registro eliminado.", "danger");
+        // Ajustar página si nos quedamos sin registros en la página actual
+        const filtered = getFilteredData();
+        const totalPages = Math.ceil(filtered.length / pageSize);
+        if (currentPage > totalPages && totalPages > 0) {
+          currentPage = totalPages;
+        } else if (totalPages === 0) {
+          currentPage = 1;
+        }
         renderAll();
       }
     };
@@ -874,10 +983,33 @@
       submitBtn.style.backgroundColor = "var(--accent)";
     }
 
-    // Buscador en Tiempo Real
+    // Buscador en Tiempo Real - reinicia a página 1
     tableSearch.addEventListener("input", () => {
-      renderTable(tableSearch.value.toLowerCase());
+      currentPage = 1;
+      renderAll();
     });
+
+    // ----- FUNCIONES DE PAGINACIÓN -----
+    function getFilteredData() {
+      const filterText = tableSearch.value.toLowerCase();
+      return records.filter(r => {
+        return r.personal.toLowerCase().includes(filterText) || 
+               r.defensor.toLowerCase().includes(filterText) || 
+               r.encargado.toLowerCase().includes(filterText) ||
+               r.periodo.toLowerCase().includes(filterText);
+      });
+    }
+
+    function getTotalPages(filteredData) {
+      return Math.ceil(filteredData.length / pageSize) || 1;
+    }
+
+    function updatePaginationControls(filteredData) {
+      const totalPages = getTotalPages(filteredData);
+      pageInfo.textContent = `Página ${currentPage} de ${totalPages}`;
+      prevPageBtn.disabled = (currentPage <= 1);
+      nextPageBtn.disabled = (currentPage >= totalPages);
+    }
 
     // Renderizado Unificado de la Interfaz
     function renderAll() {
@@ -885,22 +1017,28 @@
       renderMetricsAndCharts();
     }
 
-    function renderTable(filterText = "") {
-      tableBody.innerHTML = "";
+    function renderTable() {
+      const filtered = getFilteredData();
+      const totalPages = getTotalPages(filtered);
       
-      const filtered = records.filter(r => {
-        return r.personal.toLowerCase().includes(filterText) || 
-               r.defensor.toLowerCase().includes(filterText) || 
-               r.encargado.toLowerCase().includes(filterText) ||
-               r.periodo.toLowerCase().includes(filterText);
-      });
+      // Asegurar que currentPage esté dentro de los límites
+      if (currentPage > totalPages) currentPage = totalPages;
+      if (currentPage < 1) currentPage = 1;
 
-      if (filtered.length === 0) {
+      // Obtener los registros de la página actual
+      const start = (currentPage - 1) * pageSize;
+      const end = start + pageSize;
+      const pageData = filtered.slice(start, end);
+
+      tableBody.innerHTML = "";
+
+      if (pageData.length === 0) {
         tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:var(--text-muted);">No se encontraron asignaciones registradas.</td></tr>`;
+        updatePaginationControls(filtered);
         return;
       }
 
-      filtered.forEach(r => {
+      pageData.forEach(r => {
         const badgeClass = r.periodo.includes("Julio") ? "status-julio" : "status-verano";
         const tr = document.createElement("tr");
         tr.innerHTML = `
@@ -929,6 +1067,8 @@
         `;
         tableBody.appendChild(tr);
       });
+
+      updatePaginationControls(filtered);
     }
 
     // Lógica Analítica de Reportes y Gráficos
@@ -1082,6 +1222,10 @@
         font-size: 12px;
         color: #666;
         margin-bottom: 16px;
+      }
+      /* Ocultar paginación en impresión */
+      body.print-table-only .pagination-controls {
+        display: none !important;
       }
     }
   </style>
