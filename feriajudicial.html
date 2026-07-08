@@ -13,7 +13,8 @@
       --warning: #f1c40f;
       --danger: #e74c3c;
       --bg-body: #f4f6f9;
-      --bg-card: #ffffff;
+      --bg-card: #ffffff;        /* Fondo blanco para todos los paneles */
+      --bg-table-card: #cce0f5;  /* Fondo azul para el contenedor de la tabla */
       --text-main: #333333;
       --text-muted: #7f8c8d;
       --border-color: #dcdde1;
@@ -43,6 +44,7 @@
       gap: 24px;
     }
 
+    /* Encabezado – fondo azul oscuro (ya definido por --primary) */
     header {
       background: var(--primary);
       color: #fff;
@@ -78,12 +80,18 @@
       }
     }
 
+    /* Tarjetas: por defecto fondo blanco */
     .card {
       background: var(--bg-card);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       padding: 24px;
       border: 1px solid rgba(0,0,0,0.03);
+    }
+
+    /* Contenedor de la tabla: fondo azul */
+    #tablaCard {
+      background: var(--bg-table-card);
     }
 
     .card-title {
@@ -320,6 +328,11 @@
         border: 1px solid #ddd !important;
         padding: 16px !important;
       }
+      #tablaCard {
+        background: var(--bg-table-card) !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
       .dashboard-grid {
         display: block !important;
       }
@@ -387,7 +400,7 @@
 <body>
 
   <div class="container">
-    <!-- Encabezado (no se imprime) -->
+    <!-- Encabezado (no se imprime) – fondo azul oscuro -->
     <header class="no-print">
       <div>
         <h1>Personal en Feria Judicial</h1>
@@ -400,7 +413,7 @@
     <div id="printTimestamp" class="print-only"></div>
 
     <div class="dashboard-grid">
-      <!-- Formulario (no se imprime) -->
+      <!-- Formulario (no se imprime) – panel blanco -->
       <div class="card no-print">
         <div class="card-title" id="formTitle">Registrar Servicio en Feria</div>
         
@@ -500,7 +513,7 @@
         </form>
       </div>
 
-      <!-- Panel de métricas y reportes (se imprime) -->
+      <!-- Panel de métricas y reportes – panel blanco -->
       <div class="card">
         <div class="card-title">
           Métricas y Reportes Consolidados
@@ -526,8 +539,8 @@
       </div>
     </div>
 
-    <!-- Tabla de registros (se imprime) -->
-    <div class="card">
+    <!-- Tabla de registros – contenedor con fondo azul (id="tablaCard") -->
+    <div class="card" id="tablaCard">
       <div class="table-actions">
         <div class="card-title" style="margin-bottom:0; border:none; padding:0;">Registros Vigentes</div>
         <div style="display: flex; gap: 8px; align-items: center;">
