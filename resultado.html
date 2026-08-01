@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panel de Resultados · Encuesta Defensoría</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f2f5f9;
+            color: #1a2a3a;
+            padding: 2rem 1.5rem;
+            line-height: 1.5;
+        }
+        .dashboard {
+            max-width: 1440px;
+            margin: 0 auto;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.2rem;
+            border-bottom: 2px solid #e8edf3;
+        }
+        .header h1 {
+            font-weight: 700;
+            font-size: 1.8rem;
+            letter-spacing: -0.02em;
+            color: #1a2a3a;
+        }
+        .header .sub {
+            color: #5b6f82;
+            font-weight: 400;
+            font-size: 1rem;
+        }
+        .badge {
+            background: #2d7dd2;
+            color: white;
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 8px rgba(45, 125, 210, 0.2);
+        }
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+        .kpi-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 1.5rem 1.2rem;
+            box-shadow: 0 4px 12px rgba(0, 20, 40, 0.04);
+            text-align: center;
+            border: 1px solid #e8edf3;
+        }
+        .kpi-card .label {
+            font-weight: 500;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            color: #6f8aa3;
+            margin-bottom: 0.4rem;
+        }
+        .kpi-card .value {
+            font-weight: 700;
+            font-size: 2.4rem;
+            color: #1a2a3a;
+            line-height: 1.2;
+        }
+        .kpi-card .value small {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #5b6f82;
+            margin-left: 0.2rem;
+        }
+        .section-title {
+            font-weight: 600;
+            font-size: 1.3rem;
+            margin: 2.2rem 0 1.2rem 0;
+            color: #1a2a3a;
+            letter-spacing: -0.01em;
+        }
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 1.8rem;
+            margin-bottom: 2.5rem;
+        }
+        .chart-card {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 1.5rem 1.2rem 1.2rem;
+            box-shadow: 0 4px 12px rgba(0, 20, 40, 0.04);
+            border: 1px solid #e8edf3;
+        }
+        .chart-card h4 {
+            font-weight: 600;
+            font-size: 1rem;
+            color: #2d3f53;
+            margin-bottom: 0.8rem;
+            text-align: center;
+        }
+        .chart-wrapper {
+            position: relative;
+            height: 220px;
+            width: 100%;
+        }
+        .table-wrap {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 20, 40, 0.04);
+            border: 1px solid #e8edf3;
+            margin-bottom: 2.5rem;
+            overflow-x: auto;
+        }
+        .table-wrap h4 {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: #2d3f53;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        th {
+            background: #f5f8fc;
+            font-weight: 600;
+            color: #1a2a3a;
+            padding: 0.8rem 0.6rem;
+            text-align: left;
+            border-bottom: 2px solid #dce4ed;
+        }
+        td {
+            padding: 0.7rem 0.6rem;
+            border-bottom: 1px solid #eef2f6;
+            vertical-align: top;
+        }
+        tr:hover td {
+            background: #f9fbfd;
+        }
+        .tag {
+            display: inline-block;
+            background: #e7f0fa;
+            color: #1f5c8f;
+            padding: 0.15rem 0.7rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            margin: 0.15rem 0.2rem;
+            white-space: nowrap;
+        }
+        .empty-state {
+            text-align: center;
+            color: #8ca3b9;
+            padding: 2rem;
+            font-size: 1.1rem;
+        }
+        @media (max-width: 600px) {
+            body { padding: 1rem; }
+            .kpi-grid { grid-template-columns: 1fr 1fr; }
+            .charts-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+<div class="dashboard">
+    <div class="header">
+        <div>
+            <h1>📊 Resultados de la Encuesta</h1>
+            <div class="sub">Sistema Digital · Defensoría Oficial Civil y Comercial</div>
+        </div>
+        <div class="badge" id="db-status">Conectado a Firestore</div>
+    </div>
+
+    <div class="kpi-grid" id="kpi-container">
+        <div class="kpi-card">
+            <div class="label">Total de respuestas</div>
+            <div class="value" id="kpi-total">0</div>
+        </div>
+        <div class="kpi-card">
+            <div class="label">Interés alto (P7)</div>
+            <div class="value" id="kpi-interest">0<small>%</small></div>
+        </div>
+        <div class="kpi-card">
+            <div class="label">Uso diario (P1)</div>
+            <div class="value" id="kpi-daily">0<small>%</small></div>
+        </div>
+        <div class="kpi-card">
+            <div class="label">Principal beneficio (P3)</div>
+            <div class="value" id="kpi-benefit">—</div>
+        </div>
+    </div>
+
+    <h3 class="section-title">📈 Preguntas de opción única</h3>
+    <div class="charts-grid" id="charts-container"></div>
+
+    <h3 class="section-title">📋 Preguntas de opción múltiple</h3>
+    <div id="multi-tables-container"></div>
+
+    <h3 class="section-title">📄 Todas las respuestas</h3>
+    <div class="table-wrap">
+        <div id="individual-table-wrapper">
+            <div class="empty-state">Cargando datos desde Firestore...</div>
+        </div>
+    </div>
+</div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<script>
+    (function() {
+        // --------------------------------------------------------------
+        // CONFIGURACIÓN DE FIREBASE (REEMPLAZA CON TUS DATOS)
+        // --------------------------------------------------------------
+        const firebaseConfig = {
+            apiKey: "AIzaSyBtA-jfyJPj6exxTUlbQww86st5JsTLZe4",
+  authDomain: "encuesta-s6.firebaseapp.com",
+  projectId: "encuesta-s6",
+  storageBucket: "encuesta-s6.firebasestorage.app",
+  messagingSenderId: "648493253985",
+  appId: "1:648493253985:web:5da3aea0993218d8ed7120"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // --------------------------------------------------------------
+        // CONFIGURACIÓN DE PREGUNTAS (igual que antes)
+        // --------------------------------------------------------------
+        const QUESTION_CONFIG = {
+            q1: { label: 'Frecuencia de uso', type: 'single', options: { A: 'Diariamente', B: 'Semanal/Ocasional', C: 'Aún no usa' } },
+            q2: { label: 'Función principal', type: 'single', options: { A: 'Registro de causas', B: 'Seguimiento/actualización', C: 'Consultas/antecedentes' } },
+            q3: { label: 'Beneficio principal', type: 'single', options: { A: 'Rapidez en búsqueda', B: 'Mejor organización', C: 'Acceso remoto' } },
+            q4: { label: 'Aspectos valiosos', type: 'multi', options: { A: 'Centralización', B: 'Interfaz intuitiva', C: 'Despapelización' } },
+            q5: { label: 'Dificultades experimentadas', type: 'multi', options: { A: 'Lentitud/fallas', B: 'Dificultad navegación', C: 'Errores técnicos' } },
+            q6: { label: 'Mayor obstáculo para adopción', type: 'single', options: { A: 'Falta de capacitación', B: 'Costumbre métodos anteriores', C: 'Limitaciones técnicas' } },
+            q7: { label: 'Interés en adopción exclusiva', type: 'single', options: { A: 'Alto', B: 'Moderado', C: 'Bajo' } },
+            q8: { label: 'Recurso de apoyo preferido', type: 'single', options: { A: 'Capacitaciones', B: 'Manuales escritos', C: 'Videos tutoriales' } },
+            q9: { label: 'Expectativas funcionales', type: 'multi', options: { A: 'Alertas de plazos', B: 'Estadísticas/reportes', C: 'Integración con otros sistemas' } },
+            q10: { label: 'Mejora en servicio al ciudadano', type: 'single', options: { A: 'Sí, significativa', B: 'Probable, a largo plazo', C: 'Impacto mínimo' } }
+        };
+
+        // --------------------------------------------------------------
+        // PROCESAMIENTO DE DATOS
+        // --------------------------------------------------------------
+        function computeStats(data) {
+            const total = data.length;
+            if (total === 0) return null;
+
+            let interesAlto = 0;
+            let usoDiario = 0;
+            const beneficioCount = { A:0, B:0, C:0 };
+            let beneficioMax = null;
+
+            const singleCounts = {};
+            const multiCounts = {};
+
+            for (const [key, cfg] of Object.entries(QUESTION_CONFIG)) {
+                if (cfg.type === 'single') {
+                    singleCounts[key] = { A:0, B:0, C:0 };
+                } else {
+                    multiCounts[key] = { A:0, B:0, C:0 };
+                }
+            }
+
+            data.forEach(entry => {
+                if (entry.q7 === 'A') interesAlto++;
+                if (entry.q1 === 'A') usoDiario++;
+                if (entry.q3) beneficioCount[entry.q3] = (beneficioCount[entry.q3] || 0) + 1;
+
+                for (const key of ['q1','q2','q3','q6','q7','q8','q10']) {
+                    if (entry[key] && singleCounts[key]) {
+                        singleCounts[key][entry[key]] = (singleCounts[key][entry[key]] || 0) + 1;
+                    }
+                }
+                for (const key of ['q4','q5','q9']) {
+                    if (Array.isArray(entry[key])) {
+                        entry[key].forEach(val => {
+                            if (multiCounts[key] && multiCounts[key][val] !== undefined) {
+                                multiCounts[key][val] = (multiCounts[key][val] || 0) + 1;
+                            }
+                        });
+                    }
+                }
+            });
+
+            let maxCount = 0;
+            for (const [k, v] of Object.entries(beneficioCount)) {
+                if (v > maxCount) { maxCount = v; beneficioMax = k; }
+            }
+            const beneficioLabel = beneficioMax ? QUESTION_CONFIG.q3.options[beneficioMax] : '—';
+
+            return {
+                total,
+                interesAlto: Math.round((interesAlto / total) * 100),
+                usoDiario: Math.round((usoDiario / total) * 100),
+                beneficioLabel,
+                singleCounts,
+                multiCounts,
+                raw: data
+            };
+        }
+
+        // --------------------------------------------------------------
+        // RENDERIZADO
+        // --------------------------------------------------------------
+        function render(stats) {
+            if (!stats) {
+                document.getElementById('kpi-total').textContent = '0';
+                document.getElementById('kpi-interest').innerHTML = '0<small>%</small>';
+                document.getElementById('kpi-daily').innerHTML = '0<small>%</small>';
+                document.getElementById('kpi-benefit').textContent = '—';
+                document.getElementById('charts-container').innerHTML = '<div class="empty-state">No hay datos para mostrar</div>';
+                document.getElementById('multi-tables-container').innerHTML = '<div class="empty-state">No hay datos</div>';
+                document.getElementById('individual-table-wrapper').innerHTML = '<div class="empty-state">No hay respuestas</div>';
+                return;
+            }
+
+            const { total, interesAlto, usoDiario, beneficioLabel, singleCounts, multiCounts, raw } = stats;
+
+            document.getElementById('kpi-total').textContent = total;
+            document.getElementById('kpi-interest').innerHTML = interesAlto + '<small>%</small>';
+            document.getElementById('kpi-daily').innerHTML = usoDiario + '<small>%</small>';
+            document.getElementById('kpi-benefit').textContent = beneficioLabel;
+
+            renderSingleCharts(singleCounts);
+            renderMultiTables(multiCounts);
+            renderIndividualTable(raw);
+        }
+
+        // Gráficos
+        function renderSingleCharts(singleCounts) {
+            const container = document.getElementById('charts-container');
+            container.innerHTML = '';
+            const singleKeys = ['q1','q2','q3','q6','q7','q8','q10'];
+
+            singleKeys.forEach(key => {
+                const cfg = QUESTION_CONFIG[key];
+                if (!cfg) return;
+                const counts = singleCounts[key];
+                if (!counts) return;
+
+                const labels = Object.values(cfg.options);
+                const data = Object.values(counts);
+
+                const card = document.createElement('div');
+                card.className = 'chart-card';
+                card.innerHTML = `<h4>${cfg.label}</h4><div class="chart-wrapper"><canvas id="chart-${key}"></canvas></div>`;
+                container.appendChild(card);
+
+                setTimeout(() => {
+                    const ctx = document.getElementById(`chart-${key}`).getContext('2d');
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Respuestas',
+                                data: data,
+                                backgroundColor: ['#2d7dd2', '#4a90d9', '#6aa6e6'],
+                                borderRadius: 6,
+                                borderSkipped: false
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: { legend: { display: false } },
+                            scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+                        }
+                    });
+                }, 50);
+            });
+        }
+
+        // Tablas multi
+        function renderMultiTables(multiCounts) {
+            const container = document.getElementById('multi-tables-container');
+            container.innerHTML = '';
+            const multiKeys = ['q4','q5','q9'];
+
+            multiKeys.forEach(key => {
+                const cfg = QUESTION_CONFIG[key];
+                if (!cfg) return;
+                const counts = multiCounts[key];
+                if (!counts) return;
+
+                const total = Object.values(counts).reduce((a,b) => a+b, 0) || 1;
+                const wrap = document.createElement('div');
+                wrap.className = 'table-wrap';
+                let html = `<h4>${cfg.label}</h4><table><thead><tr><th>Opción</th><th>Frecuencia</th><th>Porcentaje</th></tr></thead><tbody>`;
+                for (const [code, label] of Object.entries(cfg.options)) {
+                    const freq = counts[code] || 0;
+                    const pct = Math.round((freq / total) * 100);
+                    html += `<tr><td>${label}</td><td>${freq}</td><td>${pct}%</td></tr>`;
+                }
+                html += '</tbody></table>';
+                wrap.innerHTML = html;
+                container.appendChild(wrap);
+            });
+        }
+
+        // Tabla individual
+        function renderIndividualTable(raw) {
+            const wrapper = document.getElementById('individual-table-wrapper');
+            if (!raw || raw.length === 0) {
+                wrapper.innerHTML = '<div class="empty-state">No hay respuestas registradas</div>';
+                return;
+            }
+
+            const headers = ['ID', 'q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8', 'q9', 'q10'];
+            const headerLabels = {
+                ID: 'ID',
+                q1: 'Frecuencia',
+                q2: 'Función',
+                q3: 'Beneficio',
+                q4: 'Aspectos valiosos',
+                q5: 'Dificultades',
+                q6: 'Obstáculo',
+                q7: 'Interés',
+                q8: 'Recurso',
+                q9: 'Expectativas',
+                q10: 'Mejora'
+            };
+
+            let html = `<table><thead><tr>`;
+            headers.forEach(h => { html += `<th>${headerLabels[h] || h}</th>`; });
+            html += `</tr></thead><tbody>`;
+
+            raw.forEach(entry => {
+                html += `<tr>`;
+                headers.forEach(h => {
+                    if (h === 'ID') {
+                        html += `<td style="font-family: monospace; font-size:0.85rem;">${entry.id || '—'}</td>`;
+                        return;
+                    }
+                    const val = entry[h];
+                    if (val === undefined || val === null || val === '') {
+                        html += `<td>—</td>`;
+                    } else if (Array.isArray(val)) {
+                        const labels = val.map(code => {
+                            const opt = QUESTION_CONFIG[h]?.options[code];
+                            return opt || code;
+                        });
+                        html += `<td>${labels.map(l => `<span class="tag">${l}</span>`).join(' ')}</td>`;
+                    } else {
+                        const label = QUESTION_CONFIG[h]?.options[val] || val;
+                        html += `<td>${label}</td>`;
+                    }
+                });
+                html += `</tr>`;
+            });
+
+            html += `</tbody></table>`;
+            wrapper.innerHTML = html;
+        }
+
+        // --------------------------------------------------------------
+        // ESCUCHAR EN TIEMPO REAL DESDE FIRESTORE
+        // --------------------------------------------------------------
+        function listenToFirestore() {
+            const statusBadge = document.getElementById('db-status');
+            db.collection('encuestas')
+                .onSnapshot(snapshot => {
+                    if (snapshot.empty) {
+                        render(null);
+                        statusBadge.textContent = 'Sin datos';
+                        return;
+                    }
+                    const data = [];
+                    snapshot.forEach(doc => {
+                        data.push(doc.data());
+                    });
+                    const stats = computeStats(data);
+                    render(stats);
+                    statusBadge.textContent = `✅ ${data.length} respuestas en tiempo real`;
+                }, error => {
+                    console.error('Error en onSnapshot:', error);
+                    statusBadge.textContent = '⚠️ Error de conexión';
+                    document.getElementById('individual-table-wrapper').innerHTML =
+                        '<div class="empty-state">Error al cargar datos desde Firestore</div>';
+                });
+        }
+
+        // Iniciar
+        document.addEventListener('DOMContentLoaded', listenToFirestore);
+    })();
+</script>
+</body>
+</html>
