@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Panel de Resultados · Encuesta Defensoría</title>
+    <title>Encuesta del Sistema Digital</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * {
             margin: 0;
@@ -18,139 +17,248 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: #f2f5f9;
             color: #1a2a3a;
-            padding: 2rem 1.5rem;
             line-height: 1.5;
         }
+
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar más ajustado */
+        .sidebar {
+            width: 170px;
+            background: #ffffff;
+            border-right: 1px solid #e8edf3;
+            padding: 1rem 0.6rem 1rem;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            box-shadow: 2px 0 12px rgba(0, 20, 40, 0.04);
+        }
+        .sidebar-brand {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #1a2a3a;
+            letter-spacing: -0.01em;
+            padding-bottom: 0.6rem;
+            border-bottom: 2px solid #eef2f6;
+        }
+        .sidebar-brand small {
+            display: block;
+            font-weight: 400;
+            font-size: 0.7rem;
+            color: #6f8aa3;
+            margin-top: 0.15rem;
+        }
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+        .sidebar-nav button {
+            background: transparent;
+            border: none;
+            text-align: left;
+            padding: 0.5rem 0.7rem;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.8rem;
+            color: #2d3f53;
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            width: 100%;
+        }
+        .sidebar-nav button:hover {
+            background: #eef4fa;
+            color: #1a2a3a;
+        }
+        .sidebar-nav button.active {
+            background: #2d7dd2;
+            color: #ffffff;
+        }
+        .sidebar-nav button .icon {
+            font-size: 1.1rem;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+        .sidebar-footer {
+            margin-top: auto;
+            font-size: 0.7rem;
+            color: #8ca3b9;
+            border-top: 1px solid #eef2f6;
+            padding-top: 0.8rem;
+            text-align: center;
+        }
+
+        /* Contenido principal */
+        .main-content {
+            flex: 1;
+            padding: 1.2rem 1.5rem 2rem;
+            max-width: calc(100% - 170px);
+        }
+
         .dashboard {
-            max-width: 1440px;
+            max-width: 1300px;
             margin: 0 auto;
         }
+
+        /* Header */
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
             gap: 1rem;
-            margin-bottom: 2.5rem;
-            padding-bottom: 1.2rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
             border-bottom: 2px solid #e8edf3;
         }
-        .header h1 {
+        .header-left h1 {
             font-weight: 700;
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             letter-spacing: -0.02em;
             color: #1a2a3a;
         }
-        .header .sub {
+        .header-left .sub {
             color: #5b6f82;
             font-weight: 400;
-            font-size: 1rem;
+            font-size: 0.9rem;
         }
-        .badge {
-            background: #2d7dd2;
-            color: white;
-            padding: 0.4rem 1.2rem;
-            border-radius: 40px;
+        .header-right {
+            text-align: right;
             font-weight: 500;
             font-size: 0.9rem;
-            box-shadow: 0 2px 8px rgba(45, 125, 210, 0.2);
+            color: #1a2a3a;
+            background: #ffffff;
+            padding: 0.3rem 0.8rem;
+            border-radius: 40px;
+            border: 1px solid #e8edf3;
+            white-space: nowrap;
         }
+        .header-right .clock {
+            font-weight: 600;
+            color: #2d7dd2;
+        }
+
+        /* Secciones */
+        .section-group {
+            display: block;
+        }
+        .section-group.hidden {
+            display: none !important;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem 1rem;
+            margin: 1.5rem 0 1rem 0;
+        }
+        .section-title {
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: #1a2a3a;
+            letter-spacing: -0.01em;
+            margin: 0;
+        }
+        .print-btn {
+            background: #ffffff;
+            border: 1px solid #d0d9e5;
+            border-radius: 30px;
+            padding: 0.3rem 1rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #1a2a3a;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: background 0.15s, border-color 0.15s;
+        }
+        .print-btn:hover {
+            background: #f5f8fc;
+            border-color: #b0c0d0;
+        }
+
+        /* KPIs */
         .kpi-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
         }
         .kpi-card {
             background: #ffffff;
-            border-radius: 16px;
-            padding: 1.5rem 1.2rem;
+            border-radius: 14px;
+            padding: 1rem 0.8rem;
             box-shadow: 0 4px 12px rgba(0, 20, 40, 0.04);
             text-align: center;
             border: 1px solid #e8edf3;
         }
         .kpi-card .label {
             font-weight: 500;
-            font-size: 0.85rem;
+            font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 0.03em;
             color: #6f8aa3;
-            margin-bottom: 0.4rem;
+            margin-bottom: 0.2rem;
         }
         .kpi-card .value {
             font-weight: 700;
-            font-size: 2.4rem;
+            font-size: 1.8rem;
             color: #1a2a3a;
             line-height: 1.2;
         }
         .kpi-card .value small {
-            font-size: 1rem;
+            font-size: 0.8rem;
             font-weight: 400;
             color: #5b6f82;
             margin-left: 0.2rem;
         }
-        .section-title {
-            font-weight: 600;
-            font-size: 1.3rem;
-            margin: 2.2rem 0 1.2rem 0;
-            color: #1a2a3a;
-            letter-spacing: -0.01em;
-        }
-        .charts-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-            gap: 1.8rem;
-            margin-bottom: 2.5rem;
-        }
-        .chart-card {
-            background: #ffffff;
-            border-radius: 18px;
-            padding: 1.5rem 1.2rem 1.2rem;
-            box-shadow: 0 4px 12px rgba(0, 20, 40, 0.04);
-            border: 1px solid #e8edf3;
-        }
-        .chart-card h4 {
-            font-weight: 600;
-            font-size: 1rem;
-            color: #2d3f53;
-            margin-bottom: 0.8rem;
-            text-align: center;
-        }
-        .chart-wrapper {
-            position: relative;
-            height: 220px;
-            width: 100%;
-        }
+
+        /* Tablas unificadas */
         .table-wrap {
             background: #ffffff;
-            border-radius: 18px;
-            padding: 1.5rem;
+            border-radius: 16px;
+            padding: 1.2rem 1rem;
             box-shadow: 0 4px 12px rgba(0, 20, 40, 0.04);
             border: 1px solid #e8edf3;
-            margin-bottom: 2.5rem;
-            overflow-x: auto;
+            margin-bottom: 1.5rem;
         }
         .table-wrap h4 {
             font-weight: 600;
-            font-size: 1.1rem;
-            margin-bottom: 1rem;
+            font-size: 1rem;
+            margin-bottom: 0.8rem;
             color: #2d3f53;
         }
+
+        /* Tabla genérica */
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
         th {
             background: #f5f8fc;
             font-weight: 600;
             color: #1a2a3a;
-            padding: 0.8rem 0.6rem;
+            padding: 0.6rem 0.5rem;
             text-align: left;
             border-bottom: 2px solid #dce4ed;
         }
         td {
-            padding: 0.7rem 0.6rem;
+            padding: 0.5rem 0.5rem;
             border-bottom: 1px solid #eef2f6;
             vertical-align: top;
         }
@@ -161,66 +269,366 @@
             display: inline-block;
             background: #e7f0fa;
             color: #1f5c8f;
-            padding: 0.15rem 0.7rem;
+            padding: 0.1rem 0.6rem;
             border-radius: 30px;
-            font-size: 0.8rem;
-            margin: 0.15rem 0.2rem;
+            font-size: 0.75rem;
+            margin: 0.1rem 0.15rem;
             white-space: nowrap;
         }
+
+        /* ============================================================ */
+        /* TABLA DE TODAS LAS RESPUESTAS: ajuste de columnas sin desborde */
+        /* ============================================================ */
+        .all-responses-table {
+            table-layout: fixed;
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .all-responses-table th,
+        .all-responses-table td {
+            padding: 0.4rem 0.3rem;
+            font-size: 0.8rem;
+            word-wrap: break-word;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            vertical-align: top;
+        }
+        /* Anchos de columna fijos pero con ajuste de contenido */
+        .all-responses-table .col-id { width: 7%; }
+        .all-responses-table .col-q1 { width: 8%; }
+        .all-responses-table .col-q2 { width: 8%; }
+        .all-responses-table .col-q3 { width: 8%; }
+        .all-responses-table .col-q4 { width: 12%; }
+        .all-responses-table .col-q5 { width: 12%; }
+        .all-responses-table .col-q6 { width: 8%; }
+        .all-responses-table .col-q7 { width: 8%; }
+        .all-responses-table .col-q8 { width: 8%; }
+        .all-responses-table .col-q9 { width: 12%; }
+        .all-responses-table .col-q10 { width: 7%; }
+
+        /* Para que los tags no se desborden, se ajustan */
+        .all-responses-table .tag {
+            display: inline-block;
+            max-width: 100%;
+            white-space: normal;
+            word-break: break-word;
+        }
+
+        /* Paginación */
+        .pagination-controls {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            margin-top: 1.2rem;
+            padding-top: 0.8rem;
+            border-top: 1px solid #eef2f6;
+        }
+        .pagination-controls button {
+            background: #ffffff;
+            border: 1px solid #d0d9e5;
+            border-radius: 6px;
+            padding: 0.2rem 0.7rem;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: background 0.15s;
+            color: #1a2a3a;
+        }
+        .pagination-controls button:hover {
+            background: #eef4fa;
+        }
+        .pagination-controls button.active-page {
+            background: #2d7dd2;
+            color: #ffffff;
+            border-color: #2d7dd2;
+        }
+        .pagination-controls button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            background: #f5f8fc;
+        }
+        .pagination-controls .page-info {
+            font-size: 0.8rem;
+            color: #5b6f82;
+            margin: 0 0.3rem;
+        }
+
         .empty-state {
             text-align: center;
             color: #8ca3b9;
-            padding: 2rem;
-            font-size: 1.1rem;
+            padding: 1.5rem;
+            font-size: 1rem;
         }
-        @media (max-width: 600px) {
-            body { padding: 1rem; }
-            .kpi-grid { grid-template-columns: 1fr 1fr; }
-            .charts-grid { grid-template-columns: 1fr; }
+
+        /* Responsive: móvil */
+        @media (max-width: 768px) {
+            .app-container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: static;
+                flex-direction: row;
+                flex-wrap: wrap;
+                padding: 0.6rem 0.8rem;
+                gap: 0.3rem;
+                border-right: none;
+                border-bottom: 1px solid #e8edf3;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            }
+            .sidebar-brand {
+                width: 100%;
+                padding-bottom: 0.2rem;
+                border-bottom: none;
+                margin-bottom: 0.1rem;
+                font-size: 0.85rem;
+            }
+            .sidebar-nav {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 0.2rem;
+            }
+            .sidebar-nav button {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.75rem;
+                border-radius: 30px;
+                background: #f5f8fc;
+                width: auto;
+            }
+            .sidebar-nav button.active {
+                background: #2d7dd2;
+                color: #fff;
+            }
+            .sidebar-footer {
+                display: none;
+            }
+            .main-content {
+                max-width: 100%;
+                padding: 0.8rem;
+            }
+            .kpi-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.5rem;
+            }
+            .header-right {
+                text-align: center;
+            }
+            /* En móvil, la tabla de todas las respuestas puede tener scroll horizontal */
+            .all-responses-table-wrap {
+                overflow-x: auto;
+            }
+            .all-responses-table {
+                min-width: 700px;
+                table-layout: auto; /* en móvil se adapta al contenido */
+            }
+        }
+        @media (max-width: 480px) {
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+            .header-left h1 {
+                font-size: 1.3rem;
+            }
+            .section-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.3rem;
+            }
+            .print-btn {
+                align-self: flex-start;
+            }
+        }
+
+        /* ============================================================ */
+        /* ESTILOS DE IMPRESIÓN: ajuste sin desborde */
+        /* ============================================================ */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #print-area, #print-area * {
+                visibility: visible;
+            }
+            #print-area {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                padding: 1rem;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .print-btn {
+                display: none !important;
+            }
+            .pagination-controls {
+                display: none !important;
+            }
+            .section-group {
+                display: block !important;
+            }
+            .sidebar {
+                display: none !important;
+            }
+            .header {
+                display: none !important;
+            }
+            .main-content {
+                max-width: 100% !important;
+                padding: 0 !important;
+            }
+            .table-wrap {
+                break-inside: avoid;
+                box-shadow: none;
+                border: 1px solid #ccc;
+                padding: 0.8rem;
+            }
+            .all-responses-table-wrap {
+                overflow: visible !important;
+            }
+            .all-responses-table {
+                table-layout: fixed !important;
+                width: 100% !important;
+                min-width: 0 !important;
+            }
+            .all-responses-table th,
+            .all-responses-table td {
+                word-wrap: break-word !important;
+                word-break: break-word !important;
+                overflow-wrap: break-word !important;
+                padding: 0.3rem !important;
+                font-size: 0.7rem !important;
+            }
+            /* Forzar anchos en impresión */
+            .all-responses-table .col-id { width: 6% !important; }
+            .all-responses-table .col-q1 { width: 7% !important; }
+            .all-responses-table .col-q2 { width: 7% !important; }
+            .all-responses-table .col-q3 { width: 7% !important; }
+            .all-responses-table .col-q4 { width: 10% !important; }
+            .all-responses-table .col-q5 { width: 10% !important; }
+            .all-responses-table .col-q6 { width: 7% !important; }
+            .all-responses-table .col-q7 { width: 7% !important; }
+            .all-responses-table .col-q8 { width: 7% !important; }
+            .all-responses-table .col-q9 { width: 10% !important; }
+            .all-responses-table .col-q10 { width: 6% !important; }
         }
     </style>
 </head>
 <body>
-<div class="dashboard">
-    <div class="header">
-        <div>
-            <h1>📊 Resultados de la Encuesta</h1>
-            <div class="sub">Sistema Digital · Defensoría Oficial Civil y Comercial</div>
-        </div>
-        <div class="badge" id="db-status">Conectado a Firestore</div>
-    </div>
+<div class="app-container">
 
-    <div class="kpi-grid" id="kpi-container">
-        <div class="kpi-card">
-            <div class="label">Total de respuestas</div>
-            <div class="value" id="kpi-total">0</div>
+    <!-- SIDEBAR más pequeño -->
+    <aside class="sidebar no-print">
+        <div class="sidebar-brand">
+            📊 Encuesta
+            <small>Defensoría</small>
         </div>
-        <div class="kpi-card">
-            <div class="label">Interés alto (P7)</div>
-            <div class="value" id="kpi-interest">0<small>%</small></div>
+        <nav class="sidebar-nav">
+            <button class="active" data-show="all">
+                <span class="icon">📈</span> Resumen
+            </button>
+            <button data-show="single">
+                <span class="icon">📊</span> Opción única
+            </button>
+            <button data-show="multi">
+                <span class="icon">📋</span> Opción múltiple
+            </button>
+            <button data-show="all_responses">
+                <span class="icon">📄</span> Todas
+            </button>
+        </nav>
+        <div class="sidebar-footer">
+            <span id="db-status-sidebar">Conectado</span>
         </div>
-        <div class="kpi-card">
-            <div class="label">Uso diario (P1)</div>
-            <div class="value" id="kpi-daily">0<small>%</small></div>
-        </div>
-        <div class="kpi-card">
-            <div class="label">Principal beneficio (P3)</div>
-            <div class="value" id="kpi-benefit">—</div>
-        </div>
-    </div>
+    </aside>
 
-    <h3 class="section-title">📈 Preguntas de opción única</h3>
-    <div class="charts-grid" id="charts-container"></div>
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="main-content">
+        <div class="dashboard">
 
-    <h3 class="section-title">📋 Preguntas de opción múltiple</h3>
-    <div id="multi-tables-container"></div>
+            <!-- HEADER -->
+            <div class="header no-print">
+                <div class="header-left">
+                    <h1>Encuesta del Sistema Digital</h1>
+                    <div class="sub">Defensoría Oficial Civil y Comercial</div>
+                </div>
+                <div class="header-right">
+                    <span id="current-date"></span> &nbsp;·&nbsp; <span class="clock" id="current-time">--:--:--</span>
+                </div>
+            </div>
 
-    <h3 class="section-title">📄 Todas las respuestas</h3>
-    <div class="table-wrap">
-        <div id="individual-table-wrapper">
-            <div class="empty-state">Cargando datos desde Firestore...</div>
+            <!-- SECCIÓN: Resumen (KPIs) -->
+            <div class="section-group kpi-group" id="kpi-section">
+                <div class="section-header no-print">
+                    <h3 class="section-title">📈 Resumen de indicadores</h3>
+                    <button class="print-btn" onclick="printSection('kpi-section')">🖨️ Imprimir</button>
+                </div>
+                <div class="kpi-grid" id="kpi-container">
+                    <div class="kpi-card">
+                        <div class="label">Total respuestas</div>
+                        <div class="value" id="kpi-total">0</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="label">Participación (17)</div>
+                        <div class="value" id="kpi-participation">0<small>%</small></div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="label">Interés alto (P7)</div>
+                        <div class="value" id="kpi-interest">0<small>%</small></div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="label">Uso diario (P1)</div>
+                        <div class="value" id="kpi-daily">0<small>%</small></div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="label">Principal beneficio</div>
+                        <div class="value" id="kpi-benefit">—</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN: Opción única (TABLAS) -->
+            <div class="section-group single-group" id="single-section">
+                <div class="section-header no-print">
+                    <h3 class="section-title">📊 Preguntas de opción única</h3>
+                    <button class="print-btn" onclick="printSection('single-section')">🖨️ Imprimir</button>
+                </div>
+                <div id="single-tables-container"></div>
+            </div>
+
+            <!-- SECCIÓN: Opción múltiple (TABLAS) -->
+            <div class="section-group multi-group" id="multi-section">
+                <div class="section-header no-print">
+                    <h3 class="section-title">📋 Preguntas de opción múltiple</h3>
+                    <button class="print-btn" onclick="printSection('multi-section')">🖨️ Imprimir</button>
+                </div>
+                <div id="multi-tables-container"></div>
+            </div>
+
+            <!-- SECCIÓN: Todas las respuestas (tabla paginada) -->
+            <div class="section-group all-group" id="all-responses-section">
+                <div class="section-header no-print">
+                    <h3 class="section-title">📄 Todas las respuestas</h3>
+                    <button class="print-btn" onclick="printSection('all-responses-section')">🖨️ Imprimir</button>
+                </div>
+                <div class="table-wrap all-responses-table-wrap">
+                    <div id="individual-table-wrapper">
+                        <div class="empty-state">Cargando datos desde Firestore...</div>
+                    </div>
+                    <!-- Controles de paginación -->
+                    <div class="pagination-controls no-print" id="pagination-controls"></div>
+                </div>
+            </div>
+
         </div>
-    </div>
+    </main>
 </div>
 
 <!-- Firebase SDK -->
@@ -230,22 +638,22 @@
 <script>
     (function() {
         // --------------------------------------------------------------
-        // CONFIGURACIÓN DE FIREBASE (REEMPLAZA CON TUS DATOS)
+        // CONFIGURACIÓN DE FIREBASE
         // --------------------------------------------------------------
         const firebaseConfig = {
             apiKey: "AIzaSyBtA-jfyJPj6exxTUlbQww86st5JsTLZe4",
-  authDomain: "encuesta-s6.firebaseapp.com",
-  projectId: "encuesta-s6",
-  storageBucket: "encuesta-s6.firebasestorage.app",
-  messagingSenderId: "648493253985",
-  appId: "1:648493253985:web:5da3aea0993218d8ed7120"
+            authDomain: "encuesta-s6.firebaseapp.com",
+            projectId: "encuesta-s6",
+            storageBucket: "encuesta-s6.firebasestorage.app",
+            messagingSenderId: "648493253985",
+            appId: "1:648493253985:web:5da3aea0993218d8ed7120"
         };
 
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
         // --------------------------------------------------------------
-        // CONFIGURACIÓN DE PREGUNTAS (igual que antes)
+        // CONFIGURACIÓN DE PREGUNTAS
         // --------------------------------------------------------------
         const QUESTION_CONFIG = {
             q1: { label: 'Frecuencia de uso', type: 'single', options: { A: 'Diariamente', B: 'Semanal/Ocasional', C: 'Aún no usa' } },
@@ -259,6 +667,13 @@
             q9: { label: 'Expectativas funcionales', type: 'multi', options: { A: 'Alertas de plazos', B: 'Estadísticas/reportes', C: 'Integración con otros sistemas' } },
             q10: { label: 'Mejora en servicio al ciudadano', type: 'single', options: { A: 'Sí, significativa', B: 'Probable, a largo plazo', C: 'Impacto mínimo' } }
         };
+
+        const TOTAL_POBLACION = 17;
+        const PAGE_SIZE = 10;
+
+        // Estado global
+        let allDataRaw = [];
+        let currentPage = 1;
 
         // --------------------------------------------------------------
         // PROCESAMIENTO DE DATOS
@@ -310,10 +725,15 @@
             }
             const beneficioLabel = beneficioMax ? QUESTION_CONFIG.q3.options[beneficioMax] : '—';
 
+            const participacion = Math.round((total / TOTAL_POBLACION) * 100);
+            const interesAltoPct = Math.round((interesAlto / TOTAL_POBLACION) * 100);
+            const usoDiarioPct = Math.round((usoDiario / TOTAL_POBLACION) * 100);
+
             return {
                 total,
-                interesAlto: Math.round((interesAlto / total) * 100),
-                usoDiario: Math.round((usoDiario / total) * 100),
+                participacion,
+                interesAlto: interesAltoPct,
+                usoDiario: usoDiarioPct,
                 beneficioLabel,
                 singleCounts,
                 multiCounts,
@@ -327,30 +747,39 @@
         function render(stats) {
             if (!stats) {
                 document.getElementById('kpi-total').textContent = '0';
+                document.getElementById('kpi-participation').innerHTML = '0<small>%</small>';
                 document.getElementById('kpi-interest').innerHTML = '0<small>%</small>';
                 document.getElementById('kpi-daily').innerHTML = '0<small>%</small>';
                 document.getElementById('kpi-benefit').textContent = '—';
-                document.getElementById('charts-container').innerHTML = '<div class="empty-state">No hay datos para mostrar</div>';
+                document.getElementById('single-tables-container').innerHTML = '<div class="empty-state">No hay datos para mostrar</div>';
                 document.getElementById('multi-tables-container').innerHTML = '<div class="empty-state">No hay datos</div>';
                 document.getElementById('individual-table-wrapper').innerHTML = '<div class="empty-state">No hay respuestas</div>';
+                document.getElementById('pagination-controls').innerHTML = '';
                 return;
             }
 
-            const { total, interesAlto, usoDiario, beneficioLabel, singleCounts, multiCounts, raw } = stats;
+            const { total, participacion, interesAlto, usoDiario, beneficioLabel, singleCounts, multiCounts, raw } = stats;
 
             document.getElementById('kpi-total').textContent = total;
+            document.getElementById('kpi-participation').innerHTML = participacion + '<small>%</small>';
             document.getElementById('kpi-interest').innerHTML = interesAlto + '<small>%</small>';
             document.getElementById('kpi-daily').innerHTML = usoDiario + '<small>%</small>';
             document.getElementById('kpi-benefit').textContent = beneficioLabel;
 
-            renderSingleCharts(singleCounts);
+            renderSingleTables(singleCounts);
             renderMultiTables(multiCounts);
-            renderIndividualTable(raw);
+
+            // Guardar datos para paginación y renderizar
+            allDataRaw = raw;
+            currentPage = 1;
+            renderPaginatedTable(raw, currentPage);
         }
 
-        // Gráficos
-        function renderSingleCharts(singleCounts) {
-            const container = document.getElementById('charts-container');
+        // --------------------------------------------------------------
+        // TABLAS para opción única
+        // --------------------------------------------------------------
+        function renderSingleTables(singleCounts) {
+            const container = document.getElementById('single-tables-container');
             container.innerHTML = '';
             const singleKeys = ['q1','q2','q3','q6','q7','q8','q10'];
 
@@ -360,40 +789,24 @@
                 const counts = singleCounts[key];
                 if (!counts) return;
 
-                const labels = Object.values(cfg.options);
-                const data = Object.values(counts);
-
-                const card = document.createElement('div');
-                card.className = 'chart-card';
-                card.innerHTML = `<h4>${cfg.label}</h4><div class="chart-wrapper"><canvas id="chart-${key}"></canvas></div>`;
-                container.appendChild(card);
-
-                setTimeout(() => {
-                    const ctx = document.getElementById(`chart-${key}`).getContext('2d');
-                    new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: labels,
-                            datasets: [{
-                                label: 'Respuestas',
-                                data: data,
-                                backgroundColor: ['#2d7dd2', '#4a90d9', '#6aa6e6'],
-                                borderRadius: 6,
-                                borderSkipped: false
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: { legend: { display: false } },
-                            scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
-                        }
-                    });
-                }, 50);
+                const total = Object.values(counts).reduce((a,b) => a+b, 0) || 1;
+                const wrap = document.createElement('div');
+                wrap.className = 'table-wrap';
+                let html = `<h4>${cfg.label}</h4><table><thead><tr><th>Opción</th><th>Frecuencia</th><th>Porcentaje</th></tr></thead><tbody>`;
+                for (const [code, label] of Object.entries(cfg.options)) {
+                    const freq = counts[code] || 0;
+                    const pct = Math.round((freq / total) * 100);
+                    html += `<tr><td>${label}</td><td>${freq}</td><td>${pct}%</td></tr>`;
+                }
+                html += '</tbody></table>';
+                wrap.innerHTML = html;
+                container.appendChild(wrap);
             });
         }
 
-        // Tablas multi
+        // --------------------------------------------------------------
+        // TABLAS para opción múltiple
+        // --------------------------------------------------------------
         function renderMultiTables(multiCounts) {
             const container = document.getElementById('multi-tables-container');
             container.innerHTML = '';
@@ -420,13 +833,27 @@
             });
         }
 
-        // Tabla individual
-        function renderIndividualTable(raw) {
+        // --------------------------------------------------------------
+        // TABLA PAGINADA de todas las respuestas
+        // --------------------------------------------------------------
+        function renderPaginatedTable(raw, page) {
             const wrapper = document.getElementById('individual-table-wrapper');
+            const controls = document.getElementById('pagination-controls');
+
             if (!raw || raw.length === 0) {
                 wrapper.innerHTML = '<div class="empty-state">No hay respuestas registradas</div>';
+                controls.innerHTML = '';
                 return;
             }
+
+            const totalPages = Math.ceil(raw.length / PAGE_SIZE);
+            if (page < 1) page = 1;
+            if (page > totalPages) page = totalPages;
+            currentPage = page;
+
+            const start = (page - 1) * PAGE_SIZE;
+            const end = Math.min(start + PAGE_SIZE, raw.length);
+            const pageData = raw.slice(start, end);
 
             const headers = ['ID', 'q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8', 'q9', 'q10'];
             const headerLabels = {
@@ -443,29 +870,33 @@
                 q10: 'Mejora'
             };
 
-            let html = `<table><thead><tr>`;
-            headers.forEach(h => { html += `<th>${headerLabels[h] || h}</th>`; });
+            let html = `<table class="all-responses-table">`;
+            html += `<thead><tr>`;
+            headers.forEach(h => {
+                const cls = h === 'ID' ? 'col-id' : `col-${h}`;
+                html += `<th class="${cls}">${headerLabels[h] || h}</th>`;
+            });
             html += `</tr></thead><tbody>`;
 
-            raw.forEach(entry => {
+            pageData.forEach(entry => {
                 html += `<tr>`;
                 headers.forEach(h => {
                     if (h === 'ID') {
-                        html += `<td style="font-family: monospace; font-size:0.85rem;">${entry.id || '—'}</td>`;
+                        html += `<td class="col-id" style="font-family:monospace;font-size:0.75rem;">${entry.id || '—'}</td>`;
                         return;
                     }
                     const val = entry[h];
                     if (val === undefined || val === null || val === '') {
-                        html += `<td>—</td>`;
+                        html += `<td class="col-${h}">—</td>`;
                     } else if (Array.isArray(val)) {
                         const labels = val.map(code => {
                             const opt = QUESTION_CONFIG[h]?.options[code];
                             return opt || code;
                         });
-                        html += `<td>${labels.map(l => `<span class="tag">${l}</span>`).join(' ')}</td>`;
+                        html += `<td class="col-${h}">${labels.map(l => `<span class="tag">${l}</span>`).join(' ')}</td>`;
                     } else {
                         const label = QUESTION_CONFIG[h]?.options[val] || val;
-                        html += `<td>${label}</td>`;
+                        html += `<td class="col-${h}">${label}</td>`;
                     }
                 });
                 html += `</tr>`;
@@ -473,13 +904,141 @@
 
             html += `</tbody></table>`;
             wrapper.innerHTML = html;
+
+            // Generar controles de paginación
+            let controlsHtml = '';
+            controlsHtml += `<button onclick="goToPage(${page-1})" ${page<=1?'disabled':''}>◀ Anterior</button>`;
+
+            const maxVisible = 5;
+            let startPage = Math.max(1, page - Math.floor(maxVisible/2));
+            let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+            if (endPage - startPage < maxVisible - 1) {
+                startPage = Math.max(1, endPage - maxVisible + 1);
+            }
+
+            for (let p = startPage; p <= endPage; p++) {
+                controlsHtml += `<button class="${p===page?'active-page':''}" onclick="goToPage(${p})">${p}</button>`;
+            }
+
+            controlsHtml += `<button onclick="goToPage(${page+1})" ${page>=totalPages?'disabled':''}>Siguiente ▶</button>`;
+            controlsHtml += `<span class="page-info">Página ${page} de ${totalPages}</span>`;
+            controls.innerHTML = controlsHtml;
+        }
+
+        // Función global para cambiar página
+        window.goToPage = function(page) {
+            const totalPages = Math.ceil(allDataRaw.length / PAGE_SIZE);
+            if (page < 1) page = 1;
+            if (page > totalPages) page = totalPages;
+            renderPaginatedTable(allDataRaw, page);
+        };
+
+        // --------------------------------------------------------------
+        // IMPRESIÓN (ventana nueva)
+        // --------------------------------------------------------------
+        window.printSection = function(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (!section) return;
+            const clone = section.cloneNode(true);
+            // Remover botones de impresión dentro del clon
+            const printBtns = clone.querySelectorAll('.print-btn');
+            printBtns.forEach(btn => btn.remove());
+
+            // Asegurar que las tablas se vean completas
+            const win = window.open('', '_blank', 'width=1000,height=800');
+            win.document.write('<!DOCTYPE html><html><head><title>Imprimir</title>');
+            win.document.write('<style>');
+            win.document.write('body { font-family: Inter, sans-serif; padding: 2rem; background: #fff; }');
+            win.document.write('.section-title { font-size: 1.6rem; margin-bottom: 1.5rem; }');
+            win.document.write('.table-wrap { margin-bottom: 1.5rem; border: 1px solid #ccc; padding: 1rem; border-radius: 8px; }');
+            win.document.write('table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }');
+            win.document.write('th { background: #f5f8fc; font-weight: 600; padding: 0.5rem; border: 1px solid #ccc; }');
+            win.document.write('td { padding: 0.4rem 0.5rem; border: 1px solid #ccc; vertical-align: top; word-wrap: break-word; word-break: break-word; }');
+            win.document.write('.tag { display: inline-block; background: #e7f0fa; padding: 0.1rem 0.6rem; border-radius: 20px; font-size: 0.75rem; margin: 0.1rem; white-space: normal; word-break: break-word; }');
+            win.document.write('.kpi-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 1rem; margin-bottom: 1.5rem; }');
+            win.document.write('.kpi-card { border: 1px solid #ccc; padding: 1rem; text-align: center; border-radius: 8px; }');
+            win.document.write('.kpi-card .label { font-weight: 500; font-size: 0.7rem; text-transform: uppercase; color: #555; }');
+            win.document.write('.kpi-card .value { font-weight: 700; font-size: 1.8rem; }');
+            win.document.write('.kpi-card .value small { font-size: 0.8rem; font-weight: 400; }');
+            // Estilos específicos para la tabla de todas las respuestas en impresión
+            win.document.write('.all-responses-table { table-layout: fixed; width: 100%; word-wrap: break-word; }');
+            win.document.write('.all-responses-table th, .all-responses-table td { word-wrap: break-word; word-break: break-word; padding: 0.3rem; }');
+            win.document.write('.all-responses-table .col-id { width: 6%; }');
+            win.document.write('.all-responses-table .col-q1 { width: 7%; }');
+            win.document.write('.all-responses-table .col-q2 { width: 7%; }');
+            win.document.write('.all-responses-table .col-q3 { width: 7%; }');
+            win.document.write('.all-responses-table .col-q4 { width: 10%; }');
+            win.document.write('.all-responses-table .col-q5 { width: 10%; }');
+            win.document.write('.all-responses-table .col-q6 { width: 7%; }');
+            win.document.write('.all-responses-table .col-q7 { width: 7%; }');
+            win.document.write('.all-responses-table .col-q8 { width: 7%; }');
+            win.document.write('.all-responses-table .col-q9 { width: 10%; }');
+            win.document.write('.all-responses-table .col-q10 { width: 6%; }');
+            win.document.write('</style></head><body>');
+            win.document.write(clone.innerHTML);
+            win.document.write('</body></html>');
+            win.document.close();
+            win.focus();
+            win.print();
+        };
+
+        // --------------------------------------------------------------
+        // NAVEGACIÓN POR SIDEBAR
+        // --------------------------------------------------------------
+        function setupSidebarNavigation() {
+            const buttons = document.querySelectorAll('.sidebar-nav button');
+            const btnAllResponses = document.querySelector('.sidebar-nav button:last-child');
+            if (btnAllResponses) {
+                btnAllResponses.dataset.show = 'all_responses';
+            }
+
+            buttons.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    buttons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+
+                    const show = this.dataset.show;
+                    document.querySelectorAll('.section-group').forEach(el => {
+                        el.classList.add('hidden');
+                    });
+
+                    if (show === 'all') {
+                        document.querySelectorAll('.section-group').forEach(el => {
+                            el.classList.remove('hidden');
+                        });
+                    } else if (show === 'single') {
+                        document.querySelector('.single-group').classList.remove('hidden');
+                    } else if (show === 'multi') {
+                        document.querySelector('.multi-group').classList.remove('hidden');
+                    } else if (show === 'all_responses') {
+                        document.querySelector('.all-group').classList.remove('hidden');
+                    }
+                });
+            });
+
+            // Por defecto mostrar todo
+            document.querySelectorAll('.section-group').forEach(el => el.classList.remove('hidden'));
         }
 
         // --------------------------------------------------------------
-        // ESCUCHAR EN TIEMPO REAL DESDE FIRESTORE
+        // RELOJ
+        // --------------------------------------------------------------
+        function updateClock() {
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            const timeStr = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            document.getElementById('current-date').textContent = dateStr;
+            document.getElementById('current-time').textContent = timeStr;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // --------------------------------------------------------------
+        // FIRESTORE (tiempo real)
         // --------------------------------------------------------------
         function listenToFirestore() {
-            const statusBadge = document.getElementById('db-status');
+            const statusBadge = document.getElementById('db-status-sidebar');
+
             db.collection('encuestas')
                 .onSnapshot(snapshot => {
                     if (snapshot.empty) {
@@ -493,17 +1052,23 @@
                     });
                     const stats = computeStats(data);
                     render(stats);
-                    statusBadge.textContent = `✅ ${data.length} respuestas en tiempo real`;
+                    statusBadge.textContent = `✅ ${data.length} respuestas`;
                 }, error => {
                     console.error('Error en onSnapshot:', error);
-                    statusBadge.textContent = '⚠️ Error de conexión';
+                    statusBadge.textContent = '⚠️ Error';
                     document.getElementById('individual-table-wrapper').innerHTML =
                         '<div class="empty-state">Error al cargar datos desde Firestore</div>';
                 });
         }
 
-        // Iniciar
-        document.addEventListener('DOMContentLoaded', listenToFirestore);
+        // --------------------------------------------------------------
+        // INICIO
+        // --------------------------------------------------------------
+        document.addEventListener('DOMContentLoaded', function() {
+            setupSidebarNavigation();
+            listenToFirestore();
+        });
+
     })();
 </script>
 </body>
