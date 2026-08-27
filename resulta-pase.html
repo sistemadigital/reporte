@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resultados · Encuesta del Sistema de Pase</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <style>
+        /* (estilos idénticos al original, solo se actualizan textos en el HTML) */
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Inter',sans-serif; background:#f2f5f9; color:#1a2a3a; line-height:1.5; }
+        .app-container { display:flex; min-height:100vh; }
+        .sidebar { width:170px; background:#ffffff; border-right:1px solid #e8edf3; padding:1rem 0.6rem 1rem; position:sticky; top:0; height:100vh; overflow-y:auto; flex-shrink:0; display:flex; flex-direction:column; gap:1.2rem; box-shadow:2px 0 12px rgba(0,20,40,0.04); }
+        .sidebar-brand { font-weight:600; font-size:0.9rem; color:#1a2a3a; letter-spacing:-0.01em; padding-bottom:0.6rem; border-bottom:2px solid #eef2f6; }
+        .sidebar-brand small { display:block; font-weight:400; font-size:0.7rem; color:#6f8aa3; margin-top:0.15rem; }
+        .sidebar-nav { display:flex; flex-direction:column; gap:0.3rem; }
+        .sidebar-nav button { background:transparent; border:none; text-align:left; padding:0.5rem 0.7rem; border-radius:8px; font-weight:500; font-size:0.8rem; color:#2d3f53; cursor:pointer; transition:background 0.15s, color 0.15s; display:flex; align-items:center; gap:0.5rem; width:100%; }
+        .sidebar-nav button:hover { background:#eef4fa; color:#1a2a3a; }
+        .sidebar-nav button.active { background:#2d7dd2; color:#ffffff; }
+        .sidebar-nav button .icon { font-size:1.1rem; line-height:1; flex-shrink:0; }
+        .sidebar-footer { margin-top:auto; font-size:0.7rem; color:#8ca3b9; border-top:1px solid #eef2f6; padding-top:0.8rem; text-align:center; }
+        .main-content { flex:1; padding:1.2rem 1.5rem 2rem; max-width:calc(100% - 170px); }
+        .dashboard { max-width:1300px; margin:0 auto; }
+        .header { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; margin-bottom:1.5rem; padding-bottom:1rem; border-bottom:2px solid #e8edf3; }
+        .header-left h1 { font-weight:700; font-size:1.6rem; letter-spacing:-0.02em; color:#1a2a3a; }
+        .header-left .sub { color:#5b6f82; font-weight:400; font-size:0.9rem; }
+        .header-right { text-align:right; font-weight:500; font-size:0.9rem; color:#1a2a3a; background:#ffffff; padding:0.3rem 0.8rem; border-radius:40px; border:1px solid #e8edf3; white-space:nowrap; }
+        .header-right .clock { font-weight:600; color:#2d7dd2; }
+        .section-group { display:block; }
+        .section-group.hidden { display:none !important; }
+        .section-header { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem 1rem; margin:1.5rem 0 1rem 0; }
+        .section-title { font-weight:600; font-size:1.2rem; color:#1a2a3a; letter-spacing:-0.01em; margin:0; }
+        .print-btn { background:#ffffff; border:1px solid #d0d9e5; border-radius:30px; padding:0.3rem 1rem; font-size:0.8rem; font-weight:500; color:#1a2a3a; cursor:pointer; display:inline-flex; align-items:center; gap:0.4rem; transition:background 0.15s, border-color 0.15s; }
+        .print-btn:hover { background:#f5f8fc; border-color:#b0c0d0; }
+        .kpi-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(150px,1fr)); gap:1rem; margin-bottom:1.5rem; }
+        .kpi-card { background:#ffffff; border-radius:14px; padding:1rem 0.8rem; box-shadow:0 4px 12px rgba(0,20,40,0.04); text-align:center; border:1px solid #e8edf3; }
+        .kpi-card .label { font-weight:500; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.03em; color:#6f8aa3; margin-bottom:0.2rem; }
+        .kpi-card .value { font-weight:700; font-size:1.8rem; color:#1a2a3a; line-height:1.2; }
+        .kpi-card .value small { font-size:0.8rem; font-weight:400; color:#5b6f82; margin-left:0.2rem; }
+        .table-wrap { background:#ffffff; border-radius:16px; padding:1.2rem 1rem; box-shadow:0 4px 12px rgba(0,20,40,0.04); border:1px solid #e8edf3; margin-bottom:1.5rem; }
+        .table-wrap h4 { font-weight:600; font-size:1rem; margin-bottom:0.8rem; color:#2d3f53; }
+        table { width:100%; border-collapse:collapse; font-size:0.85rem; }
+        th { background:#f5f8fc; font-weight:600; color:#1a2a3a; padding:0.6rem 0.5rem; text-align:left; border-bottom:2px solid #dce4ed; }
+        td { padding:0.5rem 0.5rem; border-bottom:1px solid #eef2f6; vertical-align:top; }
+        tr:hover td { background:#f9fbfd; }
+        .tag { display:inline-block; background:#e7f0fa; color:#1f5c8f; padding:0.1rem 0.6rem; border-radius:30px; font-size:0.75rem; margin:0.1rem 0.15rem; white-space:nowrap; }
+        .all-responses-table { table-layout:fixed; width:100%; border-collapse:collapse; }
+        .all-responses-table th, .all-responses-table td { padding:0.4rem 0.3rem; font-size:0.8rem; word-wrap:break-word; word-break:break-word; overflow-wrap:break-word; vertical-align:top; }
+        .all-responses-table .col-id { width:7%; }
+        .all-responses-table .col-q1 { width:8%; }
+        .all-responses-table .col-q2 { width:8%; }
+        .all-responses-table .col-q3 { width:8%; }
+        .all-responses-table .col-q4 { width:12%; }
+        .all-responses-table .col-q5 { width:12%; }
+        .all-responses-table .col-q6 { width:8%; }
+        .all-responses-table .col-q7 { width:8%; }
+        .all-responses-table .col-q8 { width:8%; }
+        .all-responses-table .col-q9 { width:12%; }
+        .all-responses-table .col-q10 { width:7%; }
+        .pagination-controls { display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:0.4rem; margin-top:1.2rem; padding-top:0.8rem; border-top:1px solid #eef2f6; }
+        .pagination-controls button { background:#ffffff; border:1px solid #d0d9e5; border-radius:6px; padding:0.2rem 0.7rem; font-size:0.8rem; cursor:pointer; transition:background 0.15s; color:#1a2a3a; }
+        .pagination-controls button:hover { background:#eef4fa; }
+        .pagination-controls button.active-page { background:#2d7dd2; color:#ffffff; border-color:#2d7dd2; }
+        .pagination-controls button:disabled { opacity:0.4; cursor:not-allowed; background:#f5f8fc; }
+        .pagination-controls .page-info { font-size:0.8rem; color:#5b6f82; margin:0 0.3rem; }
+        .empty-state { text-align:center; color:#8ca3b9; padding:1.5rem; font-size:1rem; }
+
+        @media (max-width:768px) {
+            .app-container { flex-direction:column; }
+            .sidebar { width:100%; height:auto; position:static; flex-direction:row; flex-wrap:wrap; padding:0.6rem 0.8rem; gap:0.3rem; border-right:none; border-bottom:1px solid #e8edf3; box-shadow:0 2px 8px rgba(0,0,0,0.03); }
+            .sidebar-brand { width:100%; padding-bottom:0.2rem; border-bottom:none; margin-bottom:0.1rem; font-size:0.85rem; }
+            .sidebar-nav { flex-direction:row; flex-wrap:wrap; gap:0.2rem; }
+            .sidebar-nav button { padding:0.3rem 0.6rem; font-size:0.75rem; border-radius:30px; background:#f5f8fc; width:auto; }
+            .sidebar-nav button.active { background:#2d7dd2; color:#fff; }
+            .sidebar-footer { display:none; }
+            .main-content { max-width:100%; padding:0.8rem; }
+            .kpi-grid { grid-template-columns:1fr 1fr; }
+            .header { flex-direction:column; align-items:stretch; gap:0.5rem; }
+            .header-right { text-align:center; }
+            .all-responses-table-wrap { overflow-x:auto; }
+            .all-responses-table { min-width:700px; table-layout:auto; }
+        }
+        @media (max-width:480px) { .kpi-grid { grid-template-columns:1fr; } .header-left h1 { font-size:1.3rem; } .section-header { flex-direction:column; align-items:stretch; gap:0.3rem; } .print-btn { align-self:flex-start; } }
+
+        @media print {
+            body * { visibility:hidden; }
+            #print-area, #print-area * { visibility:visible; }
+            #print-area { position:absolute; left:0; top:0; width:100%; padding:1rem; }
+            .no-print { display:none !important; }
+            .print-btn { display:none !important; }
+            .pagination-controls { display:none !important; }
+            .section-group { display:block !important; }
+            .sidebar { display:none !important; }
+            .header { display:none !important; }
+            .main-content { max-width:100% !important; padding:0 !important; }
+            .table-wrap { break-inside:avoid; box-shadow:none; border:1px solid #ccc; padding:0.8rem; }
+            .all-responses-table-wrap { overflow:visible !important; }
+            .all-responses-table { table-layout:fixed !important; width:100% !important; min-width:0 !important; }
+            .all-responses-table th, .all-responses-table td { word-wrap:break-word !important; word-break:break-word !important; overflow-wrap:break-word !important; padding:0.3rem !important; font-size:0.7rem !important; }
+            .all-responses-table .col-id { width:6% !important; }
+            .all-responses-table .col-q1 { width:7% !important; }
+            .all-responses-table .col-q2 { width:7% !important; }
+            .all-responses-table .col-q3 { width:7% !important; }
+            .all-responses-table .col-q4 { width:10% !important; }
+            .all-responses-table .col-q5 { width:10% !important; }
+            .all-responses-table .col-q6 { width:7% !important; }
+            .all-responses-table .col-q7 { width:7% !important; }
+            .all-responses-table .col-q8 { width:7% !important; }
+            .all-responses-table .col-q9 { width:10% !important; }
+            .all-responses-table .col-q10 { width:6% !important; }
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <aside class="sidebar no-print">
+        <div class="sidebar-brand">
+            📊 Encuesta
+            <small>Pase de Causas</small>
+        </div>
+        <nav class="sidebar-nav">
+            <button class="active" data-show="all"><span class="icon">📈</span> Resumen</button>
+            <button data-show="single"><span class="icon">📊</span> Opción única</button>
+            <button data-show="multi"><span class="icon">📋</span> Opción múltiple</button>
+            <button data-show="all_responses"><span class="icon">📄</span> Todas</button>
+        </nav>
+        <div class="sidebar-footer"><span id="db-status-sidebar">Conectado</span></div>
+    </aside>
+
+    <main class="main-content">
+        <div class="dashboard">
+            <div class="header no-print">
+                <div class="header-left">
+                    <h1>Resultados · Encuesta del Sistema de Pase</h1>
+                    <div class="sub">Defensoría Oficial Civil y Comercial</div>
+                </div>
+                <div class="header-right">
+                    <span id="current-date"></span> &nbsp;·&nbsp; <span class="clock" id="current-time">--:--:--</span>
+                </div>
+            </div>
+
+            <!-- KPIs -->
+            <div class="section-group kpi-group" id="kpi-section">
+                <div class="section-header no-print">
+                    <h3 class="section-title">📈 Resumen de indicadores</h3>
+                    <button class="print-btn" onclick="printSection('kpi-section')">🖨️ Imprimir</button>
+                </div>
+                <div class="kpi-grid" id="kpi-container">
+                    <div class="kpi-card"><div class="label">Total respuestas</div><div class="value" id="kpi-total">0</div></div>
+                    <div class="kpi-card"><div class="label">Participación (17)</div><div class="value" id="kpi-participation">0<small>%</small></div></div>
+                    <div class="kpi-card"><div class="label">Interés alto (P7)</div><div class="value" id="kpi-interest">0<small>%</small></div></div>
+                    <div class="kpi-card"><div class="label">Uso diario (P1)</div><div class="value" id="kpi-daily">0<small>%</small></div></div>
+                    <div class="kpi-card"><div class="label">Principal beneficio</div><div class="value" id="kpi-benefit">—</div></div>
+                </div>
+            </div>
+
+            <!-- Opción única -->
+            <div class="section-group single-group" id="single-section">
+                <div class="section-header no-print">
+                    <h3 class="section-title">📊 Preguntas de opción única</h3>
+                    <button class="print-btn" onclick="printSection('single-section')">🖨️ Imprimir</button>
+                </div>
+                <div id="single-tables-container"></div>
+            </div>
+
+            <!-- Opción múltiple -->
+            <div class="section-group multi-group" id="multi-section">
+                <div class="section-header no-print">
+                    <h3 class="section-title">📋 Preguntas de opción múltiple</h3>
+                    <button class="print-btn" onclick="printSection('multi-section')">🖨️ Imprimir</button>
+                </div>
+                <div id="multi-tables-container"></div>
+            </div>
+
+            <!-- Todas las respuestas -->
+            <div class="section-group all-group" id="all-responses-section">
+                <div class="section-header no-print">
+                    <h3 class="section-title">📄 Todas las respuestas</h3>
+                    <button class="print-btn" onclick="printSection('all-responses-section')">🖨️ Imprimir</button>
+                </div>
+                <div class="table-wrap all-responses-table-wrap">
+                    <div id="individual-table-wrapper"><div class="empty-state">Cargando datos desde Firestore...</div></div>
+                    <div class="pagination-controls no-print" id="pagination-controls"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script>
+    (function() {
+        // Configuración actualizada de Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBir4KH0ema2RCpN2U4nvZnGn_j9Bmr1WM",
+            authDomain: "encuesta-pas6.firebaseapp.com",
+            projectId: "encuesta-pas6",
+            storageBucket: "encuesta-pas6.firebasestorage.app",
+            messagingSenderId: "948402174730",
+            appId: "1:948402174730:web:8c1b2590dedd1663f698f3"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        const QUESTION_CONFIG = {
+            q1: { label: 'Frecuencia de uso', type: 'single', options: { A: 'Diariamente', B: 'Semanal/Ocasional', C: 'Aún no usa' } },
+            q2: { label: 'Función principal', type: 'single', options: { A: 'Registro de causas', B: 'Asignar/distribuir', C: 'Seguimiento/elevar' } },
+            q3: { label: 'Beneficio principal', type: 'single', options: { A: 'Rapidez y trazabilidad', B: 'Organización equitativa', C: 'Acceso remoto' } },
+            q4: { label: 'Aspectos valiosos', type: 'multi', options: { A: 'Centralización', B: 'Interfaz/asignación automática', C: 'Gestión de ausencias/demoras' } },
+            q5: { label: 'Dificultades experimentadas', type: 'multi', options: { A: 'Lentitud/fallas', B: 'Dificultad en el flujo', C: 'Errores técnicos' } },
+            q6: { label: 'Mayor obstáculo para adopción', type: 'single', options: { A: 'Falta de capacitación', B: 'Resistencia al cambio', C: 'Limitaciones técnicas' } },
+            q7: { label: 'Interés en adopción exclusiva', type: 'single', options: { A: 'Alto', B: 'Moderado', C: 'Bajo' } },
+            q8: { label: 'Recurso de apoyo preferido', type: 'single', options: { A: 'Capacitaciones', B: 'Manuales escritos', C: 'Videos tutoriales' } },
+            q9: { label: 'Expectativas funcionales', type: 'multi', options: { A: 'Alertas de plazos', B: 'Reportes/estadísticas', C: 'Integración con otros sistemas' } },
+            q10: { label: 'Mejora en servicio al ciudadano', type: 'single', options: { A: 'Sí, significativa', B: 'Probable a largo plazo', C: 'Impacto mínimo' } }
+        };
+
+        const TOTAL_POBLACION = 17;
+        const PAGE_SIZE = 10;
+        let allDataRaw = [];
+        let currentPage = 1;
+
+        function computeStats(data) {
+            const total = data.length;
+            if (total === 0) return null;
+
+            let interesAlto = 0, usoDiario = 0;
+            const beneficioCount = { A:0, B:0, C:0 };
+            let beneficioMax = null;
+            const singleCounts = {}, multiCounts = {};
+
+            for (const [key, cfg] of Object.entries(QUESTION_CONFIG)) {
+                if (cfg.type === 'single') singleCounts[key] = { A:0, B:0, C:0 };
+                else multiCounts[key] = { A:0, B:0, C:0 };
+            }
+
+            data.forEach(entry => {
+                if (entry.q7 === 'A') interesAlto++;
+                if (entry.q1 === 'A') usoDiario++;
+                if (entry.q3) beneficioCount[entry.q3] = (beneficioCount[entry.q3] || 0) + 1;
+
+                for (const key of ['q1','q2','q3','q6','q7','q8','q10']) {
+                    if (entry[key] && singleCounts[key]) singleCounts[key][entry[key]] = (singleCounts[key][entry[key]] || 0) + 1;
+                }
+                for (const key of ['q4','q5','q9']) {
+                    if (Array.isArray(entry[key])) {
+                        entry[key].forEach(val => {
+                            if (multiCounts[key] && multiCounts[key][val] !== undefined) multiCounts[key][val] = (multiCounts[key][val] || 0) + 1;
+                        });
+                    }
+                }
+            });
+
+            let maxCount = 0;
+            for (const [k, v] of Object.entries(beneficioCount)) {
+                if (v > maxCount) { maxCount = v; beneficioMax = k; }
+            }
+            const beneficioLabel = beneficioMax ? QUESTION_CONFIG.q3.options[beneficioMax] : '—';
+
+            return {
+                total,
+                participacion: Math.round((total / TOTAL_POBLACION) * 100),
+                interesAlto: Math.round((interesAlto / TOTAL_POBLACION) * 100),
+                usoDiario: Math.round((usoDiario / TOTAL_POBLACION) * 100),
+                beneficioLabel,
+                singleCounts,
+                multiCounts,
+                raw: data
+            };
+        }
+
+        function render(stats) {
+            if (!stats) {
+                document.getElementById('kpi-total').textContent = '0';
+                document.getElementById('kpi-participation').innerHTML = '0<small>%</small>';
+                document.getElementById('kpi-interest').innerHTML = '0<small>%</small>';
+                document.getElementById('kpi-daily').innerHTML = '0<small>%</small>';
+                document.getElementById('kpi-benefit').textContent = '—';
+                document.getElementById('single-tables-container').innerHTML = '<div class="empty-state">No hay datos</div>';
+                document.getElementById('multi-tables-container').innerHTML = '<div class="empty-state">No hay datos</div>';
+                document.getElementById('individual-table-wrapper').innerHTML = '<div class="empty-state">No hay respuestas</div>';
+                document.getElementById('pagination-controls').innerHTML = '';
+                return;
+            }
+
+            const { total, participacion, interesAlto, usoDiario, beneficioLabel, singleCounts, multiCounts, raw } = stats;
+            document.getElementById('kpi-total').textContent = total;
+            document.getElementById('kpi-participation').innerHTML = participacion + '<small>%</small>';
+            document.getElementById('kpi-interest').innerHTML = interesAlto + '<small>%</small>';
+            document.getElementById('kpi-daily').innerHTML = usoDiario + '<small>%</small>';
+            document.getElementById('kpi-benefit').textContent = beneficioLabel;
+
+            renderSingleTables(singleCounts);
+            renderMultiTables(multiCounts);
+
+            allDataRaw = raw;
+            currentPage = 1;
+            renderPaginatedTable(raw, currentPage);
+        }
+
+        function renderSingleTables(singleCounts) {
+            const container = document.getElementById('single-tables-container');
+            container.innerHTML = '';
+            const singleKeys = ['q1','q2','q3','q6','q7','q8','q10'];
+
+            singleKeys.forEach(key => {
+                const cfg = QUESTION_CONFIG[key];
+                if (!cfg) return;
+                const counts = singleCounts[key];
+                if (!counts) return;
+                const total = Object.values(counts).reduce((a,b) => a+b, 0) || 1;
+                const wrap = document.createElement('div');
+                wrap.className = 'table-wrap';
+                let html = `<h4>${cfg.label}</h4><table><thead><tr><th>Opción</th><th>Frecuencia</th><th>Porcentaje</th></tr></thead><tbody>`;
+                for (const [code, label] of Object.entries(cfg.options)) {
+                    const freq = counts[code] || 0;
+                    const pct = Math.round((freq / total) * 100);
+                    html += `<tr><td>${label}</td><td>${freq}</td><td>${pct}%</td></tr>`;
+                }
+                html += '</tbody></table>';
+                wrap.innerHTML = html;
+                container.appendChild(wrap);
+            });
+        }
+
+        function renderMultiTables(multiCounts) {
+            const container = document.getElementById('multi-tables-container');
+            container.innerHTML = '';
+            const multiKeys = ['q4','q5','q9'];
+
+            multiKeys.forEach(key => {
+                const cfg = QUESTION_CONFIG[key];
+                if (!cfg) return;
+                const counts = multiCounts[key];
+                if (!counts) return;
+                const total = Object.values(counts).reduce((a,b) => a+b, 0) || 1;
+                const wrap = document.createElement('div');
+                wrap.className = 'table-wrap';
+                let html = `<h4>${cfg.label}</h4><table><thead><tr><th>Opción</th><th>Frecuencia</th><th>Porcentaje</th></tr></thead><tbody>`;
+                for (const [code, label] of Object.entries(cfg.options)) {
+                    const freq = counts[code] || 0;
+                    const pct = Math.round((freq / total) * 100);
+                    html += `<tr><td>${label}</td><td>${freq}</td><td>${pct}%</td></tr>`;
+                }
+                html += '</tbody></table>';
+                wrap.innerHTML = html;
+                container.appendChild(wrap);
+            });
+        }
+
+        function renderPaginatedTable(raw, page) {
+            const wrapper = document.getElementById('individual-table-wrapper');
+            const controls = document.getElementById('pagination-controls');
+
+            if (!raw || raw.length === 0) {
+                wrapper.innerHTML = '<div class="empty-state">No hay respuestas registradas</div>';
+                controls.innerHTML = '';
+                return;
+            }
+
+            const totalPages = Math.ceil(raw.length / PAGE_SIZE);
+            if (page < 1) page = 1;
+            if (page > totalPages) page = totalPages;
+            currentPage = page;
+
+            const start = (page - 1) * PAGE_SIZE;
+            const end = Math.min(start + PAGE_SIZE, raw.length);
+            const pageData = raw.slice(start, end);
+
+            const headers = ['ID', 'q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8', 'q9', 'q10'];
+            const headerLabels = {
+                ID: 'ID',
+                q1: 'Frecuencia',
+                q2: 'Función',
+                q3: 'Beneficio',
+                q4: 'Aspectos valiosos',
+                q5: 'Dificultades',
+                q6: 'Obstáculo',
+                q7: 'Interés',
+                q8: 'Recurso',
+                q9: 'Expectativas',
+                q10: 'Mejora'
+            };
+
+            let html = `<table class="all-responses-table"><thead><tr>`;
+            headers.forEach(h => {
+                const cls = h === 'ID' ? 'col-id' : `col-${h}`;
+                html += `<th class="${cls}">${headerLabels[h] || h}</th>`;
+            });
+            html += `</tr></thead><tbody>`;
+
+            pageData.forEach(entry => {
+                html += `<tr>`;
+                headers.forEach(h => {
+                    if (h === 'ID') {
+                        html += `<td class="col-id" style="font-family:monospace;font-size:0.75rem;">${entry.id || '—'}</td>`;
+                        return;
+                    }
+                    const val = entry[h];
+                    if (val === undefined || val === null || val === '') {
+                        html += `<td class="col-${h}">—</td>`;
+                    } else if (Array.isArray(val)) {
+                        const labels = val.map(code => {
+                            const opt = QUESTION_CONFIG[h]?.options[code];
+                            return opt || code;
+                        });
+                        html += `<td class="col-${h}">${labels.map(l => `<span class="tag">${l}</span>`).join(' ')}</td>`;
+                    } else {
+                        const label = QUESTION_CONFIG[h]?.options[val] || val;
+                        html += `<td class="col-${h}">${label}</td>`;
+                    }
+                });
+                html += `</tr>`;
+            });
+
+            html += '</tbody></table>';
+            wrapper.innerHTML = html;
+
+            let controlsHtml = '';
+            controlsHtml += `<button onclick="goToPage(${page-1})" ${page<=1?'disabled':''}>◀ Anterior</button>`;
+            const maxVisible = 5;
+            let startPage = Math.max(1, page - Math.floor(maxVisible/2));
+            let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+            if (endPage - startPage < maxVisible - 1) {
+                startPage = Math.max(1, endPage - maxVisible + 1);
+            }
+            for (let p = startPage; p <= endPage; p++) {
+                controlsHtml += `<button class="${p===page?'active-page':''}" onclick="goToPage(${p})">${p}</button>`;
+            }
+            controlsHtml += `<button onclick="goToPage(${page+1})" ${page>=totalPages?'disabled':''}>Siguiente ▶</button>`;
+            controlsHtml += `<span class="page-info">Página ${page} de ${totalPages}</span>`;
+            controls.innerHTML = controlsHtml;
+        }
+
+        window.goToPage = function(page) {
+            const totalPages = Math.ceil(allDataRaw.length / PAGE_SIZE);
+            if (page < 1) page = 1;
+            if (page > totalPages) page = totalPages;
+            renderPaginatedTable(allDataRaw, page);
+        };
+
+        window.printSection = function(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (!section) return;
+            const clone = section.cloneNode(true);
+            const printBtns = clone.querySelectorAll('.print-btn');
+            printBtns.forEach(btn => btn.remove());
+
+            const win = window.open('', '_blank', 'width=1000,height=800');
+            win.document.write('<!DOCTYPE html><html><head><title>Imprimir</title>');
+            win.document.write('<style>');
+            win.document.write('body { font-family: Inter, sans-serif; padding: 2rem; background: #fff; }');
+            win.document.write('.section-title { font-size: 1.6rem; margin-bottom: 1.5rem; }');
+            win.document.write('.table-wrap { margin-bottom: 1.5rem; border: 1px solid #ccc; padding: 1rem; border-radius: 8px; }');
+            win.document.write('table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }');
+            win.document.write('th { background: #f5f8fc; font-weight: 600; padding: 0.5rem; border: 1px solid #ccc; }');
+            win.document.write('td { padding: 0.4rem 0.5rem; border: 1px solid #ccc; vertical-align: top; word-wrap: break-word; word-break: break-word; }');
+            win.document.write('.tag { display: inline-block; background: #e7f0fa; padding: 0.1rem 0.6rem; border-radius: 20px; font-size: 0.75rem; margin: 0.1rem; white-space: normal; word-break: break-word; }');
+            win.document.write('.kpi-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 1rem; margin-bottom: 1.5rem; }');
+            win.document.write('.kpi-card { border: 1px solid #ccc; padding: 1rem; text-align: center; border-radius: 8px; }');
+            win.document.write('.kpi-card .label { font-weight: 500; font-size: 0.7rem; text-transform: uppercase; color: #555; }');
+            win.document.write('.kpi-card .value { font-weight: 700; font-size: 1.8rem; }');
+            win.document.write('.kpi-card .value small { font-size: 0.8rem; font-weight: 400; }');
+            win.document.write('.all-responses-table { table-layout: fixed; width: 100%; word-wrap: break-word; }');
+            win.document.write('.all-responses-table th, .all-responses-table td { word-wrap: break-word; word-break: break-word; padding: 0.3rem; }');
+            win.document.write('.all-responses-table .col-id { width: 6%; }');
+            win.document.write('.all-responses-table .col-q1 { width: 7%; }');
+            win.document.write('.all-responses-table .col-q2 { width: 7%; }');
+            win.document.write('.all-responses-table .col-q3 { width: 7%; }');
+            win.document.write('.all-responses-table .col-q4 { width: 10%; }');
+            win.document.write('.all-responses-table .col-q5 { width: 10%; }');
+            win.document.write('.all-responses-table .col-q6 { width: 7%; }');
+            win.document.write('.all-responses-table .col-q7 { width: 7%; }');
+            win.document.write('.all-responses-table .col-q8 { width: 7%; }');
+            win.document.write('.all-responses-table .col-q9 { width: 10%; }');
+            win.document.write('.all-responses-table .col-q10 { width: 6%; }');
+            win.document.write('</style></head><body>');
+            win.document.write(clone.innerHTML);
+            win.document.write('</body></html>');
+            win.document.close();
+            win.focus();
+            win.print();
+        };
+
+        function setupSidebarNavigation() {
+            const buttons = document.querySelectorAll('.sidebar-nav button');
+            buttons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    buttons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    const show = this.dataset.show;
+                    document.querySelectorAll('.section-group').forEach(el => el.classList.add('hidden'));
+                    if (show === 'all') {
+                        document.querySelectorAll('.section-group').forEach(el => el.classList.remove('hidden'));
+                    } else if (show === 'single') {
+                        document.querySelector('.single-group').classList.remove('hidden');
+                    } else if (show === 'multi') {
+                        document.querySelector('.multi-group').classList.remove('hidden');
+                    } else if (show === 'all_responses') {
+                        document.querySelector('.all-group').classList.remove('hidden');
+                    }
+                });
+            });
+            document.querySelectorAll('.section-group').forEach(el => el.classList.remove('hidden'));
+        }
+
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('current-date').textContent = now.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            document.getElementById('current-time').textContent = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        function listenToFirestore() {
+            const statusBadge = document.getElementById('db-status-sidebar');
+            // Colección actualizada a "encuesta-pase"
+            db.collection('encuesta-pase').onSnapshot(snapshot => {
+                if (snapshot.empty) {
+                    render(null);
+                    statusBadge.textContent = 'Sin datos';
+                    return;
+                }
+                const data = [];
+                snapshot.forEach(doc => data.push(doc.data()));
+                const stats = computeStats(data);
+                render(stats);
+                statusBadge.textContent = `✅ ${data.length} respuestas`;
+            }, error => {
+                console.error('Error en onSnapshot:', error);
+                statusBadge.textContent = '⚠️ Error';
+                document.getElementById('individual-table-wrapper').innerHTML = '<div class="empty-state">Error al cargar datos</div>';
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            setupSidebarNavigation();
+            listenToFirestore();
+        });
+    })();
+</script>
+</body>
+</html>

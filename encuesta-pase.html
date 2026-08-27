@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Encuesta · Sistema de Pase de Causas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <style>
+        /* (estilos idénticos al original, sin cambios) */
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Inter',sans-serif; background:#f2f5f9; color:#1a2a3a; min-height:100vh; display:flex; flex-direction:column; align-items:center; padding:0; }
+        .header-glass { width:100%; background:rgba(46,204,113,0.25); backdrop-filter:blur(8px); border-bottom:1px solid rgba(255,255,255,0.3); border-top:1px solid rgba(255,255,255,0.3); box-shadow:0 4px 20px rgba(46,204,113,0.15); padding:1.2rem 1.5rem; text-align:center; flex-shrink:0; }
+        .header-glass h1 { font-weight:700; font-size:2rem; letter-spacing:-0.01em; color:#0a2a44; margin-bottom:0.15rem; }
+        .header-glass .subtitle { font-weight:400; font-size:1.05rem; color:#0a2a44; opacity:0.9; margin:0; }
+        @media (max-width:480px) { .header-glass { padding:0.9rem 1rem; } .header-glass h1 { font-size:1.6rem; } .header-glass .subtitle { font-size:0.95rem; } }
+        .container { max-width:1400px; width:100%; padding:2rem 2.5rem; margin:1.5rem auto; background:#ffffff; border-radius:24px; box-shadow:0 20px 60px rgba(0,20,40,0.08); flex:1; display:flex; flex-direction:column; }
+        @media (max-width:768px) { .container { padding:1.2rem; margin:1rem auto; border-radius:16px; } }
+        .questions-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; flex:1 1 auto; }
+        @media (max-width:768px) { .questions-grid { grid-template-columns:1fr; gap:1rem; } }
+        .column-preguntas { display:flex; flex-direction:column; gap:1.2rem; }
+        .question-card { background:#fafcfe; border-radius:14px; padding:1.2rem 1.4rem; border:1px solid #e8edf3; transition:border-color 0.2s, box-shadow 0.2s; }
+        .question-card:hover { border-color:#cbd8e6; box-shadow:0 4px 12px rgba(0,20,40,0.04); }
+        .question-card h3 { font-weight:600; font-size:1rem; color:#1a2a3a; margin-bottom:0.1rem; }
+        .question-card .instruction { display:inline-block; font-size:0.8rem; font-weight:400; color:#6f8aa3; margin-bottom:0.6rem; font-style:italic; }
+        .options { display:flex; flex-direction:column; gap:0.4rem; }
+        .options label { display:flex; align-items:flex-start; gap:0.7rem; padding:0.6rem 0.9rem; background:#ffffff; border:1px solid #e2e9f0; border-radius:8px; cursor:pointer; transition:background 0.15s, border-color 0.15s, box-shadow 0.15s; font-size:0.92rem; line-height:1.4; }
+        .options label:hover { background:#f2f7fd; border-color:#b8cee4; }
+        .options label:has(input:checked) { background:#eef5ff; border-color:#2d7dd2; box-shadow:0 0 0 3px rgba(45,125,210,0.12); }
+        input[type="radio"], input[type="checkbox"] { flex-shrink:0; margin-top:0.15rem; width:1rem; height:1rem; accent-color:#2d7dd2; cursor:pointer; }
+        @media (max-width:480px) { .question-card { padding:0.9rem 1rem; } .question-card h3 { font-size:0.92rem; } .options label { padding:0.5rem 0.7rem; font-size:0.85rem; } }
+        .btn-submit { display:block; width:100%; padding:1rem 1.5rem; margin-top:2rem; background:#2d7dd2; color:#ffffff; border:none; border-radius:14px; font-family:'Inter',sans-serif; font-weight:600; font-size:1.1rem; letter-spacing:0.3px; cursor:pointer; transition:background 0.2s, transform 0.1s, box-shadow 0.2s; box-shadow:0 4px 12px rgba(45,125,210,0.25); flex-shrink:0; }
+        .btn-submit:hover { background:#1f6abc; box-shadow:0 6px 16px rgba(45,125,210,0.35); }
+        .btn-submit:active { transform:scale(0.98); }
+        .footer-note { margin-top:1.8rem; text-align:center; font-size:0.8rem; color:#8ca3b9; border-top:1px solid #eef2f6; padding-top:1.2rem; flex-shrink:0; }
+        .modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.3); backdrop-filter:blur(2px); align-items:center; justify-content:center; z-index:999; }
+        .modal-overlay.active { display:flex; }
+        .modal-box { background:#ffffff; border-radius:16px; padding:2rem 2.5rem; max-width:420px; width:90%; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,0.2); border:3px solid #e74c3c; animation:fadeSlide 0.3s ease; }
+        .modal-box .icon-alert { font-size:3.2rem; color:#e74c3c; margin-bottom:0.4rem; }
+        .modal-box h3 { font-weight:700; font-size:1.3rem; color:#1a2a3a; margin-bottom:0.3rem; }
+        .modal-box p { font-size:0.95rem; color:#4a6178; margin-bottom:1.5rem; }
+        .modal-box .btn-close-modal { background:#e74c3c; color:#fff; border:none; border-radius:10px; padding:0.7rem 2rem; font-family:'Inter',sans-serif; font-weight:600; font-size:1rem; cursor:pointer; transition:background 0.2s; }
+        .modal-box .btn-close-modal:hover { background:#c0392b; }
+        @media (max-width:480px) { .modal-box { padding:1.5rem 1.2rem; } .modal-box h3 { font-size:1.1rem; } .modal-box p { font-size:0.85rem; } }
+        #success-message { display:none; text-align:center; padding:3rem 2rem; border:4px solid #27ae60; border-radius:24px; background:#f0faf5; max-width:600px; width:90%; margin:2rem auto; animation:fadeSlide 0.6s ease forwards; box-shadow:0 10px 30px rgba(39,174,96,0.15); }
+        #success-message .icon { font-size:4.2rem; color:#27ae60; margin-bottom:0.6rem; }
+        #success-message h2 { font-weight:700; font-size:2rem; color:#1a2a3a; margin-bottom:0.4rem; }
+        #success-message p { font-size:1rem; color:#2c3e50; margin:0.3rem auto; max-width:400px; }
+        @media (max-width:480px) { #success-message { padding:2rem 1rem; border-width:3px; } #success-message h2 { font-size:1.6rem; } #success-message p { font-size:0.9rem; } }
+        @keyframes fadeSlide { 0% { opacity:0; transform:translateY(16px); } 100% { opacity:1; transform:translateY(0); } }
+    </style>
+</head>
+<body>
+    <header class="header-glass">
+        <h1>Encuesta de Satisfacción</h1>
+        <p class="subtitle">Sistema Digital de Pase de Causas · Defensoría Oficial Civil y Comercial</p>
+    </header>
+
+    <div class="container" id="app">
+        <div id="survey-section">
+            <form id="survey-form" novalidate>
+                <div class="questions-grid">
+                    <!-- Columna izquierda: preguntas 1 a 5 -->
+                    <div class="column-preguntas">
+                        <!-- P1 -->
+                        <div class="question-card">
+                            <h3>1. ¿Con qué frecuencia utiliza actualmente el sistema de pase de causas para sus tareas diarias (registro, distribución o tramitación)?</h3>
+                            <span class="instruction">Seleccione una opción</span>
+                            <div class="options">
+                                <label><input type="radio" name="q1" value="A" required /> A) Diariamente</label>
+                                <label><input type="radio" name="q1" value="B" /> B) Semanalmente o de forma ocasional</label>
+                                <label><input type="radio" name="q1" value="C" /> C) Aún no he comenzado a utilizarlo</label>
+                            </div>
+                        </div>
+
+                        <!-- P2 -->
+                        <div class="question-card">
+                            <h3>2. ¿Cuál es la función principal por la que ingresa al sistema digital de pase?</h3>
+                            <span class="instruction">Seleccione una opción</span>
+                            <div class="options">
+                                <label><input type="radio" name="q2" value="A" required /> A) Registrar el ingreso de nuevas causas (operador)</label>
+                                <label><input type="radio" name="q2" value="B" /> B) Asignar o distribuir expedientes a empleados (secretario)</label>
+                                <label><input type="radio" name="q2" value="C" /> C) Realizar el seguimiento, actualizar estado o elevar al defensor (empleado/defensor)</label>
+                            </div>
+                        </div>
+
+                        <!-- P3 -->
+                        <div class="question-card">
+                            <h3>3. ¿Qué beneficio principal ha notado al utilizar este sistema de pase digital?</h3>
+                            <span class="instruction">Seleccione una opción</span>
+                            <div class="options">
+                                <label><input type="radio" name="q3" value="A" required /> A) Mayor rapidez en la búsqueda y trazabilidad de expedientes</label>
+                                <label><input type="radio" name="q3" value="B" /> B) Mejor organización y distribución equitativa de la carga de trabajo</label>
+                                <label><input type="radio" name="q3" value="C" /> C) Acceso remoto y visibilidad completa del estado de cada causa</label>
+                            </div>
+                        </div>
+
+                        <!-- P4 -->
+                        <div class="question-card">
+                            <h3>4. ¿Qué aspectos del sistema considera más valiosos para la gestión de causas?</h3>
+                            <span class="instruction">Puede seleccionar más de una opción</span>
+                            <div class="options">
+                                <label><input type="checkbox" name="q4" value="A" /> A) La centralización de todos los expedientes y su historial</label>
+                                <label><input type="checkbox" name="q4" value="B" /> B) La interfaz intuitiva y la asignación automática inteligente</label>
+                                <label><input type="checkbox" name="q4" value="C" /> C) La gestión de ausencias y la justificación de demoras</label>
+                            </div>
+                        </div>
+
+                        <!-- P5 -->
+                        <div class="question-card">
+                            <h3>5. ¿Qué dificultades o inconvenientes ha experimentado al usar el sistema de pase?</h3>
+                            <span class="instruction">Puede seleccionar más de una opción</span>
+                            <div class="options">
+                                <label><input type="checkbox" name="q5" value="A" /> A) Lentitud en la carga de expedientes o fallas de conexión</label>
+                                <label><input type="checkbox" name="q5" value="B" /> B) Dificultad para comprender el flujo de distribución o las acciones permitidas según el rol</label>
+                                <label><input type="checkbox" name="q5" value="C" /> C) Errores técnicos al guardar cambios o al generar reportes</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Columna derecha: preguntas 6 a 10 -->
+                    <div class="column-preguntas">
+                        <!-- P6 -->
+                        <div class="question-card">
+                            <h3>6. ¿Cuál considera que es el mayor obstáculo para la adopción total de esta herramienta digital?</h3>
+                            <span class="instruction">Seleccione una opción</span>
+                            <div class="options">
+                                <label><input type="radio" name="q6" value="A" required /> A) Falta de capacitación o tiempo para aprender el flujo completo</label>
+                                <label><input type="radio" name="q6" value="B" /> B) Resistencia al cambio y preferencia por los métodos tradicionales en papel</label>
+                                <label><input type="radio" name="q6" value="C" /> C) Limitaciones técnicas (equipos, conectividad) en la oficina</label>
+                            </div>
+                        </div>
+
+                        <!-- P7 -->
+                        <div class="question-card">
+                            <h3>7. ¿Qué nivel de interés tiene en adoptar este sistema como la herramienta exclusiva para el pase de causas?</h3>
+                            <span class="instruction">Seleccione una opción</span>
+                            <div class="options">
+                                <label><input type="radio" name="q7" value="A" required /> A) Alto – deseo digitalizar toda la gestión del pase lo antes posible</label>
+                                <label><input type="radio" name="q7" value="B" /> B) Moderado – prefiero una transición gradual con apoyo continuo</label>
+                                <label><input type="radio" name="q7" value="C" /> C) Bajo – prefiero mantener los soportes físicos y el proceso actual</label>
+                            </div>
+                        </div>
+
+                        <!-- P8 -->
+                        <div class="question-card">
+                            <h3>8. Si se ofrecieran recursos para facilitar el uso del sistema, ¿cuál le generaría más interés?</h3>
+                            <span class="instruction">Seleccione una opción</span>
+                            <div class="options">
+                                <label><input type="radio" name="q8" value="A" required /> A) Capacitaciones presenciales o virtuales con un instructor</label>
+                                <label><input type="radio" name="q8" value="B" /> B) Manuales de usuario y guías escritas paso a paso (como el Manual de Uso)</label>
+                                <label><input type="radio" name="q8" value="C" /> C) Videos tutoriales cortos integrados en la plataforma</label>
+                            </div>
+                        </div>
+
+                        <!-- P9 -->
+                        <div class="question-card">
+                            <h3>9. ¿Qué expectativa funcional tiene para futuras actualizaciones del sistema de pase?</h3>
+                            <span class="instruction">Puede seleccionar más de una opción</span>
+                            <div class="options">
+                                <label><input type="checkbox" name="q9" value="A" /> A) Alertas automáticas sobre vencimiento de plazos procesales</label>
+                                <label><input type="checkbox" name="q9" value="B" /> B) Reportes automáticos de equidad y estadísticas de rendimiento</label>
+                                <label><input type="checkbox" name="q9" value="C" /> C) Integración fluida con otros sistemas del Poder Judicial</label>
+                            </div>
+                        </div>
+
+                        <!-- P10 -->
+                        <div class="question-card">
+                            <h3>10. ¿Cree que el uso consolidado de este sistema digital mejorará la calidad del servicio a los ciudadanos?</h3>
+                            <span class="instruction">Seleccione una opción</span>
+                            <div class="options">
+                                <label><input type="radio" name="q10" value="A" required /> A) Sí, mejorará significativamente los tiempos de respuesta y la transparencia</label>
+                                <label><input type="radio" name="q10" value="B" /> B) Probablemente, pero llevará tiempo lograr un impacto real</label>
+                                <label><input type="radio" name="q10" value="C" /> C) No, considero que el impacto en la atención al ciudadano será mínimo</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit">Enviar respuestas</button>
+            </form>
+        </div>
+
+        <div id="success-message">
+            <div class="icon">✓</div>
+            <h2>¡Gracias por su participación!</h2>
+            <p>Sus respuestas han sido registradas de forma segura y 100% anónima.</p>
+            <p>Su opinión es fundamental para seguir mejorando el sistema de pase de causas.</p>
+        </div>
+
+        <div class="footer-note">
+            Defensoría Oficial Civil y Comercial · Encuesta interna · Anónima
+        </div>
+    </div>
+
+    <!-- Modal rojo -->
+    <div class="modal-overlay" id="modalFaltantes">
+        <div class="modal-box">
+            <div class="icon-alert">⚠️</div>
+            <h3>¡Atención!</h3>
+            <p>Por favor, responda todas las preguntas obligatorias antes de enviar.</p>
+            <button class="btn-close-modal" id="btnCerrarModal">Aceptar</button>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script>
+        (function() {
+            // Configuración actualizada de Firebase
+            const firebaseConfig = {
+                apiKey: "AIzaSyBir4KH0ema2RCpN2U4nvZnGn_j9Bmr1WM",
+                authDomain: "encuesta-pas6.firebaseapp.com",
+                projectId: "encuesta-pas6",
+                storageBucket: "encuesta-pas6.firebasestorage.app",
+                messagingSenderId: "948402174730",
+                appId: "1:948402174730:web:8c1b2590dedd1663f698f3"
+            };
+            firebase.initializeApp(firebaseConfig);
+            const db = firebase.firestore();
+
+            const form = document.getElementById('survey-form');
+            const surveySection = document.getElementById('survey-section');
+            const successMsg = document.getElementById('success-message');
+            const modalFaltantes = document.getElementById('modalFaltantes');
+            const btnCerrarModal = document.getElementById('btnCerrarModal');
+            const questionKeys = ['q1','q2','q3','q4','q5','q6','q7','q8','q9','q10'];
+
+            btnCerrarModal.addEventListener('click', () => modalFaltantes.classList.remove('active'));
+            modalFaltantes.addEventListener('click', (e) => { if (e.target === modalFaltantes) modalFaltantes.classList.remove('active'); });
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const radios = form.querySelectorAll('input[type="radio"]');
+                const radioGroups = new Set();
+                radios.forEach(r => radioGroups.add(r.name));
+                let allValid = true;
+                for (let name of radioGroups) {
+                    const selected = form.querySelector(`input[name="${name}"]:checked`);
+                    if (!selected) { allValid = false; break; }
+                }
+                if (!allValid) {
+                    modalFaltantes.classList.add('active');
+                    return;
+                }
+
+                const answers = {};
+                questionKeys.forEach(key => {
+                    const elements = form.querySelectorAll(`[name="${key}"]`);
+                    if (elements.length === 0) return;
+                    if (elements[0].type === 'checkbox') {
+                        const checked = [];
+                        elements.forEach(el => { if (el.checked) checked.push(el.value); });
+                        answers[key] = checked;
+                    } else {
+                        const selected = form.querySelector(`[name="${key}"]:checked`);
+                        answers[key] = selected ? selected.value : null;
+                    }
+                });
+
+                const id = 'enc_' + Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+                const entry = { id, timestamp: new Date().toISOString(), ...answers };
+
+                // Nombre de la colección actualizado a "encuesta-pase"
+                db.collection('encuesta-pase').add(entry)
+                    .then(() => {
+                        surveySection.style.display = 'none';
+                        successMsg.style.display = 'block';
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    })
+                    .catch(error => {
+                        console.error('Error al guardar en Firestore:', error);
+                        alert('Ocurrió un error al guardar la encuesta. Intente nuevamente.');
+                    });
+            });
+        })();
+    </script>
+</body>
+</html>
