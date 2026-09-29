@@ -1,597 +1,153 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reporte Estadístico del Sistema Digital</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Firebase y Chart.js solo para el módulo Causas -->
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <style>
-        :root {
-            --primary-color: #0066cc;
-            --primary-dark: #0052a3;
-            --light-color: #ffffff;
-            --light-gray: #f5f7fa;
-            --border-color: #e1e5eb;
-            --text-color: #333333;
-            --text-light: #666666;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            --transition: all 0.3s ease;
-            --informe-color: #0066cc;
-            --informe-dark: #0052a3;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reporte del Sistema</title>
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-        body {
-            background-color: var(--light-gray);
-            color: var(--text-color);
-            line-height: 1.6;
-            min-height: 100vh;
-        }
+<!-- Firebase y Chart.js -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
-        .app-container {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
+<style>
+:root{
+  --navy:#0b2a6f; --navy-d:#081c4d; --b7:#1849c4; --b6:#2160e8; --b5:#3b7bf5;
+  --b2:#c3d7ff; --b1:#eef4ff; --ink:#0f1b3d; --mute:#5a6a8a; --rule:#dde5f3;
+  --field:#c9d5ec; --bg:#f4f7fd;
+  --ff:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+  --pad:clamp(14px,3vw,28px);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+body{min-height:100vh;display:flex;flex-direction:column;font:15px/1.55 var(--ff);color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
+button{font-family:inherit}
+:focus-visible{outline:2px solid var(--b5);outline-offset:2px}
+.wrap{width:min(1200px,calc(100% - 2*var(--pad)));margin-inline:auto}
 
-        header {
-            background-color: var(--light-color);
-            box-shadow: var(--shadow);
-            padding: 0.5rem 2rem;
-            border-bottom: 4px solid var(--primary-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+/* Panel superior */
+.top{background:var(--navy);color:#fff;padding:18px 0}
+.top .wrap{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+.top h1{font-size:clamp(18px,2.6vw,24px);font-weight:700;letter-spacing:-.02em;line-height:1.2}
 
-        .module-buttons {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            flex: 1;
-            justify-content: flex-start;
-        }
+/* Botones */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 18px;border:1px solid transparent;border-radius:10px;font-size:14px;font-weight:600;line-height:1.2;cursor:pointer;transition:background .15s,border-color .15s}
+.btn.solid{background:var(--b6);color:#fff}
+.btn.solid:hover:not(:disabled){background:var(--b7)}
+.btn.line{background:#fff;color:var(--b7);border-color:var(--b2)}
+.btn.line:hover:not(:disabled){background:var(--b1)}
+.btn.onnavy{background:#fff;color:var(--navy)}
+.btn.onnavy:hover{background:var(--b1)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
 
-        .module-btn {
-            background-color: var(--light-color);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 0.8rem 1.2rem;
-            cursor: pointer;
-            transition: var(--transition);
-            font-weight: 600;
-            color: var(--text-color);
-            font-size: 0.9rem;
-            white-space: nowrap;
-        }
+main{flex:1;padding:24px 0 40px}
 
-        .module-btn:hover {
-            background-color: rgba(0, 102, 204, 0.05);
-            border-color: var(--primary-color);
-        }
+/* Tarjeta */
+.card{background:#fff;border:1px solid var(--rule);border-radius:18px;box-shadow:0 1px 2px rgba(11,42,111,.05),0 12px 28px -18px rgba(11,42,111,.25)}
+.pad{padding:clamp(18px,2.6vw,28px)}
+.card h2{font-size:clamp(17px,2.2vw,20px);font-weight:700;letter-spacing:-.015em}
+.ttl{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:20px}
+.ttl .l{display:flex;align-items:center;gap:10px}
+.ttl i{color:var(--b6)}
+.ttl small{display:block;font-size:12.5px;font-weight:500;color:var(--mute)}
 
-        .module-btn.active {
-            background-color: var(--primary-color);
-            color: var(--light-color);
-            border-color: var(--primary-color);
-        }
+/* KPIs */
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:18px}
+.kpi{padding:18px 20px}
+.kpi b{display:block;font-size:30px;font-weight:700;letter-spacing:-.02em;color:var(--b7);line-height:1.1}
+.kpi span{font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--mute)}
 
-        .module-btn.informe-trimestral {
-            background-color: var(--informe-color);
-            color: white;
-            font-weight: bold;
-            border-color: var(--informe-color);
-        }
+/* Gráfico */
+.chartbox{position:relative;height:340px}
+.sub-h{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:12px}
 
-        .module-btn.informe-trimestral:hover {
-            background-color: var(--informe-dark);
-            border-color: var(--informe-dark);
-        }
+/* Tabla */
+.scroll{overflow-x:auto}
+table.dt{width:100%;border-collapse:collapse}
+table.dt th{padding:11px 10px;text-align:left;background:var(--b1);color:var(--navy);font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;border-bottom:1px solid var(--rule)}
+table.dt td{padding:10px;border-bottom:1px solid var(--rule);font-size:13px;line-height:1.4;vertical-align:middle;overflow-wrap:anywhere}
+table.dt td.n,table.dt th.n{text-align:right;font-variant-numeric:tabular-nums}
+table.dt td.n{font-weight:700}
+table.dt tbody tr:hover{background:var(--b1)}
+table.dt tbody tr:last-child td{border-bottom:0}
+.pbar{display:inline-block;width:80px;height:8px;margin-right:8px;vertical-align:middle;border-radius:99px;background:var(--b1)}
+.pbar i{display:block;height:100%;border-radius:99px;background:var(--b6)}
+.empty{padding:36px 16px!important;text-align:center;color:var(--mute)}
+.loader{text-align:center;padding:48px 16px;color:var(--mute)}
 
-        .module-btn.informe-trimestral.active {
-            background-color: var(--informe-dark);
-            color: white;
-            border-color: var(--informe-dark);
-        }
+/* Informe trimestral */
+.frame{width:100%;height:calc(100vh - 170px);min-height:520px;border:1px solid var(--rule);border-radius:18px;background:#fff}
 
-        .header-right {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-        }
+footer{padding:16px 0;border-top:1px solid var(--rule);background:#fff;color:var(--mute);font-size:13px}
+footer .wrap{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.printhead{display:none}
 
-        main {
-            flex: 1;
-            padding: 2rem;
-        }
+@media (max-width:720px){
+  .kpis{grid-template-columns:1fr}
+  .chartbox{height:280px}
+}
 
-        .content-panel {
-            background-color: var(--light-color);
-            border-radius: 10px;
-            box-shadow: var(--shadow);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-
-        .content-header {
-            padding: 1.5rem;
-            border-bottom: 1px solid var(--border-color);
-            background-color: rgba(0, 102, 204, 0.05);
-        }
-
-        .content-title {
-            color: var(--primary-color);
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
-
-        .content-area {
-            flex: 1;
-            padding: 2rem;
-            overflow-y: auto;
-        }
-
-        .module-content {
-            display: none;
-        }
-
-        .module-content.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .iframe-container {
-            width: 100%;
-            height: 600px;
-            border-radius: 8px;
-            overflow: hidden;
-            border: 1px solid var(--border-color);
-        }
-
-        .iframe-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        /* Estilos para el dashboard de Causas (Firebase) */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.2rem;
-            margin-bottom: 2rem;
-        }
-        .stat-card {
-            background: var(--light-gray);
-            border-radius: 1rem;
-            padding: 1.2rem;
-            text-align: center;
-            border: 1px solid var(--border-color);
-        }
-        .stat-number {
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--primary-color);
-        }
-        .chart-container {
-            max-width: 500px;
-            margin: 1.5rem auto;
-        }
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 1.5rem;
-        }
-        .data-table th, .data-table td {
-            border: 1px solid var(--border-color);
-            padding: 0.75rem;
-            text-align: left;
-            font-size: 0.85rem;
-        }
-        .data-table th {
-            background: var(--light-gray);
-            font-weight: 600;
-        }
-        .badge {
-            display: inline-block;
-            padding: 0.2rem 0.6rem;
-            border-radius: 999px;
-            font-size: 0.7rem;
-            font-weight: 600;
-        }
-        .badge-alta { background: #fee2e2; color: #b91c1c; }
-        .badge-media { background: #fff3e3; color: #b45309; }
-        .badge-baja { background: #e0f2e9; color: #15803d; }
-        .badge-ninguna { background: #e2e8f0; color: #475569; }
-        .loader {
-            text-align: center;
-            padding: 3rem;
-            color: var(--text-light);
-        }
-        .filter-bar {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            margin-bottom: 1.5rem;
-            align-items: flex-end;
-        }
-        .filter-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.3rem;
-        }
-        .filter-group label {
-            font-size: 0.7rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            color: var(--text-light);
-        }
-        select, input {
-            padding: 0.4rem 0.8rem;
-            border: 1px solid var(--border-color);
-            border-radius: 0.6rem;
-            background: white;
-        }
-        .placeholder-content {
-            text-align: center;
-            padding: 3rem 2rem;
-            color: var(--text-light);
-        }
-        .placeholder-icon {
-            font-size: 4rem;
-            color: var(--primary-color);
-            margin-bottom: 1.5rem;
-            opacity: 0.7;
-        }
-        footer {
-            background-color: var(--light-color);
-            border-top: 1px solid var(--border-color);
-            padding: 1.5rem 2rem;
-            text-align: center;
-            color: var(--text-light);
-            font-size: 0.9rem;
-        }
-        .footer-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        @media (max-width: 992px) {
-            .module-buttons { gap: 0.4rem; }
-            .module-btn { padding: 0.7rem 1rem; font-size: 0.85rem; }
-        }
-        @media (max-width: 768px) {
-            header { flex-direction: column; padding: 0.5rem 1rem; gap: 0.5rem; }
-            .module-buttons { justify-content: flex-start; overflow-x: auto; padding-bottom: 0.5rem; width: 100%; }
-            .module-btn { flex-shrink: 0; }
-            .header-right { width: 100%; justify-content: center; }
-            .footer-info { flex-direction: column; gap: 1rem; }
-            .content-area { padding: 1.5rem; }
-        }
-
-        /* ===== ESTILOS PARA EL MÓDULO PASES (igual que pase-informe) ===== */
-        .pases-card {
-            background-color: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
-            border: 1px solid #e2e8f0;
-            overflow: hidden;
-        }
-        .pases-header {
-            background-color: #fafcff;
-            border-bottom: 2px solid #1e4663;
-            padding: 1.5rem 2rem;
-        }
-        .pases-header h1 {
-            font-size: 1.8rem;
-            font-weight: 600;
-            color: #1e3a5f;
-            margin: 0;
-        }
-        .pases-header p {
-            color: #4a627a;
-            margin-top: 0.4rem;
-            font-size: 0.9rem;
-        }
-        .pases-filtros {
-            background-color: #f9fbfd;
-            padding: 1.2rem 2rem;
-            border-bottom: 1px solid #e9edf2;
-        }
-        .pases-filtro-label {
-            font-weight: 600;
-            color: #1e4663;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            margin-bottom: 0.3rem;
-        }
-        .pases-form-select {
-            border-radius: 10px;
-            border: 1px solid #cbd5e1;
-            padding: 0.5rem 0.8rem;
-            background-color: white;
-            width: 100%;
-        }
-        .pases-kpi {
-            background-color: #eef2fa;
-            border-radius: 20px;
-            padding: 0.6rem 1.2rem;
-            text-align: center;
-            border: 1px solid #dce5ec;
-            display: inline-block;
-        }
-        .pases-kpi-numero {
-            font-size: 2.3rem;
-            font-weight: 700;
-            color: #1e4663;
-            line-height: 1;
-        }
-        .pases-kpi-texto {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            color: #4a627a;
-            font-weight: 500;
-        }
-        .pases-tabla {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 14px;
-            overflow: hidden;
-        }
-        .pases-tabla thead th {
-            background-color: #f1f5f9;
-            color: #1e3a5f;
-            font-weight: 700;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            padding: 1rem;
-            border-bottom: 2px solid #cbd5e1;
-        }
-        .pases-tabla tbody td {
-            padding: 1rem;
-            border-bottom: 1px solid #eef2f6;
-            vertical-align: middle;
-        }
-        .pases-usuario-nombre {
-            font-weight: 600;
-            color: #1f3b4c;
-            font-size: 1rem;
-            cursor: pointer;
-            text-decoration: underline;
-            text-decoration-thickness: 1px;
-            text-underline-offset: 3px;
-            transition: color 0.2s;
-        }
-        .pases-usuario-nombre:hover {
-            color: #0d6efd;
-        }
-        .pases-cantidad-destacada {
-            font-size: 1.9rem;
-            font-weight: 800;
-            display: inline-block;
-            min-width: 70px;
-            text-align: center;
-            padding: 0.2rem 0.8rem;
-            border-radius: 20px;
-        }
-        .pases-cantidad-verde {
-            background-color: #d1fae5;
-            color: #065f46;
-        }
-        .pases-cantidad-azul {
-            background-color: #dbeafe;
-            color: #1e40af;
-        }
-        .pases-cantidad-rojo {
-            background-color: #ffe4e2;
-            color: #b91c1c;
-        }
-        .pases-text-center {
-            text-align: center;
-            vertical-align: middle;
-        }
-        .pases-empty {
-            text-align: center;
-            padding: 2.5rem;
-            color: #6c86a3;
-            font-style: italic;
-        }
-        .pases-footer-note {
-            font-size: 0.75rem;
-            border-top: 1px solid #e2e8f0;
-            padding: 1rem 2rem;
-            background-color: #fefefe;
-            color: #4b6b8f;
-        }
-        .pases-btn-judicial {
-            background-color: #1e4663;
-            border: none;
-            color: white;
-            font-weight: 500;
-            padding: 0.45rem 1.2rem;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-        .pases-btn-outline {
-            background: transparent;
-            border: 1px solid #1e4663;
-            color: #1e4663;
-            border-radius: 8px;
-            padding: 0.45rem 1.2rem;
-            font-weight: 500;
-            cursor: pointer;
-        }
-        .pases-btn-outline:hover {
-            background-color: #eef3fc;
-        }
-        .pases-modal-detalle table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 1.5rem;
-        }
-        .pases-modal-detalle th {
-            background-color: #f1f5f9;
-            border: 1px solid #cbd5e1;
-            padding: 8px;
-            font-weight: 600;
-        }
-        .pases-modal-detalle td {
-            border: 1px solid #dee2e6;
-            padding: 6px 8px;
-        }
-        .pases-badge-cantidad {
-            font-weight: 700;
-            background-color: #eef2fa;
-            padding: 2px 10px;
-            border-radius: 20px;
-        }
-
-        /* Modal genérico */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4);
-        }
-        .modal-dialog {
-            margin: 2rem auto;
-            max-width: 800px;
-        }
-        .modal-content {
-            background-color: #fff;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-        .modal-header {
-            background-color: #f8fafc;
-            border-bottom: 2px solid #1e4663;
-            padding: 1rem 1.5rem;
-            border-radius: 16px 16px 0 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .modal-header h5 {
-            margin: 0;
-            color: #1e3a5f;
-        }
-        .modal-body {
-            padding: 1.5rem;
-        }
-        .modal-footer {
-            padding: 1rem 1.5rem;
-            border-top: 1px solid #e2e8f0;
-            display: flex;
-            justify-content: flex-end;
-            gap: 0.5rem;
-        }
-        .btn-close {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #1e4663;
-        }
-        .btn-secondary {
-            background: #e2e8f0;
-            border: none;
-            padding: 0.4rem 1.2rem;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-        .btn-secondary:hover {
-            background: #cbd5e1;
-        }
-    </style>
+@media print{
+  @page{margin:1.5cm}
+  body{background:#fff}
+  .top,footer,.noprint{display:none!important}
+  main{padding:0}
+  .wrap{width:100%}
+  .card{border:0;box-shadow:none}
+  .pad{padding:0}
+  .printhead{display:block;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid var(--navy)}
+  .printhead h1{font-size:20px;color:var(--navy)}
+  .printhead p{font-size:12px;color:var(--mute)}
+  .kpi{border:1px solid var(--rule);box-shadow:none}
+  .chartbox{height:300px;break-inside:avoid}
+  table.dt th{background:var(--b1)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  tr{break-inside:avoid}
+}
+</style>
 </head>
 <body>
-<div class="app-container">
-    <header>
-        <div class="module-buttons">
-            <button class="module-btn active" data-module="causas">Causas</button>
-            <button class="module-btn" data-module="pases">Pases Diarios</button>
-            <button class="module-btn" data-module="atencion">Atención al Público</button>
-            <button class="module-btn" data-module="dictamenes">Dictámenes</button>
-            <button class="module-btn" data-module="oficios">Oficios</button>
-            <button class="module-btn" data-module="partes">Partes</button>
-            <button class="module-btn" data-module="calendario">Eventos</button>
-            <button class="module-btn" data-module="prioridad">Prioridad-Intervención</button>
-        </div>
-        <div class="header-right">
-            <button class="module-btn informe-trimestral" data-module="informe">Informe Trimestral Oficial</button>
-        </div>
-    </header>
 
-    <main>
-        <div class="content-panel">
-            <div class="content-header">
-                <h2 class="content-title" id="module-title">Causas</h2>
-            </div>
-            <div class="content-area">
-                <div id="initial-content" class="placeholder-content">
-                    <div class="placeholder-icon"><i class="fas fa-chart-bar"></i></div>
-                    <div class="placeholder-text">
-                        <h3>Reporte Estadístico del Sistema Digital</h3>
-                        <p>Seleccione uno de los módulos del panel superior para visualizar los reportes estadísticos correspondientes.</p>
-                        <p>El módulo <strong>Causas</strong> ahora muestra datos en tiempo real desde ambas bases (histórica + nueva).</p>
-                    </div>
-                </div>
-                <div id="module-content-container"></div>
-            </div>
-        </div>
-    </main>
+<!-- Panel superior -->
+<header class="top">
+  <div class="wrap">
+    <h1>Reporte del Sistema</h1>
+    <button class="btn onnavy" id="btnInforme" type="button">
+      <i class="fas fa-file-lines"></i><span id="btnInformeTxt">Informe Trimestral Oficial</span>
+    </button>
+  </div>
+</header>
 
-    <footer>
-        <div class="footer-info">
-            <div><strong>Defensoría Civil y Comercial 6</strong> - Ministerio Público Misiones</div>
-            <div>Sistema de Reportes Estadísticos | Versión 3.0</div>
-            <div><i class="far fa-calendar-alt"></i> <span id="current-date"></span></div>
-        </div>
-    </footer>
-</div>
+<main>
+  <div class="wrap">
 
-<!-- Modal para detalle de usuario (Pases) -->
-<div class="modal" id="detalleUsuarioModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalUsuarioTitulo">Detalle de expedientes</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="cerrarModalDetalle()">&times;</button>
-            </div>
-            <div class="modal-body pases-modal-detalle" id="modalDetalleBody">
-                Cargando...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn-secondary" onclick="cerrarModalDetalle()">Cerrar</button>
-                <button type="button" id="btnImprimirDetalle" class="pases-btn-outline">Imprimir detalle</button>
-            </div>
-        </div>
-    </div>
-</div>
+    <!-- Vista: Prioridad-Intervención -->
+    <section id="vistaReporte">
+      <div class="printhead">
+        <h1>Reporte del Sistema — Prioridad e Intervención</h1>
+        <p>Defensoría Civil y Comercial 6 · Ministerio Público Misiones · Emitido: <span id="fechaImpresion"></span></p>
+      </div>
+      <div id="reporteContenido"><div class="loader"><i class="fas fa-spinner fa-pulse"></i> Cargando datos...</div></div>
+    </section>
+
+    <!-- Vista: Informe trimestral -->
+    <section id="vistaInforme" hidden>
+      <iframe class="frame" id="frameInforme" title="Informe Trimestral Oficial"></iframe>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div><strong>Defensoría Civil y Comercial 6</strong> · Ministerio Público Misiones</div>
+    <div><i class="far fa-calendar-alt"></i> <span id="current-date"></span></div>
+  </div>
+</footer>
 
 <script>
     // ======================= CONFIGURACIÓN FIREBASE (HISTÓRICA + NUEVA) =======================
@@ -641,126 +197,18 @@
         return causas;
     }
 
-    // ======================= MÓDULO CAUSAS (existente) =======================
-    async function renderCausasEstadisticas(periodo = "todos") {
-        const container = document.getElementById("module-content-container");
-        const initialDiv = document.getElementById("initial-content");
-        if (initialDiv) initialDiv.style.display = "none";
-        container.innerHTML = `<div class="loader"><i class="fas fa-spinner fa-pulse"></i> Cargando expedientes desde ambas bases (histórica + nueva)...</div>`;
+    // ======================= REPORTE PRIORIDAD-INTERVENCIÓN =======================
+    let chartIntervencion = null;
 
-        let todas = await obtenerTodasLasCausas();
-        
-        let fechaLimite = null;
-        if (periodo !== "todos") {
-            const dias = parseInt(periodo, 10);
-            if (!isNaN(dias)) {
-                fechaLimite = new Date();
-                fechaLimite.setDate(fechaLimite.getDate() - dias);
-            }
-        }
-        if (fechaLimite) {
-            todas = todas.filter(c => {
-                if (!c.fechaRegistro) return false;
-                let fechaDoc = c.fechaRegistro?.toDate ? c.fechaRegistro.toDate() : new Date(c.fechaRegistro);
-                return fechaDoc >= fechaLimite;
-            });
-        }
-
-        const total = todas.length;
-        const porEstado = {};
-        const porPrioridad = { Alta: 0, Media: 0, Baja: 0, Ninguna: 0 };
-        const porIntervencion = {};
-        
-        todas.forEach(c => {
-            const est = c.estado || "Sin estado";
-            porEstado[est] = (porEstado[est] || 0) + 1;
-            const prior = c.prioridad || "Ninguna";
-            if (porPrioridad[prior] !== undefined) porPrioridad[prior]++;
-            const inter = c.intervencion || "No especificada";
-            porIntervencion[inter] = (porIntervencion[inter] || 0) + 1;
-        });
-
-        const ultimas = [...todas].sort((a, b) => {
-            let fa = a.fechaRegistro?.toDate ? a.fechaRegistro.toDate() : new Date(a.fechaRegistro);
-            let fb = b.fechaRegistro?.toDate ? b.fechaRegistro.toDate() : new Date(b.fechaRegistro);
-            return fb - fa;
-        }).slice(0, 8);
-
-        const html = `
-            <div class="filter-bar">
-                <div class="filter-group">
-                    <label>Período</label>
-                    <select id="periodoCausas">
-                        <option value="todos" ${periodo === 'todos' ? 'selected' : ''}>Todo el histórico</option>
-                        <option value="90" ${periodo === '90' ? 'selected' : ''}>Últimos 3 meses</option>
-                        <option value="180" ${periodo === '180' ? 'selected' : ''}>Últimos 6 meses</option>
-                        <option value="365" ${periodo === '365' ? 'selected' : ''}>Último año</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label>&nbsp;</label>
-                    <button id="aplicarFiltroCausas" class="module-btn" style="background:var(--primary-color);color:white">Filtrar</button>
-                </div>
-            </div>
-            <div class="stats-grid">
-                <div class="stat-card"><div class="stat-number">${total}</div><div>Total Expedientes</div><small>(Nueva + Histórica)</small></div>
-                <div class="stat-card"><div class="stat-number">${Object.keys(porEstado).length}</div><div>Estados distintos</div></div>
-                <div class="stat-card"><div class="stat-number">${porPrioridad.Alta || 0}</div><div>Alta prioridad</div></div>
-            </div>
-            <div style="display:flex; flex-wrap:wrap; gap:2rem; justify-content:space-between;">
-                <div style="flex:1; min-width:250px"><canvas id="chartEstado" width="400" height="250"></canvas><p class="stat-card" style="margin-top:0.5rem">Distribución por Estado</p></div>
-                <div style="flex:1; min-width:250px"><canvas id="chartPrioridad" width="400" height="250"></canvas><p class="stat-card">Prioridad</p></div>
-            </div>
-            <h3 style="margin-top: 2rem;">📋 Últimos expedientes agregados</h3>
-            <table class="data-table">
-                <thead><tr><th>N° Expediente</th><th>Carátula</th><th>Estado</th><th>Prioridad</th><th>Fecha Registro</th><th>Origen</th></tr></thead>
-                <tbody>
-                    ${ultimas.map(c => `
-                        <tr>
-                            <td>${c.numCausa || '—'}</td>
-                            <td>${(c.caratula || '').substring(0, 60)}</td>
-                            <td>${c.estado || '—'}</td>
-                            <td><span class="badge badge-${(c.prioridad || 'ninguna').toLowerCase()}">${c.prioridad || 'Ninguna'}</span></td>
-                            <td>${c.fechaRegistro ? (c.fechaRegistro.toDate ? c.fechaRegistro.toDate().toLocaleDateString() : new Date(c.fechaRegistro).toLocaleDateString()) : '—'}</td>
-                            <td>${c.origen === 'nueva' ? 'Nueva Base' : 'Histórica'}</td>
-                        </tr>
-                    `).join('')}
-                    ${ultimas.length === 0 ? '<tr><td colspan="6">No hay registros con los filtros seleccionados</td></tr>' : ''}
-                </tbody>
-            </table>
-            <div style="margin-top:1rem"><strong>Intervenciones más frecuentes:</strong> ${Object.entries(porIntervencion).sort((a,b)=>b[1]-a[1]).slice(0,4).map(([k,v])=>`${k} (${v})`).join(', ')}</div>
-        `;
-        container.innerHTML = html;
-
-        const ctxEstado = document.getElementById("chartEstado")?.getContext("2d");
-        const ctxPrioridad = document.getElementById("chartPrioridad")?.getContext("2d");
-        if (ctxEstado) {
-            new Chart(ctxEstado, {
-                type: 'bar',
-                data: { labels: Object.keys(porEstado), datasets: [{ label: 'Cantidad', data: Object.values(porEstado), backgroundColor: '#0066cc' }] }
-            });
-        }
-        if (ctxPrioridad) {
-            new Chart(ctxPrioridad, {
-                type: 'doughnut',
-                data: { labels: Object.keys(porPrioridad), datasets: [{ data: Object.values(porPrioridad), backgroundColor: ['#ef4444', '#f97316', '#10b981', '#6b7280'] }] }
-            });
-        }
-
-        document.getElementById("aplicarFiltroCausas")?.addEventListener("click", () => {
-            const nuevoPeriodo = document.getElementById("periodoCausas").value;
-            renderCausasEstadisticas(nuevoPeriodo);
-        });
+    function esc(s) {
+        return String(s).replace(/[&<>"]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m]));
     }
 
-    // ======================= MÓDULO PRIORIDAD-INTERVENCIÓN =======================
     async function renderPrioridadIntervencion() {
-        const container = document.getElementById("module-content-container");
-        const initialDiv = document.getElementById("initial-content");
-        if (initialDiv) initialDiv.style.display = "none";
-        container.innerHTML = `<div class="loader"><i class="fas fa-spinner fa-pulse"></i> Cargando datos de prioridad e intervención...</div>`;
+        const cont = document.getElementById("reporteContenido");
+        cont.innerHTML = `<div class="loader"><i class="fas fa-spinner fa-pulse"></i> Cargando datos de prioridad e intervención...</div>`;
 
-        let todas = await obtenerTodasLasCausas();
+        const todas = await obtenerTodasLasCausas();
         const total = todas.length;
         const porPrioridad = { Alta: 0, Media: 0, Baja: 0, Ninguna: 0 };
         const porIntervencion = {};
@@ -772,537 +220,111 @@
             porIntervencion[inter] = (porIntervencion[inter] || 0) + 1;
         });
 
-        const intervencionesOrdenadas = Object.entries(porIntervencion).sort((a,b) => b[1] - a[1]);
+        const ordenadas = Object.entries(porIntervencion).sort((a, b) => b[1] - a[1]);
+        const max = ordenadas.length ? ordenadas[0][1] : 0;
+        const top = ordenadas.slice(0, 10);
 
-        const html = `
-            <div class="stats-grid">
-                <div class="stat-card"><div class="stat-number">${total}</div><div>Total Expedientes</div></div>
-                <div class="stat-card"><div class="stat-number">${Object.keys(porPrioridad).length}</div><div>Niveles de Prioridad</div></div>
-                <div class="stat-card"><div class="stat-number">${intervencionesOrdenadas.length}</div><div>Tipos de Intervención</div></div>
+        cont.innerHTML = `
+            <div class="kpis">
+                <div class="card kpi"><b>${total}</b><span>Total expedientes</span></div>
+                <div class="card kpi"><b>${Object.keys(porPrioridad).length}</b><span>Niveles de prioridad</span></div>
+                <div class="card kpi"><b>${ordenadas.length}</b><span>Tipos de intervención</span></div>
             </div>
-            <div style="display:flex; flex-wrap:wrap; gap:2rem; justify-content:space-between;">
-                <div style="flex:1; min-width:250px"><canvas id="chartPrioridadPI" width="400" height="250"></canvas><p class="stat-card">Prioridad</p></div>
-                <div style="flex:1; min-width:250px"><canvas id="chartIntervencionPI" width="400" height="250"></canvas><p class="stat-card">Intervención (top 10)</p></div>
-            </div>
-            <h3 style="margin-top: 2rem;">📋 Detalle de Intervenciones</h3>
-            <table class="data-table">
-                <thead><tr><th>Intervención</th><th>Cantidad</th></tr></thead>
-                <tbody>
-                    ${intervencionesOrdenadas.map(([k,v]) => `<tr><td>${k}</td><td>${v}</td></tr>`).join('')}
-                    ${intervencionesOrdenadas.length === 0 ? '<tr><td colspan="2">No hay datos</td></tr>' : ''}
-                </tbody>
-            </table>
-        `;
-        container.innerHTML = html;
 
-        const ctxPrioridad = document.getElementById("chartPrioridadPI")?.getContext("2d");
-        const ctxIntervencion = document.getElementById("chartIntervencionPI")?.getContext("2d");
-        if (ctxPrioridad) {
-            new Chart(ctxPrioridad, {
-                type: 'doughnut',
-                data: { labels: Object.keys(porPrioridad), datasets: [{ data: Object.values(porPrioridad), backgroundColor: ['#ef4444', '#f97316', '#10b981', '#6b7280'] }] }
-            });
-        }
-        if (ctxIntervencion) {
-            const topInter = intervencionesOrdenadas.slice(0, 10);
-            new Chart(ctxIntervencion, {
-                type: 'bar',
-                data: { labels: topInter.map(i => i[0]), datasets: [{ label: 'Cantidad', data: topInter.map(i => i[1]), backgroundColor: '#0066cc' }] }
-            });
-        }
-    }
-
-    // ======================= MÓDULO PASES DIARIOS (copia exacta de pase-informe) =======================
-    // Variables globales para pases
-    let pasesUsuariosMap = new Map();
-    let pasesUsuariosOrdenados = [];
-    let pasesFiltros = { mes: 'todos', anio: 'todos', proceso: 'todos' };
-    let pasesTotalDocumentos = 0;
-    const nombresMeses = {
-        1: 'Enero', 2: 'Febrero', 3: 'Marzo', 4: 'Abril', 5: 'Mayo', 6: 'Junio',
-        7: 'Julio', 8: 'Agosto', 9: 'Septiembre', 10: 'Octubre', 11: 'Noviembre', 12: 'Diciembre'
-    };
-    let currentDetalleUsuario = null;
-    let currentDetalleData = null;
-
-    // Función robusta para extraer año y mes
-    function extraerAnioMes(fecha) {
-        if (!fecha) return null;
-        let dateObj;
-        if (fecha.toDate) {
-            dateObj = fecha.toDate();
-        } else if (fecha instanceof Date) {
-            dateObj = fecha;
-        } else if (typeof fecha === 'string') {
-            dateObj = new Date(fecha);
-        } else {
-            return null;
-        }
-        if (isNaN(dateObj.getTime())) return null;
-        return { anio: dateObj.getFullYear(), mes: dateObj.getMonth() + 1 };
-    }
-
-    function escapeHtml(str) {
-        if (!str) return '';
-        return str.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
-        });
-    }
-
-    // Cargar datos y renderizar todo
-    async function cargarPases() {
-        const tbody = document.getElementById('pasesCuerpoTabla');
-        if (tbody) tbody.innerHTML = `<tr><td colspan="2" class="pases-empty"><i class="fas fa-spinner fa-pulse"></i> Cargando expedientes...</td></tr>`;
-        
-        try {
-            let todas = await obtenerTodasLasCausas();
-            pasesTotalDocumentos = todas.length;
-
-            const tempMap = new Map();
-            const aniosSet = new Set();
-            const mesesSet = new Set();
-            const procesosSet = new Set();
-
-            for (const exp of todas) {
-                const usuario = exp.usuarioAsignado ? exp.usuarioAsignado.trim() : 'Sin asignar';
-                const proceso = exp.tipoProceso ? exp.tipoProceso.trim() : 'No especificado';
-                procesosSet.add(proceso);
-                const fechaInfo = extraerAnioMes(exp.fechaRegistro);
-                let anio = null, mes = null;
-                if (fechaInfo) {
-                    anio = fechaInfo.anio;
-                    mes = fechaInfo.mes;
-                    aniosSet.add(anio);
-                    mesesSet.add(mes);
-                }
-                if (!tempMap.has(usuario)) tempMap.set(usuario, []);
-                tempMap.get(usuario).push({
-                    anio, mes, proceso,
-                    tieneFecha: fechaInfo !== null
-                });
-            }
-            pasesUsuariosMap = tempMap;
-            pasesUsuariosOrdenados = Array.from(tempMap.keys()).sort((a,b) => a.localeCompare(b));
-
-            // Llenar selects
-            const filtroAnio = document.getElementById('pasesFiltroAnio');
-            const filtroMes = document.getElementById('pasesFiltroMes');
-            const filtroProceso = document.getElementById('pasesFiltroProceso');
-            if (filtroAnio) {
-                filtroAnio.innerHTML = '<option value="todos">Todos los años</option>';
-                Array.from(aniosSet).sort((a,b)=>b-a).forEach(a => {
-                    filtroAnio.innerHTML += `<option value="${a}">${a}</option>`;
-                });
-                filtroAnio.value = 'todos';
-            }
-            if (filtroMes) {
-                filtroMes.innerHTML = '<option value="todos">Todos los meses</option>';
-                Array.from(mesesSet).sort((a,b)=>a-b).forEach(m => {
-                    filtroMes.innerHTML += `<option value="${m}">${nombresMeses[m] || m}</option>`;
-                });
-                filtroMes.value = 'todos';
-            }
-            if (filtroProceso) {
-                filtroProceso.innerHTML = '<option value="todos">Todos los procesos</option>';
-                Array.from(procesosSet).sort().forEach(p => {
-                    filtroProceso.innerHTML += `<option value="${escapeHtml(p)}">${escapeHtml(p)}</option>`;
-                });
-                filtroProceso.value = 'todos';
-            }
-
-            // Actualizar KPI
-            const kpiElement = document.getElementById('pasesTotalRegistros');
-            if (kpiElement) kpiElement.innerText = pasesTotalDocumentos;
-
-            // Aplicar filtros y renderizar tabla
-            aplicarFiltrosPases();
-        } catch (error) {
-            console.error(error);
-            if (tbody) tbody.innerHTML = `<tr><td colspan="2" class="pases-empty">Error al cargar datos: ${error.message}</td></tr>`;
-        }
-    }
-
-    function contarExpedientesUsuarioPases(usuario, filtros) {
-        const items = pasesUsuariosMap.get(usuario) || [];
-        let count = 0;
-        for (const item of items) {
-            let cumpleFecha = true;
-            if (filtros.anio !== 'todos' || filtros.mes !== 'todos') {
-                if (item.anio === null || item.mes === null) cumpleFecha = false;
-                else {
-                    if (filtros.anio !== 'todos' && item.anio !== parseInt(filtros.anio,10)) cumpleFecha = false;
-                    if (filtros.mes !== 'todos' && item.mes !== parseInt(filtros.mes,10)) cumpleFecha = false;
-                }
-            }
-            const cumpleProceso = (filtros.proceso === 'todos' || item.proceso === filtros.proceso);
-            if (cumpleFecha && cumpleProceso) count++;
-        }
-        return count;
-    }
-
-    function obtenerRankingPases() {
-        const filtros = {
-            anio: document.getElementById('pasesFiltroAnio').value,
-            mes: document.getElementById('pasesFiltroMes').value,
-            proceso: document.getElementById('pasesFiltroProceso').value
-        };
-        pasesFiltros = filtros;
-        const ranking = [];
-        for (const usuario of pasesUsuariosOrdenados) {
-            const cantidad = contarExpedientesUsuarioPases(usuario, filtros);
-            if (cantidad > 0) ranking.push({ usuario, cantidad });
-        }
-        ranking.sort((a,b) => b.cantidad - a.cantidad);
-        return ranking;
-    }
-
-    function obtenerColorPases(cantidad, maxCantidad) {
-        if (cantidad === maxCantidad) return 'verde';
-        if (maxCantidad - cantidad <= 3) return 'azul';
-        return 'rojo';
-    }
-
-    function renderizarTablaPases() {
-        const ranking = obtenerRankingPases();
-        const tbody = document.getElementById('pasesCuerpoTabla');
-        if (!tbody) return;
-        if (ranking.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="2" class="pases-empty">No hay expedientes con los filtros seleccionados.</td></tr>`;
-            document.getElementById('pasesFooterInfo').innerHTML = `Filtros aplicados: sin resultados. Total en sistema: ${pasesTotalDocumentos}`;
-            return;
-        }
-        const maxCantidad = ranking[0].cantidad;
-        let html = '';
-        for (const item of ranking) {
-            const colorClase = obtenerColorPases(item.cantidad, maxCantidad);
-            let claseCantidad = '';
-            if (colorClase === 'verde') claseCantidad = 'pases-cantidad-verde';
-            else if (colorClase === 'azul') claseCantidad = 'pases-cantidad-azul';
-            else claseCantidad = 'pases-cantidad-rojo';
-            html += `
-                <tr>
-                    <td class="pases-usuario-nombre" data-usuario="${escapeHtml(item.usuario)}">${escapeHtml(item.usuario)}</td>
-                    <td class="pases-text-center"><span class="pases-cantidad-destacada ${claseCantidad}">${item.cantidad}</span></td>
-                </tr>
-            `;
-        }
-        tbody.innerHTML = html;
-        document.querySelectorAll('#pasesCuerpoTabla .pases-usuario-nombre').forEach(el => {
-            el.addEventListener('click', (e) => {
-                const usuario = el.getAttribute('data-usuario');
-                mostrarDetallePases(usuario);
-            });
-        });
-        const totalMostrado = ranking.reduce((acc, r) => acc + r.cantidad, 0);
-        const filtros = pasesFiltros;
-        const footerInfo = document.getElementById('pasesFooterInfo');
-        footerInfo.innerHTML = `Filtros: Mes ${filtros.mes !== 'todos' ? nombresMeses[parseInt(filtros.mes)] : 'todos'} | Año ${filtros.anio !== 'todos' ? filtros.anio : 'todos'} | Proceso ${filtros.proceso !== 'todos' ? filtros.proceso : 'todos'} | Expedientes en vista: ${totalMostrado} | Total sistema: ${pasesTotalDocumentos}`;
-    }
-
-    function aplicarFiltrosPases() {
-        renderizarTablaPases();
-    }
-
-    function mostrarDetallePases(usuario) {
-        const filtros = pasesFiltros;
-        const items = pasesUsuariosMap.get(usuario) || [];
-        const itemsFiltrados = items.filter(item => {
-            let cumpleFecha = true;
-            if (filtros.anio !== 'todos' || filtros.mes !== 'todos') {
-                if (item.anio === null || item.mes === null) cumpleFecha = false;
-                else {
-                    if (filtros.anio !== 'todos' && item.anio !== parseInt(filtros.anio,10)) cumpleFecha = false;
-                    if (filtros.mes !== 'todos' && item.mes !== parseInt(filtros.mes,10)) cumpleFecha = false;
-                }
-            }
-            const cumpleProceso = (filtros.proceso === 'todos' || item.proceso === filtros.proceso);
-            return cumpleFecha && cumpleProceso;
-        });
-
-        const porAnio = new Map();
-        const porMes = new Map();
-        const porProceso = new Map();
-        for (const it of itemsFiltrados) {
-            if (it.anio) porAnio.set(it.anio, (porAnio.get(it.anio) || 0) + 1);
-            if (it.mes) {
-                const nomMes = nombresMeses[it.mes] || `Mes ${it.mes}`;
-                porMes.set(nomMes, (porMes.get(nomMes) || 0) + 1);
-            }
-            porProceso.set(it.proceso, (porProceso.get(it.proceso) || 0) + 1);
-        }
-
-        let html = `<h6>Usuario: <strong>${escapeHtml(usuario)}</strong></h6><hr>`;
-        html += `<h6>📅 Cantidad por año</h6><table><thead><tr><th>Año</th><th>Expedientes</th></tr></thead><tbody>`;
-        if (porAnio.size === 0) html += `<tr><td colspan="2">Sin datos de año</td></tr>`;
-        else {
-            const aniosSorted = Array.from(porAnio.keys()).sort((a,b)=>b-a);
-            for (const anio of aniosSorted) {
-                html += `<tr><td>${anio}</td><td><span class="pases-badge-cantidad">${porAnio.get(anio)}</span></td></tr>`;
-            }
-        }
-        html += `</tbody></table>`;
-
-        html += `<h6>📆 Cantidad por mes</h6><table><thead><tr><th>Mes</th><th>Expedientes</th></tr></thead><tbody>`;
-        if (porMes.size === 0) html += `<tr><td colspan="2">Sin datos de mes</td></tr>`;
-        else {
-            const mesesOrden = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-            const mesKeys = Array.from(porMes.keys()).sort((a,b) => mesesOrden.indexOf(a) - mesesOrden.indexOf(b));
-            for (const mes of mesKeys) {
-                html += `<tr><td>${mes}</td><td><span class="pases-badge-cantidad">${porMes.get(mes)}</span></td></tr>`;
-            }
-        }
-        html += `</tbody></table>`;
-
-        html += `<h6>⚖️ Cantidad por proceso</h6><table><thead><tr><th>Proceso</th><th>Expedientes</th></tr></thead><tbody>`;
-        if (porProceso.size === 0) html += `<tr><td colspan="2">Sin datos de proceso</td></tr>`;
-        else {
-            const procesosSorted = Array.from(porProceso.keys()).sort();
-            for (const proc of procesosSorted) {
-                html += `<tr><td>${escapeHtml(proc)}</td><td><span class="pases-badge-cantidad">${porProceso.get(proc)}</span></td></tr>`;
-            }
-        }
-        html += `</tbody></table>`;
-        html += `<div class="mt-2 text-muted small">* Datos basados en los filtros actuales de la tabla principal.</div>`;
-
-        document.getElementById('modalDetalleBody').innerHTML = html;
-        document.getElementById('modalUsuarioTitulo').innerText = `Detalle: ${usuario}`;
-        currentDetalleUsuario = usuario;
-        currentDetalleData = { porAnio, porMes, porProceso, usuario, filtrosActuales: {...filtros} };
-        document.getElementById('detalleUsuarioModal').style.display = 'block';
-    }
-
-    function cerrarModalDetalle() {
-        document.getElementById('detalleUsuarioModal').style.display = 'none';
-    }
-
-    function imprimirDetallePases() {
-        if (!currentDetalleUsuario) return;
-        const contenido = document.getElementById('modalDetalleBody').cloneNode(true);
-        const titulo = `Detalle de expedientes - ${currentDetalleUsuario}`;
-        const htmlPrint = `
-        <!DOCTYPE html>
-        <html>
-        <head><meta charset="UTF-8"><title>${titulo}</title>
-        <style>
-            body { font-family: 'Segoe UI', Georgia; margin: 1.5cm; }
-            h2 { color: #1e3a5f; border-bottom: 2px solid #1e4663; }
-            table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
-            th, td { border: 1px solid #aaa; padding: 8px; text-align: left; }
-            th { background: #f0f4f9; }
-            .pases-badge-cantidad { font-weight: bold; }
-        </style>
-        </head>
-        <body>
-            <h2>${titulo}</h2>
-            <p>Filtros aplicados: Mes ${currentDetalleData.filtrosActuales.mes !== 'todos' ? nombresMeses[parseInt(currentDetalleData.filtrosActuales.mes)] : 'todos'} | Año ${currentDetalleData.filtrosActuales.anio !== 'todos' ? currentDetalleData.filtrosActuales.anio : 'todos'} | Proceso ${currentDetalleData.filtrosActuales.proceso !== 'todos' ? currentDetalleData.filtrosActuales.proceso : 'todos'}</p>
-            ${contenido.innerHTML}
-            <div style="margin-top: 30px; font-size: 0.7rem;">Fecha emisión: ${new Date().toLocaleString()}</div>
-        </body>
-        </html>
-        `;
-        const ventana = window.open('', '_blank');
-        ventana.document.write(htmlPrint);
-        ventana.document.close();
-        ventana.focus();
-        ventana.print();
-        ventana.close();
-    }
-
-    function imprimirTablaPases() {
-        const tabla = document.getElementById('pasesTablaReporte').cloneNode(true);
-        const filtros = pasesFiltros;
-        const filtrosTexto = `Filtros: Mes ${filtros.mes !== 'todos' ? nombresMeses[parseInt(filtros.mes)] : 'todos'} | Año ${filtros.anio !== 'todos' ? filtros.anio : 'todos'} | Proceso ${filtros.proceso !== 'todos' ? filtros.proceso : 'todos'}`;
-        const htmlPrint = `
-        <!DOCTYPE html>
-        <html>
-        <head><meta charset="UTF-8"><title>Informe de Pase de Expedientes</title>
-        <style>
-            body { font-family: 'Segoe UI', Georgia; margin: 1.5cm; }
-            h2 { color: #1e3a5f; }
-            table { width: 100%; border-collapse: collapse; }
-            th, td { border: 1px solid #aaa; padding: 8px; }
-            th { background: #f0f4f9; }
-            .pases-cantidad-destacada { font-size: 1.4rem; font-weight: bold; padding: 0 8px; border-radius: 20px; }
-        </style>
-        </head>
-        <body>
-            <h2>Pase de expedientes por usuario</h2>
-            <p>${filtrosTexto}</p>
-            ${tabla.outerHTML}
-            <p>Total expedientes en sistema: ${pasesTotalDocumentos}</p>
-        </body>
-        </html>
-        `;
-        const win = window.open('', '_blank');
-        win.document.write(htmlPrint);
-        win.document.close();
-        win.print();
-    }
-
-    // ======================= MÓDULOS CON IFRAMES (ORIGINAL) =======================
-    const moduleUrls = {
-        atencion: "https://sistema-secretarios.github.io/cantidad-empleados/atencionE",
-        calendario: "https://sistema-secretarios.github.io/cantidad-empleados/calendarioE",
-        causas: "",  // ya no se usa iframe
-        dictamenes: "https://sistema-secretarios.github.io/cantidad-empleados/dictamenE",
-        oficios: "https://sistema-secretarios.github.io/cantidad-empleados/oficiosE",
-        partes: "https://sistema-secretarios.github.io/cantidad-empleados/partesE",
-        pases: "",   // ya no se usa iframe
-        prioridad: "", // ya no se usa iframe
-        informe: "https://sistema-secretarios.github.io/estadistica/"
-    };
-
-    const moduleData = {
-        causas: { title: "Causas" },
-        pases: { title: "Pases Diarios" },
-        atencion: { title: "Atención al Público", url: moduleUrls.atencion },
-        dictamenes: { title: "Dictámenes", url: moduleUrls.dictamenes },
-        oficios: { title: "Oficios", url: moduleUrls.oficios },
-        partes: { title: "Partes", url: moduleUrls.partes },
-        calendario: { title: "Eventos", url: moduleUrls.calendario },
-        prioridad: { title: "Prioridad-Intervención" },
-        informe: { title: "Informe Trimestral Oficial", url: moduleUrls.informe }
-    };
-
-    const moduleBtns = document.querySelectorAll('.module-btn');
-    const moduleTitle = document.getElementById('module-title');
-    const initialContent = document.getElementById('initial-content');
-    const moduleContentContainer = document.getElementById('module-content-container');
-
-    function loadModule(moduleId) {
-        // Actualizar botón activo
-        moduleBtns.forEach(btn => {
-            if (btn.dataset.module === moduleId) btn.classList.add('active');
-            else btn.classList.remove('active');
-        });
-
-        if (initialContent) initialContent.style.display = 'none';
-        moduleContentContainer.innerHTML = '';
-
-        if (moduleId === 'causas') {
-            moduleTitle.textContent = "Causas - Estadísticas integradas (ambas bases)";
-            renderCausasEstadisticas("todos");
-        } else if (moduleId === 'prioridad') {
-            moduleTitle.textContent = "Prioridad e Intervención - Estadísticas";
-            renderPrioridadIntervencion();
-        } else if (moduleId === 'pases') {
-            moduleTitle.textContent = "Pases Diarios - Informe por Usuario";
-            // Estructura HTML idéntica a pase-informe
-            const pasesHTML = `
-                <div class="pases-card">
-                    <div class="pases-header">
-                        <h1>Informe de Pase de Expedientes por Usuario</h1>
-                        <p>Tabla ordenada por cantidad (descendente). Colores: máximo (verde), diferencia ≤3 (azul), resto (rojo). Click en usuario para ver desglose.</p>
+            <div class="card pad" style="margin-bottom:18px">
+                <div class="ttl">
+                    <div class="l"><i class="fas fa-chart-line"></i>
+                        <h2>Intervenciones <small>Top 10 por cantidad</small></h2>
                     </div>
-                    <div class="pases-filtros">
-                        <div style="display:flex; flex-wrap:wrap; gap:1.5rem; align-items:flex-end;">
-                            <div style="flex:1; min-width:150px;">
-                                <div class="pases-filtro-label">Mes</div>
-                                <select id="pasesFiltroMes" class="pases-form-select">
-                                    <option value="todos">Todos los meses</option>
-                                </select>
-                            </div>
-                            <div style="flex:1; min-width:150px;">
-                                <div class="pases-filtro-label">Año</div>
-                                <select id="pasesFiltroAnio" class="pases-form-select">
-                                    <option value="todos">Todos los años</option>
-                                </select>
-                            </div>
-                            <div style="flex:1; min-width:150px;">
-                                <div class="pases-filtro-label">Proceso</div>
-                                <select id="pasesFiltroProceso" class="pases-form-select">
-                                    <option value="todos">Todos los procesos</option>
-                                </select>
-                            </div>
-                            <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
-                                <button id="pasesBtnActualizar" class="pases-btn-judicial">Refrescar datos</button>
-                                <button id="pasesBtnImprimir" class="pases-btn-outline">Imprimir tabla</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div style="padding: 1rem 2rem 0 2rem; display:flex; justify-content:flex-end;">
-                        <div class="pases-kpi">
-                            <div class="pases-kpi-texto">Total expedientes en sistema</div>
-                            <div class="pases-kpi-numero" id="pasesTotalRegistros">—</div>
-                        </div>
-                    </div>
-                    <div style="padding: 1rem 2rem 2rem 2rem;">
-                        <div class="table-responsive">
-                            <table class="pases-tabla" id="pasesTablaReporte">
-                                <thead>
-                                    <tr>
-                                        <th>Usuario asignado</th>
-                                        <th style="text-align:center;">Cantidad de expedientes</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="pasesCuerpoTabla">
-                                    <tr><td colspan="2" class="pases-empty">Cargando información...</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="pases-footer-note" id="pasesFooterInfo">
-                            Los filtros aplican sobre fecha de pase (mes/año) y tipo de proceso. Orden descendente por cantidad.
-                        </div>
-                    </div>
+                    <button class="btn solid noprint" id="btnImprimir" type="button"><i class="fas fa-print"></i> Imprimir</button>
                 </div>
-            `;
-            moduleContentContainer.innerHTML = pasesHTML;
-            // Cargar datos después de que el DOM esté listo
-            setTimeout(() => cargarPases(), 50);
-            // Eventos
-            document.getElementById('pasesBtnActualizar')?.addEventListener('click', cargarPases);
-            document.getElementById('pasesBtnImprimir')?.addEventListener('click', imprimirTablaPases);
-            document.getElementById('pasesFiltroMes')?.addEventListener('change', aplicarFiltrosPases);
-            document.getElementById('pasesFiltroAnio')?.addEventListener('change', aplicarFiltrosPases);
-            document.getElementById('pasesFiltroProceso')?.addEventListener('change', aplicarFiltrosPases);
-            document.getElementById('btnImprimirDetalle')?.addEventListener('click', imprimirDetallePases);
-            // Cerrar modal al hacer clic fuera
-            document.getElementById('detalleUsuarioModal')?.addEventListener('click', function(e) {
-                if (e.target === this) cerrarModalDetalle();
+                <div class="chartbox"><canvas id="chartIntervencionPI"></canvas></div>
+            </div>
+
+            <div class="card pad">
+                <div class="ttl"><div class="l"><i class="fas fa-table-list"></i><h2>Detalle de intervenciones</h2></div></div>
+                <div class="scroll">
+                    <table class="dt">
+                        <thead><tr><th>Intervención</th><th class="n">Cantidad</th><th class="n">% del total</th></tr></thead>
+                        <tbody>
+                            ${ordenadas.map(([k, v]) => `
+                                <tr>
+                                    <td>${esc(k)}</td>
+                                    <td class="n">${v}</td>
+                                    <td class="n"><span class="pbar"><i style="width:${max ? (v / max * 100).toFixed(0) : 0}%"></i></span>${total ? (v / total * 100).toFixed(1) : '0.0'}%</td>
+                                </tr>`).join('')}
+                            ${ordenadas.length === 0 ? '<tr><td colspan="3" class="empty">No hay datos</td></tr>' : ''}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        `;
+
+        // Gráfico lineal
+        const ctx = document.getElementById("chartIntervencionPI")?.getContext("2d");
+        if (ctx) {
+            if (chartIntervencion) chartIntervencion.destroy();
+            chartIntervencion = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: top.map(i => i[0]),
+                    datasets: [{
+                        label: 'Cantidad',
+                        data: top.map(i => i[1]),
+                        borderColor: '#2160e8',
+                        backgroundColor: 'rgba(33,96,232,.12)',
+                        pointBackgroundColor: '#1849c4',
+                        pointRadius: 4,
+                        borderWidth: 2.5,
+                        tension: 0.3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { ticks: { color: '#5a6a8a', font: { family: 'Inter' } }, grid: { display: false } },
+                        y: { beginAtZero: true, ticks: { precision: 0, color: '#5a6a8a', font: { family: 'Inter' } }, grid: { color: '#dde5f3' } }
+                    }
+                }
             });
-        } else {
-            // RESTO DE MÓDULOS: iframe original
-            const data = moduleData[moduleId];
-            if (data && data.url) {
-                moduleTitle.textContent = data.title;
-                const moduleContent = document.createElement('div');
-                moduleContent.className = 'module-content active';
-                moduleContent.innerHTML = `
-                    <div class="iframe-container">
-                        <iframe src="${data.url}" title="${data.title}" id="module-iframe"></iframe>
-                    </div>
-                `;
-                moduleContentContainer.appendChild(moduleContent);
-            } else {
-                moduleContentContainer.innerHTML = `<div class="placeholder-content"><i class="fas fa-exclamation-triangle"></i><p>Módulo no disponible temporalmente.</p></div>`;
-            }
         }
+
+        document.getElementById("btnImprimir")?.addEventListener("click", imprimirReporte);
     }
 
-    // Asignar eventos a los botones
-    moduleBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const moduleId = btn.dataset.module;
-            loadModule(moduleId);
-        });
+    function imprimirReporte() {
+        document.getElementById("fechaImpresion").textContent = new Date().toLocaleString('es-AR');
+        if (chartIntervencion) chartIntervencion.resize();
+        window.print();
+    }
+
+    // ======================= INFORME TRIMESTRAL =======================
+    const INFORME_URL = "https://sistema-secretarios.github.io/estadistica/";
+    const btnInforme = document.getElementById('btnInforme');
+    const btnInformeTxt = document.getElementById('btnInformeTxt');
+    const vistaReporte = document.getElementById('vistaReporte');
+    const vistaInforme = document.getElementById('vistaInforme');
+    const frameInforme = document.getElementById('frameInforme');
+    let informeAbierto = false;
+
+    btnInforme.addEventListener('click', () => {
+        informeAbierto = !informeAbierto;
+        vistaReporte.hidden = informeAbierto;
+        vistaInforme.hidden = !informeAbierto;
+        if (informeAbierto && !frameInforme.src) frameInforme.src = INFORME_URL;
+        btnInformeTxt.textContent = informeAbierto ? "Volver al Reporte" : "Informe Trimestral Oficial";
+        btnInforme.querySelector('i').className = informeAbierto ? "fas fa-arrow-left" : "fas fa-file-lines";
     });
 
-    // Fecha actual en footer
-    const currentDateElement = document.getElementById('current-date');
-    const today = new Date();
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    currentDateElement.textContent = today.toLocaleDateString('es-ES', options);
+    // ======================= INICIO =======================
+    document.getElementById('current-date').textContent =
+        new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
 
-    // Cargar Causas por defecto
-    loadModule('causas');
-
-    // Cerrar modal con tecla ESC
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') cerrarModalDetalle();
-    });
+    renderPrioridadIntervencion();
 </script>
 </body>
 </html>
